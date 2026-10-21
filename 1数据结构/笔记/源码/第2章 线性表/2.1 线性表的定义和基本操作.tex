@@ -1,0 +1,493 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.1
+线性表的定义和基本操作},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.1
+线性表的定义和基本操作 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.1
+线性表的定义和基本操作 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.1
+线性表的定义和基本操作}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.1 · 正课字幕 P8 · 王道书
+§2.1.1--2.1.2（第 13--14 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{学一个新的数据结构，从哪几方面入手？这一节管哪几方面？}第 1
+章说过，学任何一种数据结构都看\textbf{三要素}：逻辑结构、存储结构（物理结构）、数据的运算。线性表是全书第一个具体的数据结构，这一节只管其中两个：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{定义} → 线性表的\uln{逻辑结构}长什么样；
+\item
+  \textbf{基本操作} → 要对它实现哪些\uln{运算}。
+\end{itemize}
+
+存储结构留到后面：2.2 用顺序存储实现（顺序表），2.3
+用链式存储实现（链表）。\hlred{存储结构不同，运算的具体实现也不同}，到时候会用代码对比。
+
+\slidefig{assets/2.1-p03.jpg}{0.6}{课件：本节知识总览}
+
+\hypertarget{ux4e00ux7ebfux6027ux8868ux7684ux5b9aux4e49ux903bux8f91ux7ed3ux6784}{%
+\section{一、线性表的定义（逻辑结构）}\label{ux4e00ux7ebfux6027ux8868ux7684ux5b9aux4e49ux903bux8f91ux7ed3ux6784}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{线性表的定义里有哪三个关键词？}大白话：线性表就是数据元素之间是\textbf{一条线}的关系，一个接一个串在一起，有前有后。严格定义如下：
+
+\begin{defbox}
+
+\textbf{线性表}是具有\hlred{相同数据类型}的 \(n\,(n\ge 0)\)
+个数据元素的\hlred{有限}\hlred{序列}。\(n\) 为\textbf{表长}，\(n=0\)
+时为\textbf{空表}。用 \(L\) 命名线性表时，一般表示为
+\[L=(a_1,a_2,\cdots,a_i,a_{i+1},\cdots,a_n)\]
+
+\end{defbox}
+
+\slidefig{assets/2.1-p04.jpg}{0.65}{课件：线性表的定义}
+
+定义里的三个关键词，每个都有用处：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.556\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X>{\hsize=1.111\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 关键词} & \textcolor{white}{\bfseries 含义} & \textcolor{white}{\bfseries 为什么要它} \\
+\endfirsthead
+\textbf{相同数据类型} & 所有元素同一类型，可以是 \texttt{int}，也可以是自己定义的 \texttt{struct} & \uln{每个元素占的空间一样大}，计算机才能快速算出第 \(i\) 个元素在哪 \\ \hline
+\textbf{序列} & 元素之间有先后次序 & 这就是“线性”的来源 \\ \hline
+\textbf{有限} & 元素个数有限 & 反例：所有整数按递增排列，同类型、有次序，但个数无限，\hlred{不是线性表} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+王道书第 13--14 页把特点列成五条，除了上面三条，还有两条：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{表中元素都是数据元素}，每个元素在线性表中被视为一个\textbf{不可分割的单位}（一个元素可以含多个数据项，但在表里整体看待）。
+\item
+  \textbf{抽象性}：只讨论元素之间的逻辑关系，不管元素具体表示什么内容。
+\end{itemize}
+
+\end{bookbox}
+
+\hypertarget{ux51e0ux4e2aux672fux8bed}{%
+\subsection{几个术语}\label{ux51e0ux4e2aux672fux8bed}}
+
+\cueblock{\cuenote}{\relax{位序从几开始？和数组下标什么关系？}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{位序}：\(a_i\) 是表中“第 \(i\) 个”元素，\(i\)
+  叫它的位序。\hlred{位序从 1 开始，数组下标从 0 开始}。
+\item
+  \textbf{表头元素} \(a_1\)，\textbf{表尾元素} \(a_n\)。
+\item
+  \textbf{直接前驱 /
+  直接后继}：除第一个元素外，每个元素\uln{有且仅有}一个直接前驱；除最后一个元素外，每个元素\uln{有且仅有}一个直接后继。书上说明“直接前驱”和“前驱”、“直接后继”和“后继”通常视为同义词。
+\end{itemize}
+
+\begin{pitfallbox}
+
+以后用数组实现线性表时，位序为 \(i\) 的元素存在\textbf{下标 \(i-1\)}
+处。题目说“第 \(i\) 个”还是“下标为
+\(i\)”，\uln{一定要审题}，这是老师在本节专门强调的唯一一个坑。
+
+\end{pitfallbox}
+
+\textbf{为什么叫“表”}：英文是 Linear List。linear 来自 line（线），list
+是“列表、清单”（如 to-do
+list）。如果每个元素含多个数据项（学号、姓名、性别\ldots\ldots），整个线性表从形式上看就是一张表格，所以叫线性\textbf{表}。
+
+\begin{pitfallbox}
+
+王道书注意：\hlred{线性表是一种逻辑结构}，表示元素之间一对一的相邻关系；\textbf{顺序表和链表}指的是\textbf{存储结构}。两者属于不同层面的概念，不要混淆。
+
+\end{pitfallbox}
+
+\hypertarget{ux4e8cux7ebfux6027ux8868ux7684ux57faux672cux64cdux4f5cux8fd0ux7b97}{%
+\section{二、线性表的基本操作（运算）}\label{ux4e8cux7ebfux6027ux8868ux7684ux57faux672cux64cdux4f5cux8fd0ux7b97}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{线性表要实现哪些基本操作？怎么记？}函数名参考严蔚敏版《数据结构》，王道书用的也是同一套名字：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.906\hsize\raggedright\arraybackslash}X>{\hsize=1.642\hsize\raggedright\arraybackslash}X>{\hsize=0.453\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 基本操作} & \textcolor{white}{\bfseries 作用} & \textcolor{white}{\bfseries 归类} \\
+\endfirsthead
+\texttt{InitList(\&L)} & 初始化：构造一个空的线性表 \(L\)，\uln{分配内存空间} & 创（从无到有） \\ \hline
+\texttt{DestroyList(\&L)} & 销毁：销毁线性表，\uln{释放} \(L\) 占用的内存空间 & 销（从有到无） \\ \hline
+\texttt{ListInsert(\&L,i,e)} & 插入：在表 \(L\) 的第 \(i\) 个位置插入元素 \(e\) & 增 \\ \hline
+\texttt{ListDelete(\&L,i,\&e)} & 删除：删除表 \(L\) 第 \(i\) 个位置的元素，\uln{用 \(e\) 返回被删元素的值} & 删 \\ \hline
+\texttt{LocateElem(L,e)} & 按值查找：在表 \(L\) 中查找值为 \(e\) 的元素（书上：并返回其位置） & 查 \\ \hline
+\texttt{GetElem(L,i)} & 按位查找：获取表 \(L\) 中第 \(i\) 个位置的元素的值 & 查 \\ \hline
+\texttt{Length(L)} & 求表长：返回 \(L\) 中数据元素的个数 & 其他常用 \\ \hline
+\texttt{PrintList(L)} & 输出：按前后顺序输出 \(L\) 的所有元素值 & 其他常用 \\ \hline
+\texttt{Empty(L)} & 判空：\(L\) 为空表返回 \texttt{true}，否则返回 \texttt{false} & 其他常用 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+老师在这里给了五点提示：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{记忆和分析思路：创销、增删改查。}
+  学任何数据结构都可以这样想。表里没有单独的“改”，因为改之前也得先找到它，“改”的第一步就是“查”；“查”的本质是\textbf{定位}。下面三个“其他常用操作”是为了编程方便，核心是上面六个。
+\item
+  \textbf{这里没写参数类型，是故意的。} C 语言定义函数要写
+  \texttt{\textless{}返回值类型\textgreater{}\ 函数名(\textless{}参数类型\textgreater{}\ 参数,\ …)}，但描述基本操作时只关心“做什么”，元素
+  \(e\) 是 \texttt{int} 还是某个
+  \texttt{struct}，到写代码实现时再定，这叫接口的\textbf{抽象性}。
+\item
+  \textbf{可以按需增加操作。}
+  比如觉得“修改某个元素”很常用，就自己加一个。
+\item
+  \textbf{名字可以改，但要有可读性。} 不必死守严蔚敏版命名，但叫
+  \texttt{DestroyList} 一看就懂，叫 \texttt{a}
+  就没人知道是干嘛的。答题时用这套推荐命名，阅卷老师最喜欢。
+\item
+  \textbf{什么时候传引用 \texttt{\&}：对参数的修改结果需要“带回来”。}
+  下面单独讲。
+\end{enumerate}
+
+\begin{teacherbox}
+
+\textbf{为什么要把基本操作封装成函数？} ①
+团队合作编程，你定义的数据结构要让队友方便地用；②
+常用操作写一次、到处调用，避免重复，降低出错风险。老师借此提醒：比起学会
+How，更重要的是想明白 Why。
+
+\end{teacherbox}
+
+\hypertarget{ux4e09ux4ec0ux4e48ux65f6ux5019ux8981ux4f20ux5f15ux7528}{%
+\section{\texorpdfstring{三、什么时候要传引用
+\texttt{\&}}{三、什么时候要传引用 \&}}\label{ux4e09ux4ec0ux4e48ux65f6ux5019ux8981ux4f20ux5f15ux7528}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{参数什么时候要加 \texttt{\&}？不加会怎样？}老师用两段几乎一样的程序对比，区别只在
+\texttt{test} 的参数前有没有 \texttt{\&}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ x}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{// 版本一：不加 \&}
+\NormalTok{    x }\OperatorTok{=} \DecValTok{1024}\OperatorTok{;}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"test函数内部 x=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ x}\OperatorTok{);}
+\OperatorTok{\}}
+
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int} \OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}    \CommentTok{// 版本二：加 \&（只改了这一个符号）}
+\NormalTok{    x }\OperatorTok{=} \DecValTok{1024}\OperatorTok{;}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"test函数内部 x=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ x}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+两个版本的 \texttt{main} 一样：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ x }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"调用test前 x=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ x}\OperatorTok{);}
+\NormalTok{    test}\OperatorTok{(}\NormalTok{x}\OperatorTok{);}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"调用test后 x=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ x}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+逐步看内存里发生了什么：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 执行到} & \textcolor{white}{\bfseries 不加 \texttt{\&}} & \textcolor{white}{\bfseries 加 \texttt{\&}} \\
+\endfirsthead
+\texttt{int\ x\ =\ 1;} & \texttt{main} 的 x = 1 & \texttt{main} 的 x = 1 \\ \hline
+进入 \texttt{test(x)} & 内存里\textbf{复制}出另一份 x = 1，\texttt{test} 操作的是这份副本 & \texttt{test} 的 x 就是 \texttt{main} 的那个 x，\textbf{同一份数据} \\ \hline
+\texttt{x\ =\ 1024;} & 副本变成 1024，\texttt{main} 的 x 仍是 1 & \texttt{main} 的 x 变成 1024 \\ \hline
+回到 \texttt{main} 打印 & \textbf{1}（修改没带回来） & \textbf{1024}（修改带回来了） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/2.1-p08.jpg}{0.6}{课件：不加 \& 时，test 改的是复制品}
+
+\begin{pitfallbox}
+
+引用 \texttt{\&} 是 \textbf{C++} 的语法，C
+语言不支持。老师提醒：在线运行这段代码要选 \textbf{C++}
+在线工具。王道书第 14 页也注明：在 C
+语言中，可通过\textbf{指针}实现同样的效果。
+
+\end{pitfallbox}
+
+指针写法对照一下（考试算法题允许用 C 或 C++，两种都要认得）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int} \OperatorTok{*}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 参数是 x 的地址}
+    \OperatorTok{*}\NormalTok{x }\OperatorTok{=} \DecValTok{1024}\OperatorTok{;}         \CommentTok{// 通过地址改 main 里的那个 x}
+\OperatorTok{\}}
+\CommentTok{// 调用时传地址：test(\&x);}
+\end{Highlighting}
+\end{Shaded}
+
+回到基本操作，老师让大家自己琢磨“为什么有的加
+\texttt{\&}、有的不加”。按“要不要把修改带回来”一对就清楚了：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.923\hsize\raggedright\arraybackslash}X>{\hsize=0.346\hsize\raggedright\arraybackslash}X>{\hsize=1.731\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 参数} & \textcolor{white}{\bfseries 为什么} \\
+\endfirsthead
+\texttt{InitList(\&L)}、\texttt{DestroyList(\&L)} & \texttt{\&L} & 要分配 / 释放 \(L\) 的空间，\(L\) 本身变了，要带回 \\ \hline
+\texttt{ListInsert(\&L,i,e)} & \texttt{\&L} & 插入改变了 \(L\) 的内容和表长，要带回；\(e\) 只是读进来用，不加 \\ \hline
+\texttt{ListDelete(\&L,i,\&e)} & \texttt{\&L}、\texttt{\&e} & \(L\) 被改了要带回；被删元素的值要通过 \(e\) \textbf{带回}给调用者 \\ \hline
+\texttt{LocateElem(L,e)}、\texttt{GetElem(L,i)} & 都不加 & 只查不改，结果通过返回值给出 \\ \hline
+\texttt{Length(L)}、\texttt{PrintList(L)}、\texttt{Empty(L)} & 都不加 & 只读 \(L\)，不修改 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+老师说这一点“一定要理解，才能写出没有错误的代码”。
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987e}{%
+\section{四、知识回顾}\label{ux56dbux77e5ux8bc6ux56deux987e}}
+
+\slidefig{assets/2.1-p11.jpg}{0.65}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{线性表 =
+相同类型、有限、有序的一串数据元素}，是一种逻辑结构（一对一的线性关系），和顺序表、链表这些存储结构不是一个层面。术语里最要紧的是\textbf{位序从
+1 开始}，而数组下标从 0 开始，第 \(i\) 个元素在下标 \(i-1\)。
+
+基本操作按\textbf{创销、增删改查}来记：\texttt{InitList}、\texttt{DestroyList}、\texttt{ListInsert}、\texttt{ListDelete}、\texttt{LocateElem}、\texttt{GetElem}，外加
+\texttt{Length}、\texttt{PrintList}、\texttt{Empty}。参数要不要加
+\texttt{\&}，看\textbf{对参数的修改要不要带回来}：改了 \(L\)
+的都加，只读的不加，\texttt{ListDelete} 的 \(e\)
+因为要带回被删的值也加。\texttt{\&} 是 C++ 语法，C
+里用指针达到同样效果。
+
+\textbf{自测}：① “所有整数按递增排列”是线性表吗？为什么？② 线性表
+\((a_1,\cdots,a_n)\) 用数组 \texttt{data{[}{]}} 存，\(a_5\)
+在哪个下标？③ 为什么 \texttt{ListDelete} 的 \(e\) 要加 \texttt{\&}，而
+\texttt{ListInsert} 的 \(e\) 不用？
+
+\end{summarybox}
+\end{document}
