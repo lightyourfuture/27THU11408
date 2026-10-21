@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# git 提交前检查：冻结清单里的笔记（.md/.tex/.pdf）有改动就拒绝提交。
+# 安装：cp "1数据结构/笔记/_build/pre-commit" .git/hooks/pre-commit（仓库根目录执行）
+[ "${ALLOW_FROZEN:-0}" = 1 ] && exit 0
+top="$(git rev-parse --show-toplevel)"
+bad=0
+while IFS= read -r -d '' f; do
+  case "$f" in */笔记/*) ;; *) continue ;; esac
+  root="${f%%/笔记/*}/笔记"; rest="${f#"$root"/}"
+  list="$top/$root/_build/frozen.txt"; [ -f "$list" ] || continue
+  kind="${rest%%/*}"; case "$kind" in 源码|正课笔记|课后习题) ;; *) continue ;; esac
+  sub="${rest#*/}"; chap="${sub%%/*}"; base="${sub#*/}"
+  case "$base" in */*) continue ;; esac
+  stem="${base%.*}"
+  if grep -qxF "源码/$chap/$stem.md" "$list"; then
+    echo "拒绝提交：$f 属于已冻结的笔记（见 $root/_build/frozen.txt）" >&2; bad=1
+  fi
+done < <(git diff --cached --name-only -z)
+exit $bad

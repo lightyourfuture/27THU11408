@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # 用法：bash _build/build.sh "源码/第1章 绪论/1.1 数据结构的基本概念.md" [更多 .md ...]
 # 输出：PDF 放到 正课笔记/<章>/ 或 课后习题/<章>/（文件名含"课后习题"的归后者）；LaTeX 源码 .tex 留在 .md 旁边
+# 冻结：_build/frozen.txt 里的笔记拒绝编译，除非 ALLOW_FROZEN=1
 # 依赖：pandoc ≥3.1、xelatex（texlive-xetex + texlive-lang-chinese）、Noto CJK 字体、mermaid-cli(mmdc)
 set -euo pipefail
 export LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -11,6 +12,11 @@ export MMDC="${MMDC:-mmdc}"
 mkdir -p "$BUILD/cache"
 for md in "$@"; do
   src="$(cd "$(dirname "$md")" && pwd)/$(basename "$md")"
+  rel="${src#"$ROOT"/}"
+  if grep -qxF "$rel" "$BUILD/frozen.txt" 2>/dev/null && [ "${ALLOW_FROZEN:-0}" != 1 ]; then
+    echo "拒绝：$rel 已冻结（见 _build/frozen.txt）。Curran 明确要求修改时才用 ALLOW_FROZEN=1 放行。" >&2
+    exit 3
+  fi
   dir="$(dirname "$src")"; name="$(basename "$src" .md)"
   tmp="$(mktemp -d)"
   ( cd "$dir"
