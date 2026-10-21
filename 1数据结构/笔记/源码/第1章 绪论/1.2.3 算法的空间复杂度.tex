@@ -1,0 +1,639 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.2.3
+算法的空间复杂度},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 绪论}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.2.3 算法的空间复杂度 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.2.3
+算法的空间复杂度 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第1章
+绪论 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.2.3
+算法的空间复杂度}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.2\_3 · 字幕 P7 · 王道书
+§1.2.2（空间复杂度）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux4eceux65f6ux95f4ux5230ux7a7aux95f4}{%
+\section{从时间到空间}\label{ux4eceux65f6ux95f4ux5230ux7a7aux95f4}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{时间复杂度和空间复杂度分别衡量什么？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.682\hsize\raggedright\arraybackslash}X>{\hsize=1.636\hsize\raggedright\arraybackslash}X>{\hsize=0.682\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 衡量的是} & \textcolor{white}{\bfseries 记号} \\
+\endfirsthead
+时间复杂度 & 时间开销与问题规模 \(n\) 之间的关系 & \(T(n)\)，T = Time \\ \hline
+空间复杂度 & \hlred{空间开销（内存开销）与问题规模 \(n\) 之间的关系} & \(S(n)\)，S = Space \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+思路和时间复杂度完全相同，\uln{大 O、加法规则、常对幂指阶全部通用}。新内容只有两点：哪些内存要算，以及递归调用的开销。
+
+\hypertarget{ux4e00ux7a0bux5e8fux8fd0ux884cux65f6ux9700ux8981ux54eaux4e9bux5185ux5b58}{%
+\section{一、程序运行时需要哪些内存？}\label{ux4e00ux7a0bux5e8fux8fd0ux884cux65f6ux9700ux8981ux54eaux4e9bux5185ux5b58}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{程序代码占的空间要不要算进空间复杂度？}老师照顾跨考同学，先讲程序运行时内存里放了什么：
+
+\slidefig{assets/1.2.3-p03.jpg}{0.8}{课件：程序运行时的内存需求}
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/09b0385e846193f7a7972a795b7c6ce2c8c8f70c.pdf}\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{程序代码}：程序运行前要先把（编译后的）指令装入内存。程序写完了，它占多大就定了，\uln{和问题规模无关}。
+\item
+  \textbf{数据}：运行时，函数的参数、局部变量等也要占内存。比如算法 1
+  \texttt{loveYou(int\ n)} 里的 \texttt{n} 和 \texttt{i}，两个
+  \texttt{int} 至少 8 个字节。
+\end{enumerate}
+
+以算法 1 为例：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//算法1— 逐步递增型爱你}
+\DataTypeTok{void}\NormalTok{ loveYou}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{//n 为问题规模}
+    \DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{1}\OperatorTok{;}              \CommentTok{//爱你的程度}
+    \ControlFlowTok{while}\OperatorTok{(}\NormalTok{i}\OperatorTok{\textless{}=}\NormalTok{n}\OperatorTok{)\{}
+\NormalTok{        i}\OperatorTok{++;}              \CommentTok{//每次+1}
+\NormalTok{        printf}\OperatorTok{(}\StringTok{"I Love You }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ i}\OperatorTok{);}
+    \OperatorTok{\}}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"I Love You More Than }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ n}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+老师随手假设了一组数：程序代码占 100 个字节，\texttt{n} 和 \texttt{i}
+各占 4 个字节，那么运行时一共需要 \(100+8=108\) 个字节。不管 \(n\) 是
+3000 还是 300 万，都只要这 108
+个字节，是一个固定的常量（真实情况还会多存一些别的信息，但道理一样）：
+
+\begin{defbox}
+
+无论问题规模怎么变，算法运行所需的内存空间都是固定的常量，算法空间复杂度为
+\(S(n)=O(1)\)。
+
+\hlred{算法原地工作}：算法所需内存空间为常量。
+
+\end{defbox}
+
+\begin{exambox}
+
+“原地工作”这个术语可能在选择题中考查：\textbf{原地工作 = 空间复杂度为
+\(O(1)\)}，不是“不需要任何空间”，而是“需要的辅助空间是常量，和 \(n\)
+无关”。
+
+\end{exambox}
+
+\hypertarget{ux4e8cux666eux901aux7a0bux5e8fux53eaux770bux548c-n-ux6709ux5173ux7684ux53d8ux91cf}{%
+\section{\texorpdfstring{二、普通程序：只看和 \(n\)
+有关的变量}{二、普通程序：只看和 n 有关的变量}}\label{ux4e8cux666eux901aux7a0bux5e8fux53eaux770bux548c-n-ux6709ux5173ux7684ux53d8ux91cf}}
+
+\tocback
+
+\hypertarget{ux4e00ux7ef4ux6570ux7ec4on}{%
+\subsection{\texorpdfstring{1.
+一维数组：\(O(n)\)}{1. 一维数组：O(n)}}\label{ux4e00ux7ef4ux6570ux7ec4on}}
+
+\cueblock{\cuenote}{\relax{\texttt{int\ flag{[}n{]}} 为什么让空间复杂度变成 \(O(n)\)？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ flag}\OperatorTok{[}\NormalTok{n}\OperatorTok{];}    \CommentTok{//声明一个长度为n的数组}
+    \DataTypeTok{int}\NormalTok{ i}\OperatorTok{;}
+    \CommentTok{//……此处省略很多代码}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/1.2.3-p04.jpg}{0.65}{课件：一维数组 flag{[}n{]}}
+
+假设一个 \texttt{int} 变量占 4B，则所需内存空间 \(=4+4n+4=4n+8\)（参数
+\texttt{n} + 数组 \texttt{flag} + 变量 \texttt{i}），所以
+\(S(n)=O(n)\)。
+
+\textbf{结论：\hlred{只需关注存储空间大小与问题规模相关的变量}}，固定大小的变量只贡献常数，也不必关心
+\texttt{int} 占几个字节。
+
+\hypertarget{ux4e8cux7ef4ux6570ux7ec4on2}{%
+\subsection{\texorpdfstring{2.
+二维数组：\(O(n^2)\)}{2. 二维数组：O(n\^{}2)}}\label{ux4e8cux7ef4ux6570ux7ec4on2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ flag}\OperatorTok{[}\NormalTok{n}\OperatorTok{][}\NormalTok{n}\OperatorTok{];}    \CommentTok{//声明 n*n 的二维数组}
+    \DataTypeTok{int}\NormalTok{ i}\OperatorTok{;}
+    \CommentTok{//……此处省略很多代码}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+唯一和 \(n\) 相关的是 \texttt{flag}，它占 \(4\times n^2\) 字节，所以
+\(S(n)=O(n^2)\)。
+
+\hypertarget{ux591aux4e2aux6570ux7ec4ux52a0ux6cd5ux89c4ux5219}{%
+\subsection{3.
+多个数组：加法规则}\label{ux591aux4e2aux6570ux7ec4ux52a0ux6cd5ux89c4ux5219}}
+
+\cueblock{\cuenote}{\relax{同时有 \texttt{flag{[}n{]}{[}n{]}} 和 \texttt{other{[}n{]}} 时怎么算？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ flag}\OperatorTok{[}\NormalTok{n}\OperatorTok{][}\NormalTok{n}\OperatorTok{];}    \CommentTok{//声明 n*n 的二维数组}
+    \DataTypeTok{int}\NormalTok{ other}\OperatorTok{[}\NormalTok{n}\OperatorTok{];}      \CommentTok{//声明一个长度为n的数组}
+    \DataTypeTok{int}\NormalTok{ i}\OperatorTok{;}
+    \CommentTok{//……此处省略很多代码}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/1.2.3-p06.jpg}{0.65}{课件：多个数组用加法规则}
+
+\[S(n)=O(n^2)+O(n)+O(1)=O(n^2)\]
+
+和时间复杂度一样，用\uln{加法规则}，只保留阶数最高的那个大 O。
+
+\hypertarget{ux4e09ux9012ux5f52ux7a0bux5e8fux51fdux6570ux8c03ux7528ux4e5fux4f1aux5403ux5185ux5b58}{%
+\section{三、递归程序：函数调用也会吃内存}\label{ux4e09ux9012ux5f52ux7a0bux5e8fux51fdux6570ux8c03ux7528ux4e5fux4f1aux5403ux5185ux5b58}}
+
+\tocback
+
+\hypertarget{ux9012ux5f52ux8c03ux7528ux7684ux8fc7ux7a0b}{%
+\subsection{1.
+递归调用的过程}\label{ux9012ux5f52ux8c03ux7528ux7684ux8fc7ux7a0b}}
+
+\cueblock{\cuenote}{\relax{递归调用时，每一层的变量存在哪里？为什么不会互相覆盖？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//算法5— 递归型爱你}
+\DataTypeTok{void}\NormalTok{ loveYou}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{//n 为问题规模}
+    \DataTypeTok{int}\NormalTok{ a}\OperatorTok{,}\NormalTok{b}\OperatorTok{,}\NormalTok{c}\OperatorTok{;}            \CommentTok{//声明一系列局部变量}
+    \CommentTok{//...省略代码}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{n }\OperatorTok{\textgreater{}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        loveYou}\OperatorTok{(}\NormalTok{n}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{);}
+    \OperatorTok{\}}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"I Love You }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ n}\OperatorTok{);}
+\OperatorTok{\}}
+
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()\{}
+\NormalTok{    loveYou}\OperatorTok{(}\DecValTok{5}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+输出：\texttt{I\ Love\ You\ 1}、\texttt{I\ Love\ You\ 2}、\ldots\ldots、\texttt{I\ Love\ You\ 5}。
+
+\slidefig{assets/1.2.3-p07.jpg}{0.65}{课件：函数递归调用带来的内存开销}
+
+调用过程（老师逐层演示）：
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/ebb62b4fa88c0579dce205d621840b9afe97c27a.pdf}\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{main} 调用
+  \texttt{loveYou(5)}，内存里开辟一片区域，存这一层的参数 \texttt{n=5}
+  和局部变量 \texttt{a,b,c}。
+\item
+  因为 \texttt{5\textgreater{}1}，调用
+  \texttt{loveYou(4)}，\textbf{再开辟一片新区域}存 \texttt{n=4} 和新的
+  \texttt{a,b,c}。
+\item
+  依此类推，直到 \texttt{loveYou(1)}：\texttt{1\textgreater{}1}
+  不成立，跳过 \texttt{if}，打印 “I Love You 1”。
+\item
+  \texttt{loveYou(1)} 结束返回，它那片内存就可以释放；回到
+  \texttt{loveYou(2)} 继续执行 \texttt{printf}，打印 “I Love You
+  2”\ldots\ldots{}
+\end{enumerate}
+
+\begin{deepbox}
+
+每次调用都单独开一块空间存本层的参数、局部变量和返回地址，所以各层的
+\texttt{n} 互不干扰。这套机制叫\textbf{函数调用栈}（第 3
+章“栈在递归中的应用”）。\texttt{printf} 在递归调用之后，所以最深的
+\texttt{loveYou(1)} 先打印，输出 1→5。
+
+\end{deepbox}
+
+\hypertarget{ux7a7aux95f4ux590dux6742ux5ea6-ux9012ux5f52ux8c03ux7528ux7684ux6df1ux5ea6}{%
+\subsection{2. 空间复杂度 =
+递归调用的深度}\label{ux7a7aux95f4ux590dux6742ux5ea6-ux9012ux5f52ux8c03ux7528ux7684ux6df1ux5ea6}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{算法 5 的空间复杂度？一般规律？}每一层调用存 \texttt{n,a,b,c}
+四个 \texttt{int}，约 16 字节（再加返回地址等，总之是一个常数 \(k\)
+字节）。\(n=5\) 时递归了 5 层，层数和问题规模 \(n\) 相等，所以总共需要
+\(k\cdot n\) 字节：
+
+\[S(n)=O(n)\]
+
+\begin{defbox}
+
+\hlred{空间复杂度 = 递归调用的深度}（当每一层所需空间为常量时）。
+
+\end{defbox}
+
+\slidefig{assets/1.2.3-p08.jpg}{0.8}{课件：S(n)=O(n)，空间复杂度 = 递归调用的深度}
+
+\begin{exambox}
+
+考研中大部分递归程序的空间复杂度分析都和这个例子类似：每层所需空间是常量，\textbf{只需找到递归调用深度
+\(x\) 与问题规模 \(n\) 的关系，\(x\) 的数量级就是空间复杂度}。
+
+\end{exambox}
+
+\hypertarget{ux7279ux6b8aux60c5ux51b5ux6bcfux5c42ux7a7aux95f4ux4e0dux4e00ux6837}{%
+\subsection{3.
+特殊情况：每层空间不一样}\label{ux7279ux6b8aux60c5ux51b5ux6bcfux5c42ux7a7aux95f4ux4e0dux4e00ux6837}}
+
+\cueblock{\cuenote}{\relax{每层递归都定义一个长度为 n 的数组，空间复杂度是多少？}}
+
+\begin{fixbox}
+
+\textbf{命名说明}：课件里这段代码的注释和上一段一样，也叫“算法5---
+递归型爱你”，但两段代码不同：这一段在每层多声明了一个数组
+\texttt{flag{[}n{]}}。为了不混，本笔记把它叫作 \textbf{算法
+5′}（“每层带数组的递归型爱你”）。
+
+\end{fixbox}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//算法5′— 每层带数组的递归型爱你（课件注释仍写"算法5"）}
+\DataTypeTok{void}\NormalTok{ loveYou}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{//n 为问题规模}
+    \DataTypeTok{int}\NormalTok{ flag}\OperatorTok{[}\NormalTok{n}\OperatorTok{];}          \CommentTok{//声明一个数组}
+    \CommentTok{//...省略初始化数组的代码}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{n }\OperatorTok{\textgreater{}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        loveYou}\OperatorTok{(}\NormalTok{n}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{);}
+    \OperatorTok{\}}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"I Love You }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ n}\OperatorTok{);}
+\OperatorTok{\}}
+
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()\{}
+\NormalTok{    loveYou}\OperatorTok{(}\DecValTok{5}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/1.2.3-p09.jpg}{0.8}{课件：每层的数组长度不同}
+
+这次每一层定义的数组长度等于本层的参数 \(n\)：第 1
+层（\texttt{loveYou(5)}）数组长 5，第 2 层长 4，\ldots\ldots，最深一层长
+1。各层数组的总长度：
+
+\[1+2+3+\cdots+n=\frac{n(1+n)}{2}=\frac12 n^2+\frac12 n,\qquad S(n)=O(n^2)\]
+
+\begin{pitfallbox}
+
+这种情况“空间复杂度 =
+递归深度”就不成立了，要把各层的空间\textbf{加起来}。不过老师说考研中不太会遇到这么复杂的情况，绝大多数题目和前一个例子一样。
+
+\end{pitfallbox}
+
+\hypertarget{ux56dbux738bux9053ux4e66ux7684ux89c6ux89d2ux53eaux7b97ux8f85ux52a9ux7a7aux95f4}{%
+\section{\texorpdfstring{四、王道书的视角：只算“辅助空间”}{四、王道书的视角：只算辅助空间}}\label{ux56dbux738bux9053ux4e66ux7684ux89c6ux89d2ux53eaux7b97ux8f85ux52a9ux7a7aux95f4}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{输入数据占的空间算不算进空间复杂度？}}
+
+\begin{bookbox}
+
+王道书对空间复杂度的表述：空间复杂度 \(S(n)\)
+表示算法在运行过程中所需的\textbf{额外存储空间}，是问题规模 \(n\)
+的函数，记为 \(S(n)=O(g(n))\)。
+
+程序执行时所需的空间包括三部分：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.960\hsize\raggedright\arraybackslash}X>{\hsize=1.440\hsize\raggedright\arraybackslash}X>{\hsize=0.600\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 部分} & \textcolor{white}{\bfseries 说明} & \textcolor{white}{\bfseries 计入 \(S(n)\)？} \\
+\endfirsthead
+指令、常数和变量 & 与 \(n\) 无关，固定开销 & 否（顶多是常数） \\ \hline
+输入数据 & 取决于问题本身，与算法无关 & \hlred{\textbf{不计入}} \\ \hline
+辅助空间 & 递归调用栈、临时数组、指针等 & \hlred{\textbf{计入}} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+所以分析空间复杂度时，只关注算法\uln{额外使用的辅助空间}。例如，若算法创建了若干与输入规模
+\(n\) 同阶的辅助数组，则其空间复杂度为
+\(O(n)\)。若算法仅使用常量级的额外空间，则称为\textbf{原地工作}，空间复杂度为
+\(O(1)\)。
+
+\end{bookbox}
+
+\begin{deepbox}
+
+\textbf{课件和书的说法其实一致，只是侧重不同。} 课件的例子里
+\texttt{flag{[}n{]}}
+是\textbf{函数内部新声明}的数组，属于辅助空间，所以算进去；而像算法 4
+\texttt{loveYou(int\ flag{[}{]},\ int\ n)} 那样，\texttt{flag}
+是作为\textbf{输入}传进来的，它本来就存在，不是这个算法额外申请的，就不算。以后分析排序算法时，“原地排序”指的就是除了输入数组本身，只用了常数个辅助变量。
+
+\end{deepbox}
+
+\hypertarget{ux4e94ux77e5ux8bc6ux56deux987eux65f6ux95f4ux548cux7a7aux95f4ux5e76ux6392ux770b}{%
+\section{五、知识回顾：时间和空间并排看}\label{ux4e94ux77e5ux8bc6ux56deux987eux65f6ux95f4ux548cux7a7aux95f4ux5e76ux6392ux770b}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{普通程序、递归程序分别怎么求空间复杂度？}空间复杂度和上一节的时间复杂度是“同一套方法换了个对象”，所以回顾时把两节并排放，哪里相同、哪里不同一眼就能看出来：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.647\hsize\raggedright\arraybackslash}X>{\hsize=1.176\hsize\raggedright\arraybackslash}X>{\hsize=1.176\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 时间复杂度 \(T(n)\)} & \textcolor{white}{\bfseries 空间复杂度 \(S(n)\)} \\
+\endfirsthead
+衡量什么 & 时间开销与 \(n\) 的关系 & 内存开销与 \(n\) 的关系 \\ \hline
+数的是什么 & 基本操作的\textbf{执行次数} & 和 \(n\) 有关的变量占的\textbf{空间} \\ \hline
+可以忽略的 & 顺序执行的语句（只影响常数项） & 程序代码、大小固定的变量（只贡献常数） \\ \hline
+普通程序怎么算 & ① 找最深层循环的一条基本操作 ② 求执行次数 \(x=f(n)\) ③ \(O(x)\) & ① 找大小与 \(n\) 相关的变量 ② 求所占空间 \(x=f(n)\) ③ \(O(x)\) \\ \hline
+递归程序怎么算 & 列递推式求总次数 & 每层空间为常量时：\hlred{\(S(n)\) = 递归调用的深度}；每层不同时逐层累加 \\ \hline
+通用的工具 & 大 O、加法规则、乘法规则、常对幂指阶 & 完全相同 \\ \hline
+特殊术语 & 最好、最坏、平均时间复杂度 & \hlred{原地工作}：\(S(n)=O(1)\) \\ \hline
+考研频率 & 几乎每年都考 & 相对低很多，递归的要会算 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/1.2.3-p10.jpg}{0.7}{课件：本节知识回顾}
+
+\begin{exambox}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  空间复杂度衡量\textbf{内存开销与问题规模 \(n\) 的关系}，用大 O
+  表示，只关心数量级。
+\item
+  \textbf{普通程序}：只看大小与 \(n\) 相关的变量（数组等）。
+\item
+  \textbf{递归程序}：空间复杂度 = 递归调用的深度（每层空间为常量时）。
+\item
+  加法规则、乘法规则、“常对幂指阶”与时间复杂度通用。
+\item
+  \textbf{原地工作}：所需辅助空间为常量，\(S(n)=O(1)\)。
+\end{enumerate}
+
+\end{exambox}
+
+\begin{pitfallbox}
+
+\begin{itemize}
+\tightlist
+\item
+  空间复杂度 \(O(1)\) 是“所需辅助空间大小与问题规模 \(n\)
+  无关”，不是“不需要任何空间”。
+\item
+  递归程序即使没有定义任何数组，空间复杂度也可能是
+  \(O(n)\)，因为每层调用都要占栈空间。
+\item
+  考研中考查时间复杂度的频率比空间复杂度高很多，但递归程序的空间复杂度要会算。
+\end{itemize}
+
+\end{pitfallbox}
+
+\begin{summarybox}
+
+\textbf{空间复杂度 = 算法额外占用的内存随问题规模 \(n\) 增长的数量级。}
+
+程序代码和固定大小的变量与 \(n\)
+无关，只贡献常数；真正决定空间复杂度的，是大小随 \(n\) 变化的变量（如
+\texttt{flag{[}n{]}} 是 \(O(n)\)，\texttt{flag{[}n{]}{[}n{]}} 是
+\(O(n^2)\)，多个就用加法规则取最高阶）。递归函数每调用一层都要在函数调用栈上开一块空间，所以每层空间为常量时，空间复杂度就等于递归深度；每层大小不同时要逐层加起来。辅助空间是常量的算法叫“原地工作”，\(S(n)=O(1)\)。
+
+\textbf{自测}：① 递归函数
+\texttt{f(n)\{\ if(n\textgreater{}1)\ f(n-1);\ \}} 的空间复杂度？②
+为什么分析空间复杂度时不用管 \texttt{int} 占几个字节？
+
+\end{summarybox}
+\end{document}

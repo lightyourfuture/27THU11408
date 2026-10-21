@@ -1,0 +1,790 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.1
+数据结构的基本概念},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 绪论}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.1 数据结构的基本概念 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.1
+数据结构的基本概念 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{2}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第1章
+绪论 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.1
+数据结构的基本概念}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.1 · 字幕 P3（新版）+
+P4（旧版三要素）· 王道书 §1.1.1--1.1.2}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux5168ux4e66ux91ccux7684ux4f4dux7f6e}{%
+\section{这一节在全书里的位置}\label{ux8fd9ux4e00ux8282ux5728ux5168ux4e66ux91ccux7684ux4f4dux7f6e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{绪论考不考？为什么还要认真学？}老师开头就交代了：绪论这一章\uln{不是 408 大纲重点考查的大题来源}，但它给后面所有章节搭了一个\textbf{思维框架}。学完这一节，你就知道以后每遇到一种新的数据结构（线性表、栈、树、图\ldots\ldots），应该从哪几个角度去学它。
+
+\slidefig{assets/1.1-p03.jpg}{0.65}{课件：本节知识总览}
+
+\begin{teacherbox}
+
+概念多，比较无聊。\textbf{抓大放小}，重要的是形成框架，不必纠结于细节概念。视频结尾会把最重要的概念串一遍，勿慌。
+
+\end{teacherbox}
+
+本节的主线可以浓缩成一句话，后面所有内容都是在展开它：
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/56dc78b3064d0acd1d382a890f77b8606305d038.pdf}\end{figure}
+
+\hypertarget{ux4e00ux57faux672cux6982ux5ff5ux4eceux6570ux636eux4e00ux8defux62c6ux5230ux6570ux636eux9879}{%
+\section{\texorpdfstring{一、基本概念：从“数据”一路拆到“数据项”}{一、基本概念：从数据一路拆到数据项}}\label{ux4e00ux57faux672cux6982ux5ff5ux4eceux6570ux636eux4e00ux8defux62c6ux5230ux6570ux636eux9879}}
+
+\tocback
+
+\hypertarget{ux6570ux636e}{%
+\subsection{1. 数据}\label{ux6570ux636e}}
+
+\cueblock{\cuenote}{\relax{数据是什么？对计算机来说数据长什么样？}}
+
+\begin{defbox}
+
+\textbf{数据}是\hlred{信息的载体}，是描述客观事物属性的数、字符及所有\hlred{能输入到计算机中并被计算机程序识别和处理的符号的集合}。数据是计算机程序加工的\textbf{原料}。
+
+\end{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  站在计算机的角度：它能识别、能处理的只有\textbf{二进制 0 和 1}。
+\item
+  现实世界的任何信息（数字、文字、图片、声音），只要定好一套\textbf{转换规则}，都能变成
+  0/1
+  存进计算机。课件里用“太极生两仪，两仪生四象，四象生八卦”类比：两个符号不断组合，就能表示出无穷多的东西。
+\end{itemize}
+
+\hypertarget{ux6570ux636eux5143ux7d20ux4e0eux6570ux636eux9879}{%
+\subsection{2.
+数据元素与数据项}\label{ux6570ux636eux5143ux7d20ux4e0eux6570ux636eux9879}}
+
+\cueblock{\cuenote}{\relax{数据元素和数据项，谁是“基本单位”，谁是“最小单位”？}}
+
+\begin{defbox}
+
+\textbf{数据元素}是数据的\hlred{基本单位}，通常作为一个\textbf{整体}进行考虑和处理。一个数据元素可由若干\textbf{数据项}组成，数据项是构成数据元素的\hlred{不可分割的最小单位}。
+
+\end{defbox}
+
+\slidefig{assets/1.1-p05.jpg}{0.8}{课件：海底捞排队里的数据元素与数据项}
+
+老师举了两个例子：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.717\hsize\raggedright\arraybackslash}X>{\hsize=0.848\hsize\raggedright\arraybackslash}X>{\hsize=1.435\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 业务场景} & \textcolor{white}{\bfseries 一个\textbf{数据元素}} & \textcolor{white}{\bfseries 它包含的\textbf{数据项}} \\
+\endfirsthead
+海底捞排号系统 & 一波顾客（一次取号） & 号数、取号时间、就餐人数 \\ \hline
+微博账号系统 & 一个账号 & 昵称、性别、生日\ldots\ldots（生日还可拆成年、月、日） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{组合项}：像“生日”这种由多个数据项（年、月、日）合起来表示一个整体信息的，叫组合项。
+\end{itemize}
+
+\begin{pitfallbox}
+
+“基本单位”和“最小单位”别混：\uln{数据元素 = 基本单位}（处理时当作一个整体），\uln{数据项 = 最小单位}（不可再分）。
+
+\end{pitfallbox}
+
+\hypertarget{ux6570ux636eux7ed3ux6784ux4e0eux6570ux636eux5bf9ux8c61}{%
+\subsection{3.
+数据结构与数据对象}\label{ux6570ux636eux7ed3ux6784ux4e0eux6570ux636eux5bf9ux8c61}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{“结构”二字到底指什么？}老师先从“结构”这个词讲起：小学学汉字时，“沙”是左右结构、“粥”是左中右结构、“曼”是上中下结构。所谓\textbf{结构，就是各个组成部分之间的关系}。把这个意思搬到数据上：
+
+\begin{defbox}
+
+\textbf{数据结构}是\hlred{相互之间存在一种或多种特定关系}的数据元素的集合。
+
+\textbf{数据对象}是具有\hlred{相同性质}的数据元素的集合，是数据的一个子集。
+
+\end{defbox}
+
+\slidefig{assets/1.1-p08.jpg}{0.8}{课件：A、B 两家门店的排队信息}
+
+\cueblock{\cuenote}{\relax{数据结构和数据对象的区别？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 数据结构} & \textcolor{white}{\bfseries 数据对象} \\
+\endfirsthead
+强调什么 & 元素之间\hlred{\textbf{有关系}} & 元素\hlblue{\textbf{性质相同}}即可，不管有没有关系 \\ \hline
+海底捞例子 & \textbf{某一家}门店的排队顾客信息，以及它们之间的先后关系（3 号在 4 号前\ldots\ldots） & \textbf{全国所有门店}的排队顾客信息 \\ \hline
+为什么 & 同一家店的顾客有排队先后 & A 店 3 号和 B 店 995 号之间没有先后关系，但它们都是“排队顾客信息” \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+王道书的例子更“数学”：整数数据对象可以表示为集合
+\(N=\{0,\pm1,\pm2,\cdots\}\)。这是一个只讲“性质相同（都是整数）“、不讲元素间关系的集合，正好对应”数据对象”。书上还强调：在任何问题中，数据元素都不是孤立存在的，它们之间存在某种关系，\uln{这种关系称为结构（Structure）}。
+
+\end{bookbox}
+
+把几个概念的包含关系画出来，层次就清楚了：
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.6,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/01e48a28f175a30cc62085de955c75b1a7d7d2bc.pdf}\end{figure}
+
+\begin{exambox}
+
+\textbf{数据结构这门课着重关注的是数据元素之间的关系，以及对这些数据元素的操作，而不关心具体的数据项内容。}（课件“知识回顾”原话）
+
+\end{exambox}
+
+\hypertarget{ux4e8cux6570ux636eux7ed3ux6784ux7684ux4e09ux8981ux7d20}{%
+\section{二、数据结构的三要素}\label{ux4e8cux6570ux636eux7ed3ux6784ux7684ux4e09ux8981ux7d20}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{讨论任何一种数据结构，要关注哪三个方面？}}
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/5e28cc0ec7109529c8319715e59cb88158ad5143.pdf}\end{figure}
+
+\hypertarget{ux903bux8f91ux7ed3ux6784ux5143ux7d20ux4e4bux95f4ux903bux8f91ux4e0aux662fux4ec0ux4e48ux5173ux7cfb}{%
+\subsection{\texorpdfstring{1.
+逻辑结构：元素之间“逻辑上”是什么关系}{1. 逻辑结构：元素之间逻辑上是什么关系}}\label{ux903bux8f91ux7ed3ux6784ux5143ux7d20ux4e4bux95f4ux903bux8f91ux4e0aux662fux4ec0ux4e48ux5173ux7cfb}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{四种逻辑结构分别是几对几？}逻辑结构是指数据元素之间的逻辑关系，是从逻辑角度对数据的描述。它\uln{与数据在计算机中怎么存无关}，独立于计算机。
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.690\hsize\raggedright\arraybackslash}X>{\hsize=0.690\hsize\raggedright\arraybackslash}X>{\hsize=1.655\hsize\raggedright\arraybackslash}X>{\hsize=0.966\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 逻辑结构} & \textcolor{white}{\bfseries 关系} & \textcolor{white}{\bfseries 老师的例子} & \textcolor{white}{\bfseries 本课程哪里讲} \\
+\endfirsthead
+\textbf{集合} & 同属一个集合，\hlred{别无其他关系} & 烤盘上的各种食物；“中国最有钱的 400 个人”（只关心谁在名单里，不关心排名） & 基本不讨论（408 大纲已删除集合） \\ \hline
+\textbf{线性结构} & \hlred{一对一} & 烤串；海底捞排队；富豪排行榜 & 第 2、3 章（线性表、栈、队列） \\ \hline
+\textbf{树形结构} & \hlred{一对多} & 思维导图；电脑里的文件夹与文件 & 第 5 章 树与二叉树 \\ \hline
+\textbf{图状（网状）结构} & \hlred{多对多} & 微信好友关系；城市之间的道路 & 第 6 章 图 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{fixbox}
+
+课件和字幕说“树形结构在第四章、图在第五章、散列在第六章”，那是旧版教材的章号。按你现在这套课件和
+2027 王道书的目录：\textbf{第 4 章是串，第 5 章是树与二叉树，第 6
+章是图，散列表在第 7 章查找里}。
+
+\end{fixbox}
+
+\slidefig{assets/1.1-p15.jpg}{0.65}{课件：四种逻辑结构}
+
+\Needspace{4\baselineskip}
+
+\cuenote{“前驱”“后继”怎么理解？}\textbf{线性结构里的前驱与后继}：把元素编号
+1、2、3、4、5 排成一排。
+
+\begin{itemize}
+\tightlist
+\item
+  除了\textbf{第一个}元素，其余每个元素都有\uln{唯一的前驱}（紧挨着在它前面的那个）。
+\item
+  除了\textbf{最后一个}元素，其余每个元素都有\uln{唯一的后继}（紧挨着在它后面的那个）。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书把逻辑结构分成两大类，这个分法在选择题里很常见：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{线性结构}：一般线性表；受限线性表（栈和队列、串）；线性表推广（数组）。
+\item
+  \textbf{非线性结构}：集合、树形结构（一般树、二叉树）、图状结构（有向图、无向图）。
+\end{itemize}
+
+注意 \hlred{集合被归为非线性结构}。
+
+\end{bookbox}
+
+\hypertarget{ux5b58ux50a8ux7ed3ux6784ux7269ux7406ux7ed3ux6784ux5728ux8ba1ux7b97ux673aux91ccux600eux4e48ux8868ux793aux51faux8fd9ux79cdux5173ux7cfb}{%
+\subsection{\texorpdfstring{2.
+存储结构（物理结构）：在计算机里怎么“表示出”这种关系}{2. 存储结构（物理结构）：在计算机里怎么表示出这种关系}}\label{ux5b58ux50a8ux7ed3ux6784ux7269ux7406ux7ed3ux6784ux5728ux8ba1ux7b97ux673aux91ccux600eux4e48ux8868ux793aux51faux8fd9ux79cdux5173ux7cfb}}
+
+\begin{fixbox}
+
+\textbf{名词统一}：老师先说“物理结构”，紧接着说“很多地方更愿意把它称为存储结构”；课件两种都写，王道书用“存储结构（也称物理结构）“。\uln{两个词完全是一回事}，本笔记下文统一叫”存储结构”。
+
+\end{fixbox}
+
+\Needspace{4\baselineskip}
+
+\cuenote{存储结构要解决的核心问题是什么？}存储结构要解决的是：把元素存进内存的同时，把它们之间的逻辑关系也表示出来。王道书：存储结构包括\uln{数据元素的表示和关系的表示}。
+
+\slidefig{assets/1.1-p21.jpg}{0.62}{课件：四种存储结构}
+
+为了简单，绪论里只拿最简单的\textbf{线性结构}（a、b、d、e、f
+排成一排）来演示四种存法：
+
+\hypertarget{ux987aux5e8fux5b58ux50a8}{%
+\subsubsection{顺序存储}\label{ux987aux5e8fux5b58ux50a8}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{顺序存储靠什么表示“谁在谁后面”？}把\hlred{逻辑上相邻的元素存储在物理位置上也相邻的存储单元中}，元素之间的关系由存储单元的\textbf{邻接关系}来体现。
+
+\slidefig{assets/1.1-p17.jpg}{0.6}{课件：顺序存储}
+
+\begin{itemize}
+\tightlist
+\item
+  关系是“隐含”的：b 紧挨着 a 存，所以 b 就是 a 的后继，不用额外记录。
+\item
+  代价：必须给它们分配\uln{一整片连续的存储空间}。
+\end{itemize}
+
+\hypertarget{ux94feux5f0fux5b58ux50a8}{%
+\subsubsection{链式存储}\label{ux94feux5f0fux5b58ux50a8}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{链式存储靠什么表示关系？要先补什么知识？}逻辑上相邻的元素在物理位置上\hlred{可以不相邻}，借助指示元素存储地址的\textbf{指针}来表示元素之间的逻辑关系。
+
+\slidefig{assets/1.1-p18.jpg}{0.6}{课件：链式存储}
+
+\begin{itemize}
+\tightlist
+\item
+  每个元素旁边多存一个“下一个元素在哪”的地址（指针），顺着指针就能把
+  a→b→d→e→f 串起来。
+\item
+  老师特别提醒：\hlorange{对 C 语言指针不熟的同学，学数据结构之前一定要先把指针补一补}，从第
+  2 章单链表开始会大量用到。
+\end{itemize}
+
+\hypertarget{ux7d22ux5f15ux5b58ux50a8}{%
+\subsubsection{索引存储}\label{ux7d22ux5f15ux5b58ux50a8}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{索引存储多了什么？关键字是什么？}在存储元素信息的同时，还建立附加的\textbf{索引表}。索引表中的每项称为索引项，一般形式是
+\hlred{（关键字，地址）}。
+
+\slidefig{assets/1.1-p19.jpg}{0.6}{课件：索引存储}
+
+\textbf{关键字}：能区分不同数据元素的数据项（如海底捞的排队号）。索引表本身要额外占空间。
+
+\hypertarget{ux6563ux5217ux5b58ux50a8}{%
+\subsubsection{散列存储}\label{ux6563ux5217ux5b58ux50a8}}
+
+根据元素的\textbf{关键字直接计算}出该元素的存储地址，又称哈希（Hash）存储。
+
+老师这里不展开散列存储，第 7
+章散列表再讲。现在只需记住：\uln{用散列函数把关键字直接算成地址}。
+
+\Needspace{4\baselineskip}
+
+\cuenote{四种存储方式怎么分类？各自优缺点？}后三种（链式、索引、散列）统称
+\hlblue{非顺序存储（离散存储）}。
+
+\begin{bookbox}
+
+王道书给出了四种存储方式的优缺点，课上没细讲，但选择题常考，这里补全：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.551\hsize\raggedright\arraybackslash}X>{\hsize=1.224\hsize\raggedright\arraybackslash}X>{\hsize=1.224\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 存储方式} & \textcolor{white}{\bfseries 优点} & \textcolor{white}{\bfseries 缺点} \\
+\endfirsthead
+顺序存储 & 可以实现\textbf{随机存取}；每个元素占用最少的存储空间 & 需要连续空间，可能产生较多\textbf{外部碎片} \\ \hline
+链式存储 & 不会出现碎片，能充分利用所有存储单元 & 指针额外占空间；只能\textbf{顺序存取} \\ \hline
+索引存储 & 检索速度快 & 索引表额外占空间；增删数据要修改索引表，花额外时间 \\ \hline
+散列存储 & 检索、插入、删除都很快 & 散列函数设计不好会产生\textbf{冲突}，解决冲突要额外的时间和空间 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\end{bookbox}
+
+\begin{deepbox}
+
+\textbf{随机存取}：第 \(i\) 个元素的地址 = 起始地址 + \((i-1)\times\)
+元素大小，一步算出，顺序存储能做到；链式存储只能顺着指针从头找，叫\textbf{顺序存取}。第
+2 章会反复用到。
+
+\end{deepbox}
+
+\hypertarget{ux7eeaux8bbaux9636ux6bb5ux53eaux9700ux7406ux89e3ux7684ux4e09ux70b9}{%
+\subsubsection{绪论阶段只需理解的三点}\label{ux7eeaux8bbaux9636ux6bb5ux53eaux9700ux7406ux89e3ux7684ux4e09ux70b9}}
+
+\slidefig{assets/1.1-p22.jpg}{0.65}{课件：存储结构的影响（传统排队 vs 银行取号）}
+
+\cueblock{\cuenote}{\relax{存储结构会影响哪两件事？各举一个例子。}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{顺序存储}：各元素在物理上\hlred{必须连续}；\textbf{非顺序存储}：各元素在物理上\hlred{可以离散}。（传统排队每个人必须挨着站；银行取号后哪儿有空座坐哪儿。）
+\item
+  存储结构会影响 \uln{存储空间分配的方便程度}。
+\item
+  存储结构会影响 \uln{对数据运算的速度}。
+\end{enumerate}
+
+把两个例子展开讲透：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.692\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 场景} & \textcolor{white}{\bfseries 顺序存储（传统排队）} & \textcolor{white}{\bfseries 非顺序存储（银行取号）} \\
+\endfirsthead
+\textbf{有人想插队}（插入新元素） & 插入位置后面的人要\hlred{全部往后挪一位}，挪动的数据多，分配空间不方便 & 来个 VIP，给他一个更小的号，随便找个空座即可；链式存储只要\hlgreen{改两个指针} \\ \hline
+\textbf{想找排第 3 的人}（按位置查找） & 一眼就能看到，直接定位 & 要先找第 1 个，再顺着找第 2、第 3 个，\hlred{没那么快} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hypertarget{ux6570ux636eux7684ux8fd0ux7b97}{%
+\subsection{3. 数据的运算}\label{ux6570ux636eux7684ux8fd0ux7b97}}
+
+\cueblock{\cuenote}{\relax{运算的“定义”和“实现”分别针对什么？}}
+
+\begin{defbox}
+
+施加在数据上的运算包括运算的\textbf{定义}和\textbf{实现}。\hlred{运算的定义是针对逻辑结构的}，指出运算的\textbf{功能}；\hlred{运算的实现是针对存储结构的}，指出运算的\textbf{具体操作步骤}。
+
+\end{defbox}
+
+\slidefig{assets/1.1-p23.jpg}{0.65}{课件：海底捞队列的运算}
+
+\textbf{第一步：结合现实需求，针对逻辑结构“定义”运算。}
+排队是线性结构（队列），服务员和顾客需要：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  队头元素出队（服务员叫号）；
+\item
+  新元素入队（新来一桌取号，排到队尾）；
+\item
+  输出队列长度（告诉顾客前面还有几桌）\ldots\ldots{}
+\end{enumerate}
+
+这些运算只说“要做什么”，\uln{不管数据怎么存}，对任何线性结构都通用。旧版课里老师还举了富豪排行榜：查第
+\(i\) 名是谁、在第 \(i\) 个位置插入一个新上榜的人、删除跌出榜单的人。
+
+\textbf{第二步：选定存储结构后，才能“实现”运算。} 同样是“999 号入队”：
+
+\begin{itemize}
+\tightlist
+\item
+  顺序存储：必须把 999 号放在 998 号\textbf{紧挨着的下一个位置}。
+\item
+  链式存储：999 号放在内存里任意空闲位置都行，只要让 998 的指针指向
+  999。
+\end{itemize}
+
+\begin{teacherbox}
+
+（旧版课）定义一辆车是“四个轮子、一个方向盘、一个发动机”；实现时可以装三缸发动机，也可以装六缸。定义只说功能，实现才落到具体零件。
+
+\end{teacherbox}
+
+\begin{bookbox}
+
+王道书把这层关系说成一句话：\uln{算法的设计取决于所采用的逻辑结构，而算法的实现则依赖于所选择的存储结构}。逻辑结构和存储结构密不可分：逻辑结构独立于存储结构，但存储结构不能脱离逻辑结构而存在（它就是逻辑结构在计算机上的映射）。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux6570ux636eux7c7bux578bux4e0eux62bdux8c61ux6570ux636eux7c7bux578badt}{%
+\section{三、数据类型与抽象数据类型（ADT）}\label{ux4e09ux6570ux636eux7c7bux578bux4e0eux62bdux8c61ux6570ux636eux7c7bux578badt}}
+
+\tocback
+
+\hypertarget{ux6570ux636eux7c7bux578b}{%
+\subsection{1. 数据类型}\label{ux6570ux636eux7c7bux578b}}
+
+\cueblock{\cuenote}{\relax{数据类型的两个组成部分？原子类型和结构类型的区别？}}
+
+\begin{defbox}
+
+\textbf{数据类型}是一个\hlred{值的集合}和定义在此集合上的\hlred{一组操作}的总称。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{原子类型}：其值不可再分的数据类型。
+\item
+  \textbf{结构类型}：其值可以再分解为若干成分（分量）的数据类型。
+\end{enumerate}
+
+\end{defbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.682\hsize\raggedright\arraybackslash}X>{\hsize=1.159\hsize\raggedright\arraybackslash}X>{\hsize=1.159\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 类型} & \textcolor{white}{\bfseries 值的集合（能取哪些值）} & \textcolor{white}{\bfseries 一组操作（能做什么）} \\
+\endfirsthead
+\texttt{bool}（原子） & \texttt{true}、\texttt{false} & 与、或、非\ldots\ldots{} \\ \hline
+\texttt{int}（原子） & \(-2147483648\sim 2147483647\)（4 字节补码时） & 加、减、乘、除、取模\ldots\ldots{} \\ \hline
+\texttt{struct\ Customer}（结构） & 由业务决定，如 \texttt{num} 取 1\textasciitilde9999，\texttt{people} 取 1\textasciitilde12 & 由业务决定，如“拼桌” \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/1.1-p25.jpg}{0.65}{课件：数据类型举例}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{struct}\NormalTok{ Customer }\OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ num}\OperatorTok{;}     \CommentTok{// 号数}
+    \DataTypeTok{int}\NormalTok{ people}\OperatorTok{;}  \CommentTok{// 人数}
+    \CommentTok{// ……其他必要的信息}
+\OperatorTok{\};}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  号数范围、人数范围都是\textbf{根据业务需求}定的：店里不可能同时排超过
+  9999 桌，一桌最多 12 人。
+\item
+  “拼桌”运算：把两波顾客合成一桌，背后就是把两个 \texttt{people} 相加。
+\end{itemize}
+
+\begin{bookbox}
+
+旧版课里老师还举了“坐标”结构体（\texttt{x} 横坐标、\texttt{y}
+纵坐标），点出一个细节：结构类型里的分量之间也有逻辑关系，\textbf{\texttt{x}
+和 \texttt{y}
+的含义不能互换}，换了这个点就变了。它的操作可以是“两个坐标相加”“求到原点的距离”，在
+C 语言里每个操作写成一个函数。
+
+\end{bookbox}
+
+\hypertarget{ux62bdux8c61ux6570ux636eux7c7bux578b-adt}{%
+\subsection{2. 抽象数据类型
+ADT}\label{ux62bdux8c61ux6570ux636eux7c7bux578b-adt}}
+
+\cueblock{\cuenote}{\relax{ADT 定义了三要素中的哪几个？为什么叫“抽象”？}}
+
+\begin{defbox}
+
+\textbf{抽象数据类型}（Abstract Data
+Type，ADT）是抽象数据组织及与之相关的操作。
+
+ADT
+用数学化的语言定义数据的\hlred{逻辑结构}、定义\hlred{运算}，\hlred{与具体的实现无关}。
+
+\end{defbox}
+
+\slidefig{assets/1.1-p26.jpg}{0.65}{课件：ADT 只涉及三要素中的两个}
+
+\begin{deepbox}
+
+\textbf{“抽象”抽掉的是存储结构和实现细节}：使用者只关心逻辑关系和能做哪些操作（就像用
+\texttt{int}
+不关心补码怎么存），实现者才决定顺序还是链式、代码怎么写。即“接口 vs
+实现”。
+
+\end{deepbox}
+
+\begin{bookbox}
+
+王道书对 ADT
+的表述：一个数学模型以及定义在该模型上的一组操作。它通常是对数据的某种抽象，规定了数据的\textbf{取值范围、结构形式以及可执行的操作集合}。书中把
+ADT 和原子类型、结构类型并列，作为数据类型的第三种。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987eux4e0eux91cdux8981ux8003ux70b9}{%
+\section{四、知识回顾与重要考点}\label{ux56dbux77e5ux8bc6ux56deux987eux4e0eux91cdux8981ux8003ux70b9}}
+
+\tocback
+
+\slidefig{assets/1.1-p29.jpg}{0.8}{课件：知识回顾思维导图}
+
+这一节几乎全是概念，复习时最怕“每个都眼熟、一问就说不清”。下面把本节出现的概念按出场顺序排成一张速查表，每个概念配一句话和老师用过的例子，遮住中间一列就能自测：
+
+\cueblock{\cuenote}{\relax{遮住“一句话”一列，看着例子能说出每个概念吗？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.660\hsize\raggedright\arraybackslash}X>{\hsize=1.380\hsize\raggedright\arraybackslash}X>{\hsize=0.960\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 概念} & \textcolor{white}{\bfseries 一句话} & \textcolor{white}{\bfseries 老师的例子} \\
+\endfirsthead
+数据 & 能输入计算机并被程序处理的符号的集合 & 一切最终变成 0 和 1 的东西 \\ \hline
+数据元素 & 数据的\textbf{基本单位}，作为整体处理 & 一波排队顾客、一个微博账号 \\ \hline
+数据项 & 构成数据元素的\textbf{最小单位} & 号数、取号时间、昵称 \\ \hline
+组合项 & 多个数据项合起来表示一个整体信息 & 生日 = 年 + 月 + 日 \\ \hline
+数据对象 & \textbf{性质相同}的数据元素的集合 & 全国所有门店的排队信息 \\ \hline
+数据结构 & \textbf{有关系}的数据元素的集合 & A 门店的排队队列 \\ \hline
+逻辑结构 & 元素之间逻辑上的关系，与怎么存无关 & 集合、线性、树、图 \\ \hline
+存储结构 & 逻辑关系在计算机里的表示 & 顺序、链式、索引、散列 \\ \hline
+数据的运算 & 定义看逻辑结构，实现看存储结构 & 叫号出队、取号入队 \\ \hline
+关键字 & 能区分不同数据元素的数据项 & 海底捞的排队号 \\ \hline
+数据类型 & 值的集合 + 一组操作 & \texttt{bool}、\texttt{int}、\texttt{struct\ Customer} \\ \hline
+ADT & 只定义逻辑结构和运算，不管存储 & 使用者眼里的“说明书” \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\cueblock{\cuenote}{\relax{用两句话说出“定义一个数据结构”和“实现一个数据结构”的区别。}}
+
+\begin{exambox}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  层次关系：\textbf{数据 → 数据对象 → 数据元素 →
+  数据项}（前一个由后一个组成）；数据元素是基本单位，数据项是最小单位。
+\item
+  \textbf{定义一个
+  ADT，就是定义了数据的逻辑结构和数据的运算，也就是定义了一个数据结构。}
+\item
+  \textbf{确定一种存储结构，就意味着在计算机中表示出数据的逻辑结构。存储结构不同，运算的具体实现也不同。确定了存储结构，才能实现数据结构。}
+\item
+  学习任何一种数据结构，都从三个方面入手：逻辑结构、存储结构、数据的运算。
+\end{enumerate}
+
+\end{exambox}
+
+\begin{pitfallbox}
+
+\begin{itemize}
+\tightlist
+\item
+  逻辑结构\textbf{独立于}存储结构（它只是我们脑子里的关系）；存储结构\textbf{不能脱离}逻辑结构（它是逻辑结构在计算机里的映射）。
+\item
+  一个完整的数据结构要把三要素都确定下来：逻辑结构 + 存储结构 +
+  数据的运算。只说了“线性结构”，还不知道它在计算机里怎么存、能做什么操作。
+\item
+  存储数据时，不仅要存各数据元素的值，还要存\hlred{元素之间的关系}。
+\item
+  “数据元素”和“数据项”：一个是基本单位（整体处理），一个是最小单位（不可再分），别记反。
+\end{itemize}
+
+\end{pitfallbox}
+
+\begin{summarybox}
+
+\textbf{这一节就讲了一件事：学一种数据结构，要看哪几个方面。}
+
+数据由数据元素组成，数据元素由数据项组成，怎么划分看业务。数据结构关心的不是数据项的内容，而是\textbf{数据元素之间的关系}。围绕“关系”有三个问题：逻辑上是什么关系（集合、线性、树、图），在计算机里怎么存才能把关系表示出来（顺序、链式、索引、散列），以及要对它做哪些操作（定义看逻辑结构，实现看存储结构）。ADT
+只写“逻辑结构 +
+运算”，是一个数据结构的“说明书”；选好存储结构、写出代码，才算把它真正实现。
+
+\textbf{自测}：① 为什么说存储结构会影响运算速度？用“插队”和“找第 3
+个人”各说一遍。② “有序表”和“顺序表”哪个是逻辑结构？
+
+\end{summarybox}
+\end{document}

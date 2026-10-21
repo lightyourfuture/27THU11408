@@ -1,0 +1,568 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.2.1
+算法的基本概念},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 绪论}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.2.1 算法的基本概念 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.2.1
+算法的基本概念 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第1章
+绪论 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.2.1
+算法的基本概念}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.2\_1 · 字幕 P5 · 王道书
+§1.2.1}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux672cux8282ux8981ux56deux7b54ux7684ux4e09ux4e2aux95eeux9898}{%
+\section{本节要回答的三个问题}\label{ux672cux8282ux8981ux56deux7b54ux7684ux4e09ux4e2aux95eeux9898}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{本节三个知识点？}}
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/e0d5c0ad807947d82b22b2bed853ab40279d794f.pdf}\end{figure}
+
+\hypertarget{ux4e00ux4ec0ux4e48ux662fux7b97ux6cd5}{%
+\section{一、什么是算法}\label{ux4e00ux4ec0ux4e48ux662fux7b97ux6cd5}}
+
+\tocback
+
+\hypertarget{ux7a0bux5e8f-ux6570ux636eux7ed3ux6784-ux7b97ux6cd5}{%
+\subsection{1. 程序 = 数据结构 +
+算法}\label{ux7a0bux5e8f-ux6570ux636eux7ed3ux6784-ux7b97ux6cd5}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{数据结构和算法各管什么？}老师引用了计算机界的一句名言（出自
+Pascal 语言之父 Niklaus Wirth）：
+
+\begin{defbox}[：程序 = 数据结构 + 算法]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{数据结构}：如何用数据\hlred{正确地描述现实世界的问题}，并存入计算机；
+\item
+  \textbf{算法}：如何\hlred{高效地处理这些数据}，以解决实际问题。
+\end{itemize}
+
+\end{defbox}
+
+\begin{defbox}
+
+\textbf{算法}（Algorithm）是对特定问题\hlred{求解步骤}的一种描述，它是指令的\hlred{有限序列}，其中的每条指令表示一个或多个操作。
+
+\end{defbox}
+
+老师坦白说“这个定义还看不懂对吧？没关系”，然后用做菜来解释：
+
+\slidefig{assets/1.2.1-p03.jpg}{0.65}{课件：做番茄炒蛋}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.714\hsize\raggedright\arraybackslash}X>{\hsize=1.143\hsize\raggedright\arraybackslash}X>{\hsize=1.143\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 做番茄炒蛋} & \textcolor{white}{\bfseries 计算机程序} \\
+\endfirsthead
+原料 & 鸡蛋 4 个、西红柿 2 个、料酒、盐、糖 & \textbf{数据结构}：给计算机提供要加工的“食材” \\ \hline
+步骤 & ① 西红柿切块 ② 鸡蛋加料酒打匀 ③ 锅烧热，倒入鸡蛋翻炒 ④ 倒入西红柿翻炒 ⑤ 加盐、糖 ⑥ 装盘 & \textbf{算法}：描述计算机如何一步步处理这些食材 \\ \hline
+结果 & 一盘番茄炒蛋 & 问题被正确解决 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hypertarget{ux4e00ux4e2aux5177ux4f53ux7684ux7b97ux6cd5ux6309ux5e74ux9f84ux9012ux589eux6392ux5e8f}{%
+\subsection{2.
+一个具体的算法：按年龄递增排序}\label{ux4e00ux4e2aux5177ux4f53ux7684ux7b97ux6cd5ux6309ux5e74ux9f84ux9012ux589eux6392ux5e8f}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{老师用什么例子演示“算法就是求解步骤”？}现在有一个线性表，存了 5
+个人的财富信息，要求\hlred{将该线性表按照年龄递增排序}：
+
+\slidefig{assets/1.2.1-p04.jpg}{0.65}{课件：待排序的线性表}
+
+老师给出的步骤是：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Step 1}：扫描 5 个元素，找到年龄最小的一个元素，插入到第 1
+  个位置；（咸鱼，18 岁）
+\item
+  \textbf{Step 2}：扫描剩下的 4 个元素，找到年龄最小的一个元素，插入到第
+  2 个位置；（黄峥，40 岁）
+\item
+  \textbf{Step 3}：扫描剩下的 3 个元素，找到年龄最小的一个元素，插入到第
+  3 个位置；
+\item
+  \textbf{Step 4}：扫描剩下的 2 个元素，找到年龄最小的一个元素，插入到第
+  4 个位置。
+\end{itemize}
+
+\slidefig{assets/1.2.1-p13.jpg}{0.65}{课件：排序完成}
+
+\(n\) 个元素只需 \(n-1\)
+趟（最后剩下的自然最大）。这个“每趟挑最小放前面”的思路就是第 8
+章\textbf{简单选择排序}的雏形。
+
+\Needspace{4\baselineskip}
+
+\cuenote{算法可以用哪些方式描述？}算法可以用\textbf{自然语言}（如上面的
+Step
+1\textasciitilde4）、\textbf{伪代码}或\textbf{真正的程序代码}（C、Java\ldots\ldots）描述。要让计算机执行，最终得写成代码。
+
+\hypertarget{ux4e8cux7b97ux6cd5ux5fc5ux987bux5177ux5907ux7684ux4e94ux4e2aux7279ux6027}{%
+\section{二、算法必须具备的五个特性}\label{ux4e8cux7b97ux6cd5ux5fc5ux987bux5177ux5907ux7684ux4e94ux4e2aux7279ux6027}}
+
+\tocback
+
+下面五个特性\hlred{缺一个就不能称为算法}，和后面“好算法的目标”不是一回事。
+
+\hypertarget{ux6709ux7a77ux6027}{%
+\subsection{1. 有穷性}\label{ux6709ux7a77ux6027}}
+
+\cueblock{\cuenote}{\relax{算法和程序的区别？死循环是算法吗？}}
+
+\begin{defbox}
+
+\textbf{有穷性}：一个算法必须总在执行\hlred{有穷步之后结束}，且每一步都可在\hlred{有穷时间内完成}。
+
+\end{defbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.682\hsize\raggedright\arraybackslash}X>{\hsize=0.682\hsize\raggedright\arraybackslash}X>{\hsize=1.636\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 能否无穷运行} & \textcolor{white}{\bfseries 例子} \\
+\endfirsthead
+\textbf{算法} & \hlred{必须有穷} & 用有限步骤解决某个特定的问题 \\ \hline
+\textbf{程序} & \hlblue{可以无穷} & 微信：只要不关，它就一直运行下去，所以微信是程序，\textbf{不是}算法 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  死循环不是算法，因为它不满足有穷性。
+\end{itemize}
+
+\hypertarget{ux786eux5b9aux6027}{%
+\subsection{2. 确定性}\label{ux786eux5b9aux6027}}
+
+\cueblock{\cuenote}{\relax{“相同输入只能得出相同输出”怎么理解？老师给的排序步骤为什么不满足确定性？}}
+
+\begin{defbox}
+
+\textbf{确定性}：算法中每条指令必须有\hlred{确切的含义}，对于\hlred{相同的输入只能得出相同的输出}。
+
+\end{defbox}
+
+\slidefig{assets/1.2.1-p15.jpg}{0.65}{课件：两个 49 岁的人，谁排在前面？}
+
+5 个人里\textbf{马化腾和丁磊都是 49
+岁}。按年龄递增排序，下面两种结果看起来都“对”：
+
+\begin{itemize}
+\tightlist
+\item
+  结果一：\ldots\ldots 马化腾、丁磊\ldots\ldots{}
+\item
+  结果二：\ldots\ldots 丁磊、马化腾\ldots\ldots{}
+\end{itemize}
+
+如果同一份输入，这次跑出结果一、下次跑出结果二，那它就\textbf{不具备确定性}，不能称为算法。
+
+\begin{deepbox}
+
+\textbf{老师埋的伏笔}：前面 Step 3
+说“找年龄最小的一个”，可剩下的马化腾、丁磊都是 49
+岁，这句有歧义，所以那份步骤\hlred{严格说不满足确定性}。补一条规则“年龄相同时，原来在前的仍排在前”即可。这条规则在第
+8 章叫排序的\textbf{稳定性}。
+
+\end{deepbox}
+
+\slidefig{assets/1.2.1-p16.jpg}{0.7}{课件：确定性要求描述无歧义}
+
+\hypertarget{ux53efux884cux6027}{%
+\subsection{3. 可行性}\label{ux53efux884cux6027}}
+
+\cueblock{\cuenote}{\relax{可行性的大白话？}}
+
+\begin{defbox}
+
+\textbf{可行性}：算法中描述的操作都可以通过\hlred{已经实现的基本运算执行有限次}来实现。
+
+\end{defbox}
+
+老师的大白话：给出的方案必须能用计算机代码实现。
+
+\hypertarget{ux8f93ux5165}{%
+\subsection{4. 输入}\label{ux8f93ux5165}}
+
+\cueblock{\cuenote}{\relax{算法可以没有输入吗？输入来自哪里？}}
+
+\begin{defbox}
+
+\textbf{输入}：一个算法有\hlred{零个或多个输入}，这些输入取自于某个特定的对象的集合。
+
+\end{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{可以没有输入}：比如打印 “Hello World” 的程序，不需要任何输入。
+\item
+  “特定的对象的集合”就是 1.1
+  节讲的\textbf{数据对象}：本例中的输入数据，都来自“个人财富信息”这个数据对象。
+\end{itemize}
+
+\hypertarget{ux8f93ux51fa}{%
+\subsection{5. 输出}\label{ux8f93ux51fa}}
+
+\begin{defbox}
+
+\textbf{输出}：一个算法有\hlred{一个或多个输出}，这些输出是与输入有着某种特定关系的量。
+
+\end{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{不可能没有输出}：算法总要给出一个结果。Hello World
+  虽然没干什么有意义的事，但它也打印了一行字。
+\end{itemize}
+
+老师的联想：算法类似函数 \(y=f(x)\)，\(x\) 是输入，\(f\) 是算法，\(y\)
+是输出。
+
+\begin{pitfallbox}
+
+\textbf{输入 0 个可以，输出 0 个不行。}“算法可以没有输出”这句话是错的。
+
+\end{pitfallbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.500\hsize\raggedright\arraybackslash}X>{\hsize=1.500\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 特性} & \textcolor{white}{\bfseries 一句话记忆} \\
+\endfirsthead
+有穷性 & 有限步、有限时间内必须结束（程序可以无穷，算法不行） \\ \hline
+确定性 & 每步无歧义，相同输入 → 相同输出 \\ \hline
+可行性 & 能用已有的基本运算执行有限次实现 \\ \hline
+输入 & \textbf{≥ 0} 个，来自某个数据对象 \\ \hline
+输出 & \textbf{≥ 1} 个，与输入有特定关系 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hypertarget{ux4e09ux597dux7b97ux6cd5ux7684ux7279ux8d28}{%
+\section{\texorpdfstring{三、“好”算法的特质}{三、好算法的特质}}\label{ux4e09ux597dux7b97ux6cd5ux7684ux7279ux8d28}}
+
+\tocback
+
+\uln{不满足五个特性 → 不是算法}；\uln{不满足下面的目标 → 是算法，但不是好算法}。
+
+\hypertarget{ux6b63ux786eux6027}{%
+\subsection{1. 正确性}\label{ux6b63ux786eux6027}}
+
+\cueblock{\cuenote}{\relax{“没有正确解决问题”的算法还算算法吗？}}
+
+\begin{defbox}
+
+\textbf{正确性}：算法应能够正确地解决求解问题。
+
+\end{defbox}
+
+\slidefig{assets/1.2.1-p18.jpg}{0.7}{课件：没有正确解决问题的排序结果}
+
+如果排序后黄峥（40
+岁）排在了最后，说明没有正确解决问题。\uln{但它依然可以称为一个算法}，只是不是好算法。
+
+\hypertarget{ux53efux8bfbux6027}{%
+\subsection{2. 可读性}\label{ux53efux8bfbux6027}}
+
+\cueblock{\cuenote}{\relax{可读性对考研答题有什么启示？}}
+
+\begin{defbox}
+
+\textbf{可读性}：算法应具有良好的可读性，以帮助人们理解。
+
+\end{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  代码可读性差，队友看不懂，团队协作出问题；过一段时间自己回头看也看不懂。
+\item
+  成熟稳重的程序员会在关键地方\textbf{写注释}。
+\end{itemize}
+
+\begin{teacherbox}
+
+以后写代码题的时候，也要给改卷老师写一写注释，不要用纯代码来描述你的逻辑。你写了注释，改卷老师肯定也会更喜欢。
+
+\end{teacherbox}
+
+\hypertarget{ux5065ux58eeux6027}{%
+\subsection{3. 健壮性}\label{ux5065ux58eeux6027}}
+
+\cueblock{\cuenote}{\relax{健壮性的例子？}}
+
+\begin{defbox}
+
+\textbf{健壮性}：输入\hlred{非法数据}时，算法能适当地做出反应或进行处理，而不会产生莫名其妙的输出结果。
+
+\end{defbox}
+
+\slidefig{assets/1.2.1-p20.jpg}{0.7}{课件：混入了一个 -100 岁的人}
+
+\begin{itemize}
+\tightlist
+\item
+  年龄 \(-100\)
+  岁显然非法。健壮的算法会检查出来并给出报错提示；不健壮的算法“将错就错”，照样把它排进去。
+\end{itemize}
+
+\hypertarget{ux9ad8ux6548ux7387ux4e0eux4f4eux5b58ux50a8ux91cfux9700ux6c42}{%
+\subsection{4.
+高效率与低存储量需求}\label{ux9ad8ux6548ux7387ux4e0eux4f4eux5b58ux50a8ux91cfux9700ux6c42}}
+
+\cueblock{\cuenote}{\relax{“高效率”“低存储量需求”分别对应哪个术语？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.867\hsize\raggedright\arraybackslash}X>{\hsize=1.067\hsize\raggedright\arraybackslash}X>{\hsize=1.067\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 目标} & \textcolor{white}{\bfseries 大白话} & \textcolor{white}{\bfseries 对应术语（1.2.2、1.2.3 节）} \\
+\endfirsthead
+高效率 & 执行时\textbf{花的时间少} & \hlred{时间复杂度低} \\ \hline
+低存储量需求 & 执行过程中\textbf{不费内存} & \hlred{空间复杂度低} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+王道书补充：效率是指算法的执行时间，存储量需求是指执行过程中所需的最大存储空间，\uln{二者都与问题规模密切相关}。“问题规模”这个词是下一节的核心，请留意。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987eux5fc5ux987bux6709ux548cux6700ux597dux6709}{%
+\section{\texorpdfstring{四、知识回顾：“必须有”和“最好有”}{四、知识回顾：必须有和最好有}}\label{ux56dbux77e5ux8bc6ux56deux987eux5fc5ux987bux6709ux548cux6700ux597dux6709}}
+
+\tocback
+
+\slidefig{assets/1.2.1-p22.jpg}{0.8}{课件：本节知识回顾}
+
+\cueblock{\cuenote}{\relax{“五个特性”和“好算法的目标”分别有哪些？如何区分？}}
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.85,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/6113e08fde9f430f176b884bc9d8f1d4bf90d204.pdf}\end{figure}
+
+\begin{exambox}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{程序 = 数据结构 + 算法}。设计一个好程序 =
+  设计一个合适的数据结构 + 设计一个高效的算法。
+\item
+  算法的\textbf{五个特性}：有穷性、确定性、可行性、输入、输出。
+\item
+  \textbf{好算法的目标}：正确性、可读性、健壮性、高效率与低存储量需求。
+\end{enumerate}
+
+\end{exambox}
+
+\begin{pitfallbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \uln{正确性、可读性、健壮性}\textbf{不属于}算法的五个特性，它们是设计目标。两组词混在一起出现时，先问自己：“缺了它还算不算算法？”缺了就不算的是特性，缺了只是“不好”的是目标。
+\item
+  算法必须有穷，程序可以无穷。
+\item
+  算法可以没有输入，但至少有一个输出。
+\end{itemize}
+
+\end{pitfallbox}
+
+\begin{summarybox}
+
+\textbf{算法就是解决某个特定问题的、写得清清楚楚的有限步骤。}
+
+数据结构负责把信息存好（食材），算法负责把信息处理好（菜谱），程序 =
+数据结构 +
+算法。一个东西要称得上算法，必须满足五个特性：会结束（有穷）、无歧义（确定）、做得到（可行）、可以没有输入、但一定有输出。在这个及格线之上，好算法还要追求正确、易读、健壮、又快又省内存。最后这一条“快”和“省”，就是接下来两节要量化的时间复杂度和空间复杂度。
+
+\textbf{自测}：① 为什么说老师最初给出的排序步骤“不能算作算法”？怎么改？②
+微信是算法吗？
+
+\end{summarybox}
+\end{document}

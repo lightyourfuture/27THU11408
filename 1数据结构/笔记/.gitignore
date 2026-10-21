@@ -1,0 +1,7 @@
+参考资料/
+_build/cache/
+*.aux
+*.log
+*.out
+*.toc
+.DS_Store

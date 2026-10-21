@@ -1,0 +1,341 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.0
+开篇：数据结构在学什么},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 绪论}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.0
+开篇：数据结构在学什么 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.0
+开篇：数据结构在学什么 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第1章
+绪论 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.0
+开篇：数据结构在学什么}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.0 · 字幕 P2 · 王道书
+第1章章首（考纲内容 / 知识框架）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux4e00ux4e00ux53e5ux8bddux56deux7b54ux6570ux636eux7ed3ux6784ux5728ux5b66ux4ec0ux4e48}{%
+\section{一、一句话回答：数据结构在学什么}\label{ux4e00ux4e00ux53e5ux8bddux56deux7b54ux6570ux636eux7ed3ux6784ux5728ux5b66ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{数据结构这门课要解决哪两个问题？}老师开门见山，先抛出结论（老师特意说明，这是他自己的理解）：
+
+\begin{defbox}[：数据结构在学什么]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  如何用程序代码把\hlred{现实世界的问题信息化}；
+\item
+  如何用计算机\hlred{高效地处理这些信息}，从而创造价值。
+\end{enumerate}
+
+\end{defbox}
+
+\hypertarget{ux4e8cux4e09ux4e2aux4fe1ux606fux5316ux7684ux4f8bux5b50}{%
+\section{\texorpdfstring{二、三个“信息化”的例子}{二、三个信息化的例子}}\label{ux4e8cux4e09ux4e2aux4fe1ux606fux5316ux7684ux4f8bux5b50}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{“第三次浪潮”指什么？}1980
+年，未来学家阿尔文·托夫勒在《第三次浪潮》中把人类社会的发展分为三个阶段：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=0.840\hsize\raggedright\arraybackslash}X>{\hsize=1.560\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 浪潮} & \textcolor{white}{\bfseries 阶段} & \textcolor{white}{\bfseries 大致时间} \\
+\endfirsthead
+第一次 & 农业阶段 & 约 1 万年前开始 \\ \hline
+第二次 & 工业阶段 & 17 世纪末开始，至今约 300 多年 \\ \hline
+第三次 & \hlred{信息化阶段} & 正在到来（就是我们现在） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/1.0-p03.jpg}{0.6}{课件：财富的信息化}
+
+\cueblock{\cuenote}{\relax{三个例子分别把什么信息化了？带来了什么好处？}}
+
+\begin{teacherbox}
+
+“虽然现在我的财富已经达到了六位数，但是拿在手上再也没有这种沉甸甸的充实感\ldots\ldots123456，六位数没记错哈。”老师用这个自嘲说明：钱从硬币纸币变成了手机里一串数字。
+
+\end{teacherbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.552\hsize\raggedright\arraybackslash}X>{\hsize=1.103\hsize\raggedright\arraybackslash}X>{\hsize=1.103\hsize\raggedright\arraybackslash}X>{\hsize=1.241\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 例子} & \textcolor{white}{\bfseries 信息化之前} & \textcolor{white}{\bfseries 信息化之后} & \textcolor{white}{\bfseries 好处} \\
+\endfirsthead
+\textbf{财富} & 硬币、纸币放进存钱罐，沉甸甸 & 手机里一串“轻飘飘”的数字 & 存取、转账都不用搬实物 \\ \hline
+\textbf{排队} & 每个人必须到场，站成一排等 & 微信上取个号，等叫号即可 & 顾客省时间，商家省等位区的空间 \\ \hline
+\textbf{友谊} & 只能线下认识，物理上要相邻 & 微博互相关注就是好友 & 关系可以跨越空间建立 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/1.0-p07.jpg}{0.6}{课件：三个被信息化的例子}
+
+\hypertarget{ux4e09ux5b66ux5b8c-c-ux8bedux8a00ux591fux7528ux5417}{%
+\section{三、学完 C
+语言，够用吗？}\label{ux4e09ux5b66ux5b8c-c-ux8bedux8a00ux591fux7528ux5417}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{为什么光会 C 语言还不够？}老师接着追问：用学过的 C
+语言，怎么在计算机里表示这三种信息？
+
+\slidefig{assets/1.0-p06.jpg}{0.6}{课件：学完 C 语言，如何表示这些信息？}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.480\hsize\raggedright\arraybackslash}X>{\hsize=0.960\hsize\raggedright\arraybackslash}X>{\hsize=1.560\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 信息} & \textcolor{white}{\bfseries C 语言能想到的办法} & \textcolor{white}{\bfseries 问题在哪} \\
+\endfirsthead
+财富（一个数） & 一个 \texttt{float} 型变量 & 没问题，很简单 \\ \hline
+排队（一串人） & 一个数组，记录每桌是大桌还是小桌 & 能做，但学完数据结构会知道\uln{还有更好的办法}（第 3 章队列） \\ \hline
+好友关系（一张网） & ？？？ & \hlred{毫无思路}：A 关注了 B、C，B 又关注了 D\ldots\ldots 这种“多对多”的关系 C 语言基础语法表达不出来（第 6 章图） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+变量只能存一个值，数组只能存一排值，但现实信息更重要的是\uln{值与值之间的关系}，这正是
+1.1 节三要素要展开的内容。
+
+\hypertarget{ux56dbux56dbux95e8ux4e13ux4e1aux8bfeux7684ux5173ux7cfbux7406ux89e3ux4fe1ux606fux5316ux4e16ux754c}{%
+\section{四、四门专业课的关系：理解信息化世界}\label{ux56dbux56dbux95e8ux4e13ux4e1aux8bfeux7684ux5173ux7cfbux7406ux89e3ux4fe1ux606fux5316ux4e16ux754c}}
+
+\cueblock{\cuenote}{\relax{408 的四门课分别研究计算机的哪一层？}}
+
+\slidefig{assets/1.0-p08.jpg}{0.5}{课件：信息化世界的组成}
+
+老师用一张图把 408 的四门课串起来，自底向上看一台计算机或手机：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 课程} & \textcolor{white}{\bfseries 研究对象} & \textcolor{white}{\bfseries 一个生活中的问题} \\
+\endfirsthead
+计算机组成原理 & 硬件（CPU、内存、主板） & 手机里的芯片是怎么“算”的？ \\ \hline
+操作系统 & 硬件之上的系统软件 & 手机同时开十个 App，谁先用 CPU？ \\ \hline
+数据结构（+ C 语言） & 应用软件的“骨架” & 微信怎么存几亿人的好友关系？ \\ \hline
+计算机网络 & 机器之间的通信 & 你发的微信怎么到了对方手机里？ \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{teacherbox}
+
+即便有的同学不考其中某些科目，在有时间的情况下，还是强烈建议把这四门课都学一下。只有学过这四门课，才能真正理解这个信息化世界的本质，这也是计算机专业的学生和只会写代码的人的区别。
+
+\end{teacherbox}
+
+\hypertarget{ux4e94ux7b2c-1-ux7ae0ux5168ux8c8cux6765ux81eaux738bux9053ux4e66ux7ae0ux9996}{%
+\section{五、第 1
+章全貌（来自王道书章首）}\label{ux4e94ux7b2c-1-ux7ae0ux5168ux8c8cux6765ux81eaux738bux9053ux4e66ux7ae0ux9996}}
+
+\begin{bookbox}
+
+\textbf{考纲内容}：（一）数据结构的基本概念；（二）算法的基本概念，算法的时间复杂度和空间复杂度。
+
+\textbf{复习提示}：本章帮助读者整体认识数据结构，\hlred{重点在于掌握算法时间复杂度和空间复杂度的分析方法}。统考真题中，无论是算法设计题还是选择题，通常都会要求分析算法的时间复杂度（有时也包括空间复杂度）。
+
+\end{bookbox}
+
+\cueblock{\cuenote}{\relax{第 1 章的知识框架是什么？哪部分是重点？}}
+
+\begin{figure}[!ht]\centering\adjustimage{scale=0.7,max width=\linewidth,max height=0.6\textheight}{/mnt/project-files/notes/1数据结构/笔记/_build/cache/e34815526eb9b54f61fbe9ebf4988c167b12b104.pdf}\end{figure}
+
+\begin{exambox}
+
+第 1 章真正“拿分”的地方在 1.2
+节的\textbf{时间复杂度分析}：几乎每年都考，选择题直接考，算法设计大题也要求写出时间、空间复杂度。1.0
+和 1.1 以理解为主，形成框架即可。
+
+\end{exambox}
+
+\begin{teacherbox}
+
+“唯一可以确定的是，明天会使我们所有人大吃一惊。”（阿尔文·托夫勒）学会自己种粮食，人类才在各地定居下来，各种文明才开始萌芽；后来出现了枪炮和机械，导致一些非现代文明的灭亡（老师举的例子是清朝的灭亡）；而高度信息化的世界会带来什么，谁也说不准。外卖、打车软件，几年前谁都不敢想象。
+
+\end{teacherbox}
+
+\begin{summarybox}
+
+\textbf{数据结构 = 研究怎么“存”现实世界的信息，以及怎么“算”得又快又省。}
+
+我们正处在托夫勒说的“第三次浪潮”信息化阶段，财富、排队、友谊都被信息化了，信息化能省时间、省空间、创造价值。光会
+C
+语言，只能存“一个值”或“一排值”，表达不出复杂的\textbf{关系}（比如好友网），这正是数据结构要补上的。408
+四门课分别对应硬件（计组）、系统（OS）、应用（数据结构）和互联（计网），合起来才是完整的信息化世界。第
+1 章的考试重点是时间、空间复杂度分析。
+
+\textbf{自测}：① 用自己的话说出数据结构要解决的两个问题。②
+为什么“微博互相关注”用 C 语言基础语法“毫无思路”？
+
+\end{summarybox}
+\end{document}
