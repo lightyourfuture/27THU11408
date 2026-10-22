@@ -1,0 +1,596 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.2\_3
+单链表的建立},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.2\_3 单链表的建立 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.2\_3
+单链表的建立 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.2\_3
+单链表的建立}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.2\_3 · 正课字幕 P15 ·
+王道书 §2.3.2 第 7、8 点（第 34--35 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{给你很多个数据元素，怎么把它们存进一个单链表？分哪两步？}给你很多个数据元素（\texttt{ElemType}），要把它们存到一个单链表里：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Step 1}：初始化一个单链表（从无到有）；
+\item
+  \textbf{Step
+  2}：每次取一个数据元素，插到\textbf{表尾}或\textbf{表头}。
+\end{itemize}
+
+插到表尾就是\textbf{尾插法}，插到表头就是\textbf{头插法}。本节讨论\uln{带头结点}的情况；不带头结点怎么写，老师留作思考（下面给了我的答案）。
+
+\hypertarget{ux4e00ux5c3eux63d2ux6cd5}{%
+\section{一、尾插法}\label{ux4e00ux5c3eux63d2ux6cd5}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{直接循环调用 \texttt{ListInsert(L,\ length+1,\ e)}
+有什么问题？怎么改进？}}
+
+\hypertarget{ux5148ux60f3ux5230ux7684ux529eux6cd5ux53cdux590dux8c03ux7528ux6309ux4f4dux63d2ux5165}{%
+\subsection{先想到的办法：反复调用按位插入}\label{ux5148ux60f3ux5230ux7684ux529eux6cd5ux53cdux590dux8c03ux7528ux6309ux4f4dux63d2ux5165}}
+
+用一个变量 \texttt{length} 记录当前表长，每取一个元素 \texttt{e} 就调用
+\texttt{ListInsert(L,\ length+1,\ e)} 插到表尾，再 \texttt{length++}。
+
+问题：\texttt{ListInsert} 每次都要\uln{从头开始往后遍历}，找到第
+\texttt{length} 个结点。插第 1 个元素时循环 0 次，插第 2 个循环 1
+次\ldots\ldots 插第 \(n\) 个循环 \(n-1\) 次：
+
+\[0+1+2+\cdots+(n-1)=\frac{n(n-1)}{2}\quad\Rightarrow\quad O(n^2)\]
+
+时间复杂度太高（课件上的鸭子直接说“垃圾”）。
+
+\slidefig{assets/2.3.2_3-p04.jpg}{0.65}{课件：反复调用 ListInsert 建表，每次都从头遍历，O(n²)}
+
+\hypertarget{ux6539ux8fdbux8bbeux4e00ux4e2aux8868ux5c3eux6307ux9488-r}{%
+\subsection{改进：设一个表尾指针
+r}\label{ux6539ux8fdbux8bbeux4e00ux4e2aux8868ux5c3eux6307ux9488-r}}
+
+没必要每次都从头找。设一个指针
+\uln{\texttt{r} 永远指向表尾的最后一个数据结点}：插入新元素时，只需对
+\texttt{r} 所指结点做一次\textbf{后插操作}（2.3.2\_1 的
+\texttt{InsertNextNode}），然后让 \texttt{r} 后移，指向新的表尾。
+
+课本代码（课件和王道书第 35 页一致，\texttt{ElemType} 设为
+\texttt{int}）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LinkList List\_TailInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}          \CommentTok{// 正向建立单链表}
+    \DataTypeTok{int}\NormalTok{ x}\OperatorTok{;}                                        \CommentTok{// 设 ElemType 为整型}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{LinkList}\OperatorTok{)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}          \CommentTok{// 建立头结点（初始化空表）}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s}\OperatorTok{,} \OperatorTok{*}\NormalTok{r }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}                             \CommentTok{// r 为表尾指针}
+\NormalTok{    scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}                              \CommentTok{// 输入结点的值}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{x }\OperatorTok{!=} \DecValTok{9999}\OperatorTok{)} \OperatorTok{\{}                           \CommentTok{// 输入 9999 表示结束}
+\NormalTok{        s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}                              \CommentTok{// 这三句：在 r 结点之后插入元素 x}
+\NormalTok{        r}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+\NormalTok{        r }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                                    \CommentTok{// r 指向新的表尾结点}
+\NormalTok{        scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}
+    \OperatorTok{\}}
+\NormalTok{    r}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                               \CommentTok{// 尾结点指针置空}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{scanf} 让用户从键盘输入一个整数，作为这次要插入的元素。
+\item
+  \texttt{9999}
+  只是随便挑的一个特殊值，输入它表示建表结束，换成别的数也行。
+\item
+  拆开看：前面两句就是\textbf{初始化空表}，循环里就是\textbf{对
+  \texttt{r} 的后插操作}（和自己写的 \texttt{InsertNextNode}
+  有一丢丢区别，但思想一样）。唯一要注意的是 \texttt{r}
+  要永远指向最后一个结点。
+\end{itemize}
+
+\hypertarget{ux4e00ux6b65ux4e00ux6b65ux770b}{%
+\subsection{一步一步看}\label{ux4e00ux6b65ux4e00ux6b65ux770b}}
+
+依次输入 10、16、27、9999：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.500\hsize\raggedright\arraybackslash}X>{\hsize=1.300\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 输入 \texttt{x}} & \textcolor{white}{\bfseries 做了什么} & \textcolor{white}{\bfseries 循环结束后的链表} \\
+\endfirsthead
+（循环前） & 建头结点，\texttt{r} 指向头结点 & \texttt{L→头} \\ \hline
+10 & 新结点存 10，\texttt{r-\textgreater{}next=s}，\texttt{r=s} & \texttt{L→头→10}，\texttt{r} 指 10 \\ \hline
+16 & 同上 & \texttt{L→头→10→16}，\texttt{r} 指 16 \\ \hline
+27 & 同上 & \texttt{L→头→10→16→27}，\texttt{r} 指 27 \\ \hline
+9999 & 不满足 \texttt{x!=9999}，跳出循环，\texttt{r-\textgreater{}next=NULL} & \texttt{L→头→10→16→27→NULL} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+元素在链表中的顺序和输入顺序\textbf{相同}，所以书上叫“正向建立”。插入
+\(n\) 个结点循环 \(n\) 次，时间复杂度 \hlred{\(O(n)\)}。
+
+\slidefig{assets/2.3.2_3-p06.jpg}{0.65}{课件：尾插法建立单链表}
+
+\begin{teacherbox}
+
+老师提了一句：课本这里初始化头结点时，\textbf{没有}写
+\texttt{L-\textgreater{}next\ =\ NULL}，因为头结点的 \texttt{next}
+后面会被修改。
+
+我的补充：如果第一个就输入 9999，循环不执行，此时 \texttt{r}
+还指向头结点，最后的 \texttt{r-\textgreater{}next\ =\ NULL}
+正好把头结点的 \texttt{next}
+置空，得到空表，所以这里不写也不会出错。不过老师建议还是写上（见下面头插法）。
+
+\end{teacherbox}
+
+\begin{bookbox}
+
+王道书第 35
+页：若希望输入顺序与链表中的元素顺序一致，可采用尾插法。为此需要维护一个尾指针
+\texttt{r}，使其始终指向当前的尾结点。插入时，令
+\texttt{r-\textgreater{}next} 指向新结点 \texttt{*s}，再将 \texttt{r}
+更新为
+\texttt{s}。因为附设了一个尾指针，故无须遍历查找尾部，总时间复杂度仍为
+\(O(n)\)。
+
+\end{bookbox}
+
+\slidefig{assets/2.3.2_3-book-fig2.8.png}{0.7}{王道书图 2.8：采用尾插法建立单链表}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199}{%
+\subsection{不带头结点怎么写}\label{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{不带头结点时，尾插法哪里要特殊处理？}我的答案（课件和书都没给代码）：没有头结点，插入\textbf{第一个}结点时没有“前一个结点”可以后插，要让头指针
+\texttt{L} 直接指向它；之后的结点照常接在 \texttt{r} 后面。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LinkList List\_TailInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 不带头结点}
+    \DataTypeTok{int}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s}\OperatorTok{,} \OperatorTok{*}\NormalTok{r }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+\NormalTok{    L }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                              \CommentTok{// 空表}
+\NormalTok{    scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{x }\OperatorTok{!=} \DecValTok{9999}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+        \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                     \CommentTok{// 第一个结点：头指针直接指向它}
+\NormalTok{            L }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+        \ControlFlowTok{else}
+\NormalTok{            r}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+\NormalTok{        r }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+\NormalTok{        scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}
+    \OperatorTok{\}}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{r }\OperatorTok{!=}\NormalTok{ NULL}\OperatorTok{)}                         \CommentTok{// 空表时 r 为 NULL，不能访问 r{-}\textgreater{}next}
+\NormalTok{        r}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4e8cux5934ux63d2ux6cd5}{%
+\section{二、头插法}\label{ux4e8cux5934ux63d2ux6cd5}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{头插法每次对哪个结点做后插？为什么初始化时
+\texttt{L-\textgreater{}next\ =\ NULL} 不能省？}每取得一个新元素，就插到表头（头结点之后、第一个数据结点之前）。本质还是\textbf{后插操作}，只不过每次后插的指定结点都是\uln{头结点}。所以：初始化单链表，然后循环里每取一个元素
+\texttt{e} 就调用一次 \texttt{InsertNextNode(L,\ e)}。
+
+\newpage
+
+课本代码（课件和王道书第 35 页一致）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LinkList List\_HeadInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}          \CommentTok{// 逆向建立单链表}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{LinkList}\OperatorTok{)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}          \CommentTok{// 创建头结点}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                               \CommentTok{// 初始为空链表}
+\NormalTok{    scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}                              \CommentTok{// 输入结点的值}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{x }\OperatorTok{!=} \DecValTok{9999}\OperatorTok{)} \OperatorTok{\{}                           \CommentTok{// 输入 9999 表示结束}
+\NormalTok{        s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}       \CommentTok{// 创建新结点}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}                        \CommentTok{// ① 新结点指向原来的第一个结点}
+\NormalTok{        L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                              \CommentTok{// ② 头结点指向新结点}
+\NormalTok{        scanf}\OperatorTok{(}\StringTok{"}\SpecialCharTok{\%d}\StringTok{"}\OperatorTok{,} \OperatorTok{\&}\NormalTok{x}\OperatorTok{);}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+循环里的
+\texttt{s-\textgreater{}next\ =\ L-\textgreater{}next;\ L-\textgreater{}next\ =\ s;}
+就是把 \texttt{InsertNextNode(p,\ e)} 里的 \texttt{p} 换成
+\texttt{L}，两段代码本质上没有区别。①②
+的顺序也和后插一样不能反（2.3.2\_1 讲过）。
+
+依次输入 10、16、27、9999：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.500\hsize\raggedright\arraybackslash}X>{\hsize=1.500\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 输入 \texttt{x}} & \textcolor{white}{\bfseries 循环结束后的链表} \\
+\endfirsthead
+（循环前） & \texttt{L→头→NULL} \\ \hline
+10 & \texttt{L→头→10→NULL} \\ \hline
+16 & \texttt{L→头→16→10→NULL} \\ \hline
+27 & \texttt{L→头→27→16→10→NULL} \\ \hline
+9999 & 跳出循环，返回 \texttt{L} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+得到
+27、16、10，正好是输入顺序的\hlred{逆序}，所以书上叫“逆向建立”。每插入一个结点
+\(O(1)\)，总时间复杂度 \hlred{\(O(n)\)}。
+
+\slidefig{assets/2.3.2_3-p08.jpg}{0.65}{课件：头插法建立单链表}
+
+\begin{bookbox}
+
+王道书第 34--35
+页（书上\textbf{先讲头插法、再讲尾插法}，和课件顺序相反）：从一个空表开始，生成新结点
+\texttt{*s}，将读取的数据存入其数据域；然后令
+\texttt{s-\textgreater{}next} 指向头结点当前 \texttt{next}
+所指的结点，再将头结点的 \texttt{next} 指向
+\texttt{*s}。新结点始终成为第一个数据结点，最终链表中的元素顺序与输入顺序相反。
+
+\end{bookbox}
+
+\slidefig{assets/2.3.2_3-book-fig2.7.png}{0.6}{王道书图 2.7：采用头插法建立单链表}
+
+\hypertarget{ux53bbux6389-l-next-null-ux4f1aux600eux6837}{%
+\subsection{\texorpdfstring{去掉 \texttt{L-\textgreater{}next\ =\ NULL}
+会怎样}{去掉 L-\textgreater next = NULL 会怎样}}\label{ux53bbux6389-l-next-null-ux4f1aux600eux6837}}
+
+老师让大家暂停思考：如果像尾插法那样不写这一句呢？
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{malloc}
+  申请的空间里可能有以前留下的\textbf{脏数据}，不初始化的话，头结点的
+  \texttt{next} 可能指向内存中某个“神秘的区域”。
+\item
+  第一个新结点执行
+  \texttt{s-\textgreater{}next\ =\ L-\textgreater{}next}，就指向了这个未知的地方；之后的结点都插在它前面，所以\hlred{最后一个结点的 \texttt{next} 指向未知区域}，而不是
+  \texttt{NULL}，链表的结尾就乱了。
+\item
+  尾插法不会这样，因为最后有
+  \texttt{r-\textgreater{}next\ =\ NULL}；头插法没有这一步，所以必须初始化。
+\end{itemize}
+
+\begin{pitfallbox}
+
+老师的建议：\uln{只要是初始化单链表，都先把头指针（头结点的 \texttt{next}）指向
+\texttt{NULL}}。尾插法里也最好加上，加上总不会错，忘写了可能出现预料不到的问题。这个好习惯平时做题时就要刻意培养。
+
+\end{pitfallbox}
+
+\hypertarget{ux91cdux8981ux5e94ux7528ux94feux8868ux7684ux9006ux7f6e}{%
+\subsection{重要应用：链表的逆置}\label{ux91cdux8981ux5e94ux7528ux94feux8868ux7684ux9006ux7f6e}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{怎么用头插法把一个已有的单链表 \texttt{L} 逆置？}头插法得到的是输入的逆序，这个性质十分重要，很多课后题都会用到\textbf{链表的逆置}，老师强调这个考点经常考察。思路是核心逻辑不变，只是取数据元素的方式变了：
+
+\begin{itemize}
+\tightlist
+\item
+  不再用 \texttt{scanf} 取元素，而是用一个指针\textbf{循环扫描}旧链表
+  \texttt{L}，依次取出各个元素，再用头插法插入到\textbf{另一个新链表}中，新链表就是
+  \texttt{L} 的逆置；
+\item
+  也可以每次从 \texttt{L} 上\textbf{取下一个结点}，重新头插回 \texttt{L}
+  的头结点之后，这样不需要建新链表，实现\uln{原地逆置}。
+\end{itemize}
+
+\newpage
+
+老师留了“动手试一试：给你一个
+\texttt{LinkList\ L}，如何逆置？”。我的答案（原地逆置，带头结点，建议先自己写再对照）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LinkList Reverse}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{,} \OperatorTok{*}\NormalTok{q}\OperatorTok{;}   \CommentTok{// p 扫描旧链表}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}           \CommentTok{// 头结点先断开，变成空表}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        q }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}          \CommentTok{// 先记住 p 的后继，否则头插后就找不到了}
+\NormalTok{        p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}    \CommentTok{// 把 p 头插到头结点之后}
+\NormalTok{        L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{;}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ q}\OperatorTok{;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199-1}{%
+\subsection{不带头结点怎么写}\label{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199-1}}
+
+老师建议跨考、基础不好的同学一定要动手写一写。我的答案：没有头结点可以后插，新结点直接插到
+\texttt{L} 前面，\textbf{每插入一个结点都要修改头指针 \texttt{L}}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{    L }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                 \CommentTok{// 初始化为空表}
+    \CommentTok{// ……循环里：}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}              \CommentTok{// 新结点指向原来的第一个结点}
+\NormalTok{    L }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                    \CommentTok{// 头指针指向新结点}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{bookbox}
+
+王道书第 35
+页“思考：若单链表不带头结点，则上述代码中哪些地方需要修改？”脚注答案：主要修改之处是，因为在头部插入新结点，每次插入新结点后，都需要将它的地址赋值给头指针
+\texttt{L}。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux77e5ux8bc6ux56deux987e}{%
+\section{三、知识回顾}\label{ux4e09ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.741\hsize\raggedright\arraybackslash}X>{\hsize=1.481\hsize\raggedright\arraybackslash}X>{\hsize=1.037\hsize\raggedright\arraybackslash}X>{\hsize=0.741\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 方法} & \textcolor{white}{\bfseries 核心操作} & \textcolor{white}{\bfseries 结果顺序} & \textcolor{white}{\bfseries 时间} \\
+\endfirsthead
+尾插法 & 对表尾指针 \texttt{r} 后插，再 \texttt{r\ =\ s}；最后 \texttt{r-\textgreater{}next\ =\ NULL} & 与输入相同（正向） & \(O(n)\) \\ \hline
+头插法 & 对头结点后插；初始化时 \texttt{L-\textgreater{}next\ =\ NULL} & 与输入相反（逆向） & \(O(n)\) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/2.3.2_3-p09.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+头插法、尾插法的核心就是两个基本操作：\uln{初始化}和\uln{指定结点的后插}。尾插法要设一个指向表尾结点的指针
+\texttt{r}，否则每次从头找表尾会变成
+\(O(n^2)\)。头插法得到逆序，重要应用是\textbf{链表的逆置}。
+
+老师借这一节说明了基本操作为什么重要：考试几乎不会直接考某个基本操作怎么写，但掌握了它们的实现精髓，思想就能迁移到更复杂的算法上。
+
+\textbf{自测}：① 循环调用 \texttt{ListInsert(L,\ length+1,\ e)}
+建表为什么是 \(O(n^2)\)？② 尾插法里 \texttt{r}
+指向哪个结点？循环结束后为什么要
+\texttt{r-\textgreater{}next\ =\ NULL}？③ 头插法去掉
+\texttt{L-\textgreater{}next\ =\ NULL} 会出什么问题？④ 依次输入
+1、2、3，头插法和尾插法分别得到什么顺序？⑤
+写出带头结点单链表的原地逆置。
+
+\end{summarybox}
+\end{document}
