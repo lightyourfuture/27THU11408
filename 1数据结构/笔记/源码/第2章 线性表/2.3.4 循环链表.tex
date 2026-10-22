@@ -1,0 +1,572 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.4
+循环链表},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.4 循环链表 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.4
+循环链表 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.4
+循环链表}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.4 · 正课字幕 P17 · 王道书
+§2.3.4（第 37--38 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{循环链表是在什么基础上改进的？分哪两种？}在单链表、双链表的基础上加一个小小的改进，就得到对应的\textbf{循环单链表}和\textbf{循环双链表}。老师说这一节内容十分简单，看一个图就明白了。
+
+\hypertarget{ux4e00ux5faaux73afux5355ux94feux8868}{%
+\section{一、循环单链表}\label{ux4e00ux5faaux73afux5355ux94feux8868}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{循环单链表的表尾结点指向哪里？初始化、判空、判表尾分别怎么写？}}
+
+\begin{itemize}
+\tightlist
+\item
+  单链表：表尾结点的 \texttt{next} 指针指向 \texttt{NULL}；
+\item
+  循环单链表：表尾结点的 \texttt{next} 指针\uln{指向头结点}。
+\end{itemize}
+
+\slidefig{assets/2.3.4-p03.jpg}{0.6}{课件：单链表与循环单链表}
+
+结点定义和单链表完全一样。区别在初始化、判空、判表尾：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.692\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 单链表（带头结点）} & \textcolor{white}{\bfseries 循环单链表} \\
+\endfirsthead
+初始化 & \texttt{L-\textgreater{}next\ =\ NULL} & \texttt{L-\textgreater{}next\ =\ L} \\ \hline
+判空 & \texttt{L-\textgreater{}next\ ==\ NULL} & \texttt{L-\textgreater{}next\ ==\ L} \\ \hline
+\texttt{p} 是表尾 & \texttt{p-\textgreater{}next\ ==\ NULL} & \texttt{p-\textgreater{}next\ ==\ L} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+代码如下：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化一个循环单链表}
+\DataTypeTok{bool}\NormalTok{ InitList}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}   \CommentTok{// 分配一个头结点}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                        \CommentTok{// 内存不足，分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}                          \CommentTok{// 头结点 next 指向头结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 判断循环单链表是否为空}
+\DataTypeTok{bool}\NormalTok{ Empty}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ L}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断结点 p 是否为循环单链表的表尾结点}
+\DataTypeTok{bool}\NormalTok{ isTail}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ L}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  初始化：头结点的 \texttt{next}
+  指向\textbf{头结点自己}；判空：看头结点的 \texttt{next} 是否指向自己。
+\item
+  表不为空时，最后一个结点的 \texttt{next} 指向头结点；所以判断
+  \texttt{p} 是不是表尾，看 \texttt{p} 的下一个结点是不是头结点。
+\item
+  因此写代码遍历循环单链表时，判断扫描指针 \texttt{p}
+  是否到达表尾的条件，和普通单链表不一样。
+\end{itemize}
+
+\slidefig{assets/2.3.4-p04.jpg}{0.65}{课件：循环单链表的初始化、判空、判表尾}
+
+\hypertarget{ux4eceux4efbux610fux7ed3ux70b9ux51faux53d1ux80fdux627eux5230ux6240ux6709ux7ed3ux70b9}{%
+\subsection{从任意结点出发能找到所有结点}\label{ux4eceux4efbux610fux7ed3ux70b9ux51faux53d1ux80fdux627eux5230ux6240ux6709ux7ed3ux70b9}}
+
+\begin{itemize}
+\tightlist
+\item
+  单链表：给一个结点 \texttt{p}，只能找到 \texttt{p}
+  后续的各个结点，前面的结点不可知（除非也拿到头指针）；
+\item
+  循环单链表：从一个结点出发，\uln{可以找到其他任何一个结点}。
+\end{itemize}
+
+用处举例：删除结点 \texttt{p} 要修改它前驱的
+\texttt{next}。普通单链表只知道 \texttt{p}
+的话找不到前驱；循环单链表可以顺着链往后找，一直找到 \texttt{p}
+的前驱，再修改它的 \texttt{next}。
+
+\hypertarget{ux8ba9-l-ux6307ux5411ux8868ux5c3e}{%
+\subsection{让 L 指向表尾}\label{ux8ba9-l-ux6307ux5411ux8868ux5c3e}}
+
+很多时候对链表的操作都在\textbf{表头或表尾}（比如头插法、尾插法建表）。
+
+\begin{itemize}
+\tightlist
+\item
+  普通单链表只知道头结点时，找到表尾要从头扫描到尾，\(O(n)\)；
+\item
+  循环单链表可以让 \texttt{L}
+  \uln{不指向头结点，而指向表尾结点}：从表尾往后走一步就是头结点，找头部
+  \(O(1)\)；表尾本身就是 \texttt{L}，找尾部也是 \(O(1)\)。
+\end{itemize}
+
+所以如果应用场景里经常要对表头或表尾操作，可以让循环单链表的 \texttt{L}
+指向表尾元素。代价：在表尾插入、删除元素时，需要修改 \texttt{L}
+的指向（老师没有展开）。
+
+\slidefig{assets/2.3.4-p06.jpg}{0.6}{课件：从头结点找尾部 O(n)；L 指向表尾时找头部、尾部都是 O(1)}
+
+\begin{bookbox}
+
+王道书第 37 页（循环单链表）：表中最后一个结点的 \texttt{next} 域不再是
+\texttt{NULL}，而是指向头结点，整个链表形成一个环，因此链表中\textbf{不存在
+\texttt{next} 为 \texttt{NULL} 的结点}。判空条件不是头指针 \texttt{L}
+是否为空，而是头结点的 \texttt{next}
+是否指向自身（\texttt{L-\textgreater{}next\ ==\ L}）。
+
+插入、删除与普通单链表基本相同，关键差异在表尾操作时要保持循环特性。但正因为循环单链表是一个环，\uln{在任何位置上的插入和删除操作都是等价的}，无须判断是否到达表尾。
+
+为了提高效率，循环单链表有时不设头指针，\textbf{仅设尾指针
+\texttt{r}}：在表头或表尾插入元素都是
+\(O(1)\)；若用头指针，表尾插入要遍历整个链表，\(O(n)\)。在表尾插入新结点
+\texttt{*s} 的步骤：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ r}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}    \CommentTok{// 新结点的后继指向头结点，维持环状结构}
+\NormalTok{r}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}          \CommentTok{// 原表尾指向新结点}
+\NormalTok{r }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                \CommentTok{// 更新 r 为新结点}
+\end{Highlighting}
+\end{Shaded}
+
+书上的考点追踪：循环单链表中删除首元素的操作（2021）。
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux5faaux73afux53ccux94feux8868}{%
+\section{二、循环双链表}\label{ux4e8cux5faaux73afux53ccux94feux8868}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{循环双链表中哪两个指针形成闭环？空表时头结点的两个指针指向哪里？}}
+
+\begin{itemize}
+\tightlist
+\item
+  双链表：表头结点的 \texttt{prior} 指向 \texttt{NULL}，表尾结点的
+  \texttt{next} 指向 \texttt{NULL}；
+\item
+  循环双链表：\uln{表头结点的 \texttt{prior} 指向表尾结点，表尾结点的 \texttt{next}
+  指向头结点}。
+\end{itemize}
+
+所有 \texttt{next} 指针形成一个闭环，所有 \texttt{prior}
+指针形成另一个方向的闭环。
+
+\slidefig{assets/2.3.4-p07.jpg}{0.6}{课件：双链表与循环双链表}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化空的循环双链表}
+\DataTypeTok{bool}\NormalTok{ InitDLinkList}\OperatorTok{(}\NormalTok{DLinklist }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{DNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{DNode}\OperatorTok{));}   \CommentTok{// 分配一个头结点}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                        \CommentTok{// 内存不足，分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{prior }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}                         \CommentTok{// 头结点的 prior 指向头结点}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}                          \CommentTok{// 头结点的 next 指向头结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 判断循环双链表是否为空}
+\DataTypeTok{bool}\NormalTok{ Empty}\OperatorTok{(}\NormalTok{DLinklist L}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ L}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断结点 p 是否为循环双链表的表尾结点}
+\DataTypeTok{bool}\NormalTok{ isTail}\OperatorTok{(}\NormalTok{DLinklist L}\OperatorTok{,}\NormalTok{ DNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ L}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  初始化：头结点的 \texttt{prior}、\texttt{next}
+  \uln{都指向头结点自己}（普通双链表都指向 \texttt{NULL}）。
+\item
+  判表尾：看 \texttt{p-\textgreater{}next}
+  是否指向头结点。空表时头结点的 \texttt{next}
+  也指向自己，头结点既是第一个也是最后一个结点，这个逻辑依然正确。
+\end{itemize}
+
+\begin{fixbox}
+
+课件上 \texttt{isTail(DLinklist\ L,\ DNode\ *p)} 的注释写的是“判断结点 p
+是否为\textbf{循环单链表}的表尾结点”，应为循环\textbf{双}链表（参数是
+\texttt{DLinklist}）。
+
+\end{fixbox}
+
+\slidefig{assets/2.3.4-p08.jpg}{0.6}{课件：循环双链表的初始化}
+
+\hypertarget{ux8bfeux672cux7684ux63d2ux5165ux5220ux9664ux4ee3ux7801ux5728ux5faaux73afux53ccux94feux8868ux4e0aux6ca1ux6709-bug}{%
+\subsection{课本的插入、删除代码在循环双链表上没有
+bug}\label{ux8bfeux672cux7684ux63d2ux5165ux5220ux9664ux4ee3ux7801ux5728ux5faaux73afux53ccux94feux8868ux4e0aux6ca1ux6709-bug}}
+
+2.3.3 说过，课本的双链表后插四句、删除三句，在 \texttt{p}（或
+\texttt{q}）是表尾结点时会出现空指针错误。换成循环双链表，这两段代码就是对的：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 在 p 结点之后插入 s 结点}
+\NormalTok{s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}          \CommentTok{// 将结点 *s 插入到结点 *p 之后}
+\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{{-}\textgreater{}}\NormalTok{prior }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+\NormalTok{s}\OperatorTok{{-}\textgreater{}}\NormalTok{prior }\OperatorTok{=}\NormalTok{ p}\OperatorTok{;}
+\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{插入}：即便 \texttt{p} 是表尾结点，它的 \texttt{next}
+  也非空，指向头结点；第二句就是让头结点的 \texttt{prior} 指向新结点
+  \texttt{s}，没有问题。老师说这小段代码大家可以自己捋一捋。
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 删除 p 的后继结点 q}
+\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{{-}\textgreater{}}\NormalTok{prior }\OperatorTok{=}\NormalTok{ p}\OperatorTok{;}
+\NormalTok{free}\OperatorTok{(}\NormalTok{q}\OperatorTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{删除}：即便 \texttt{q} 是最后一个结点，第一句让
+  \texttt{p-\textgreater{}next} 指向
+  \texttt{q-\textgreater{}next}，也就是头结点；第二句让头结点的
+  \texttt{prior} 指向 \texttt{p}；第三句释放 \texttt{q}。逻辑没有问题。
+\end{itemize}
+
+\slidefig{assets/2.3.4-p09.jpg}{0.55}{课件：循环双链表的插入}
+
+\slidefig{assets/2.3.4-p10.jpg}{0.55}{课件：循环双链表的删除}
+
+\begin{bookbox}
+
+王道书第 37--38
+页（循环双链表）：不同之处在于每个结点不仅有指向下一个结点的
+\texttt{next} 域，还有指向前一个结点的 \texttt{prior} 域，头结点的
+\texttt{prior} 需要指向表尾结点，从而形成完整的环形结构。设尾结点为
+\texttt{*p}，则 \texttt{p-\textgreater{}next} 应指向头结点
+\texttt{L}，同时 \texttt{L-\textgreater{}prior} 应指向
+\texttt{*p}。当循环双链表为空表时，其头结点的 \texttt{prior} 和
+\texttt{next} 都指向自身（\texttt{L-\textgreater{}prior\ ==\ L} 且
+\texttt{L-\textgreater{}next\ ==\ L}）。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux77e5ux8bc6ux56deux987e}{%
+\section{三、知识回顾}\label{ux4e09ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{写任何一种链表的代码，都要关注哪几个问题？}老师的比喻：循环单链表为空时，像“单手抱住了空虚的自己”；循环双链表为空时，头结点前后两个指针都指向自己，像“双手抱住了空虚的自己”；普通双链表为空时，两个指针都指向
+\texttt{NULL}。
+
+\slidefig{assets/2.3.4-p11.jpg}{0.6}{课件：知识回顾与重要考点}
+
+到这里学完了所有用指针实现的链表。不管是单链表、双链表还是循环链表，写代码时都要关注这几个方面：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{如何判空}：知道空表的状态，也就知道怎么初始化；
+\item
+  \textbf{如何判断结点 \texttt{p} 是表尾 /
+  表头结点}：知道了这个条件，就知道\uln{前向、后向遍历}怎么写。链表都不具备随机访问的特性，找某个结点的核心都是一个
+  \texttt{while} 循环，循环无非停在表头或表尾；
+\item
+  \textbf{如何在表头、表中、表尾插入 /
+  删除一个结点}：分别考虑这三种情况要不要特殊处理，基本就能覆盖比较容易出错的\uln{边界条件}。
+\end{enumerate}
+
+\begin{summarybox}
+
+\textbf{循环单链表}：表尾结点的 \texttt{next} 指向头结点。初始化
+\texttt{L-\textgreater{}next\ =\ L}，判空
+\texttt{L-\textgreater{}next\ ==\ L}，判表尾
+\texttt{p-\textgreater{}next\ ==\ L}。从任意结点出发可以找到其他任何结点；让
+\texttt{L} 指向表尾时，找头部、尾部都是 \(O(1)\)（但表尾插入删除要修改
+\texttt{L}）。
+
+\textbf{循环双链表}：表尾的 \texttt{next} 指向头结点，头结点的
+\texttt{prior} 指向表尾，两个方向各成一个闭环。初始化
+\texttt{L-\textgreater{}prior\ =\ L;\ L-\textgreater{}next\ =\ L;}，判空
+\texttt{L-\textgreater{}next\ ==\ L}，判表尾
+\texttt{p-\textgreater{}next\ ==\ L}。课本的双链表插入、删除代码在循环双链表上不会出现空指针错误。
+
+\textbf{自测}：① 循环单链表怎么初始化、判空？② 为什么循环单链表常让
+\texttt{L} 指向表尾？③ 循环双链表空表时，头结点的
+\texttt{prior}、\texttt{next} 指向哪里？④
+为什么课本的后插四句在循环双链表上不需要
+\texttt{if\ (p-\textgreater{}next\ !=\ NULL)}？⑤
+写链表代码要关注哪三类问题？
+
+\end{summarybox}
+\end{document}
