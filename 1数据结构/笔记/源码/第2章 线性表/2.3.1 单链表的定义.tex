@@ -1,0 +1,700 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.1
+单链表的定义},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.1 单链表的定义 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.1
+单链表的定义 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.1
+单链表的定义}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.1 · 正课字幕 P12 · 王道书
+§2.3 引言、§2.3.1、§2.3.2 初始化（第 30--32 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{顺序表之后学什么？链表分哪几种？}2.2
+用\textbf{顺序存储}实现了线性表（顺序表）。从这节起换一种存储结构：用\textbf{链式存储}实现线性表，统称\textbf{链表}。链表又分四种：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{单链表}（2.3.1～2.3.2，本节先讲怎么定义）
+\item
+  双链表（2.3.3）、循环链表（2.3.4）、静态链表（2.3.5）
+\end{itemize}
+
+本节三件事：什么是单链表、怎么用代码定义、带头结点和不带头结点两种实现。
+
+\begin{bookbox}
+
+王道书本节考点追踪：\textbf{单链表的应用}（2009、2012、2013、2015、2016、2019）。和顺序表一样，单链表是算法题的常客，这节的结构体定义要能默写。
+
+书上 §2.3
+开头的对比：顺序表能随机存取，但插入删除要移动大量元素，效率较低；链式存储不要求地址连续，靠指针建立元素之间的逻辑关系，插入删除只改指针、不用移动元素，代价是\uln{失去了随机存取能力}，只能从头开始顺序访问。
+
+\end{bookbox}
+
+\begin{fixbox}
+
+\textbf{名字统一}：字幕里是“节点”，课件和王道书写“\textbf{结点}”，本笔记统一用“结点”。
+
+\end{fixbox}
+
+\hypertarget{ux4e00ux4ec0ux4e48ux662fux5355ux94feux8868}{%
+\section{一、什么是单链表}\label{ux4e00ux4ec0ux4e48ux662fux5355ux94feux8868}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{单链表的一个结点里存什么？为什么叫“单”链表？}单链表的每个\textbf{结点}存两样东西：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{数据元素}本身；
+\item
+  一个\textbf{指向下一个结点的指针}。
+\end{itemize}
+
+每个结点只有\uln{一个}指向后继的指针，所以叫\textbf{单}链表。
+
+\slidefig{assets/2.3.1-p04.jpg}{0.65}{课件：顺序表与单链表的存储对比}
+
+和顺序表对比（课件）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.556\hsize\raggedright\arraybackslash}X>{\hsize=1.222\hsize\raggedright\arraybackslash}X>{\hsize=1.222\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 顺序表（顺序存储）} & \textcolor{white}{\bfseries 单链表（链式存储）} \\
+\endfirsthead
+存法 & 每个结点只放数据元素，元素在物理上\textbf{连续}存放 & 每个结点放数据元素 + 指向下一个结点的指针，结点在物理上可以\textbf{离散}存放 \\ \hline
+优点 & 可随机存取，存储密度高 & 不要求大片连续空间，改变容量方便 \\ \hline
+缺点 & 要求大片连续空间，改变容量不方便 & \textbf{不可随机存取}，要耗费一定空间存放指针 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{改变容量方便}：要加新结点，在内存里随便抠一小块地方放它就行，不用像
+  2.2.1 的 \texttt{IncreaseSize} 那样整块重新申请再复制。
+\item
+  \textbf{不可随机存取}：要找第 \(i\)
+  个结点，只能从第一个结点开始，顺着指针一个一个往后找。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书的说法：线性表的链式存储又称\textbf{单链表}，它通过一组\uln{任意的存储单元}（不要求地址连续）来存储线性表中的数据元素；每个结点除存放元素自身的信息外，还要存放一个指向其后继的指针。单链表是一种\hlred{非随机存取}的存储结构，不能直接找到表中某个特定结点，查找时要从表头开始依次遍历。
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux7528ux4ee3ux7801ux5b9aux4e49ux4e00ux4e2aux5355ux94feux8868}{%
+\section{二、用代码定义一个单链表}\label{ux4e8cux7528ux4ee3ux7801ux5b9aux4e49ux4e00ux4e2aux5355ux94feux8868}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{结点的结构体怎么写？哪个叫数据域，哪个叫指针域？}一个结点 =
+一片放数据元素的空间 + 一片放指针的空间，用 \texttt{struct} 表示：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{\{}              \CommentTok{// 定义单链表结点类型}
+\NormalTok{    ElemType data}\OperatorTok{;}          \CommentTok{// 每个结点存放一个数据元素（数据域）}
+    \KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{next}\OperatorTok{;}     \CommentTok{// 指针指向下一个结点（指针域）}
+\OperatorTok{\};}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{data}：\textbf{数据域}，存数据元素；
+\item
+  \texttt{next}：\textbf{指针域}，存下一个结点的地址。
+\end{itemize}
+
+要往单链表里加一个新结点，就用 \texttt{malloc}
+申请一个结点大小的空间，用指针 \texttt{p} 指向它，之后再写代码把
+\texttt{p} 插进链表：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=} \OperatorTok{(}\KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\KeywordTok{struct}\NormalTok{ LNode}\OperatorTok{));}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/2.3.1-p05.jpg}{0.65}{课件：用代码定义一个单链表}
+
+\hypertarget{typedefux7ed9ux6570ux636eux7c7bux578bux8d77ux522bux540d}{%
+\subsection{typedef：给数据类型起别名}\label{typedefux7ed9ux6570ux636eux7c7bux578bux8d77ux522bux540d}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{typedef} 怎么用？为什么要用它？}上面每次都要写
+\texttt{struct\ LNode}，带着 \texttt{struct} 关键字很啰嗦。C 语言的
+\texttt{typedef} 可以给数据类型\uln{起一个别名}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \OperatorTok{\textless{}}\NormalTok{数据类型}\OperatorTok{\textgreater{}} \OperatorTok{\textless{}}\NormalTok{别名}\OperatorTok{\textgreater{};}
+\end{Highlighting}
+\end{Shaded}
+
+老师的例子（汉语拼音“超亲切”）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \DataTypeTok{int}\NormalTok{ zhengshu}\OperatorTok{;}           \CommentTok{// 给 int 起别名 zhengshu}
+\KeywordTok{typedef} \DataTypeTok{int} \OperatorTok{*}\NormalTok{zhengshuzhizhen}\OperatorTok{;}   \CommentTok{// 给 int * 起别名 zhengshuzhizhen}
+
+\DataTypeTok{int}\NormalTok{ x }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}          \CommentTok{// 两两等价}
+\NormalTok{zhengshu x }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}
+\DataTypeTok{int} \OperatorTok{*}\NormalTok{p}\OperatorTok{;}
+\NormalTok{zhengshuzhizhen p}\OperatorTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+同理，给 \texttt{struct\ LNode} 起别名 \texttt{LNode}，以后就不用带
+\texttt{struct}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ LNode LNode}\OperatorTok{;}
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux738bux9053ux4e66ux7684ux5199ux6cd5ux4e00ux53e5ux5b9aux4e49ux52a0ux4e24ux4e2aux522bux540d}{%
+\subsection{王道书的写法：一句定义加两个别名}\label{ux738bux9053ux4e66ux7684ux5199ux6cd5ux4e00ux53e5ux5b9aux4e49ux52a0ux4e24ux4e2aux522bux540d}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{\}LNode,\ *LinkList;} 这一行等价于哪几句？}课本把定义和起别名写在了一起：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{\{}      \CommentTok{// 定义单链表结点类型}
+\NormalTok{    ElemType data}\OperatorTok{;}          \CommentTok{// 每个结点存放一个数据元素}
+    \KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{next}\OperatorTok{;}     \CommentTok{// 指针指向下一个结点}
+\OperatorTok{\}}\NormalTok{ LNode}\OperatorTok{,} \OperatorTok{*}\NormalTok{LinkList}\OperatorTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+它等价于先定义 \texttt{struct\ LNode}，再写两句 \texttt{typedef}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{\{}
+\NormalTok{    ElemType data}\OperatorTok{;}
+    \KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{next}\OperatorTok{;}
+\OperatorTok{\};}
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ LNode LNode}\OperatorTok{;}       \CommentTok{// LNode = struct LNode}
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{LinkList}\OperatorTok{;}   \CommentTok{// LinkList = 指向 struct LNode 的指针}
+\end{Highlighting}
+\end{Shaded}
+
+所以 \hlred{\texttt{LinkList} 和 \texttt{LNode\ *} 是同一个类型}。
+
+\slidefig{assets/2.3.1-p07.jpg}{0.65}{课件：typedef 合在一起的写法}
+
+\begin{pitfallbox}
+
+结构体里面的 \texttt{next} 必须写成
+\texttt{struct\ LNode\ *next;}，不能写
+\texttt{LNode\ *next;}：编译器读到这一行时，\texttt{typedef}
+还没生效，\texttt{LNode} 这个别名还不存在。（这是 C
+语法本身决定的，课件和书上都这么写。）
+
+\end{pitfallbox}
+
+\hypertarget{ux5934ux6307ux9488ux7528ux4e00ux4e2aux6307ux9488ux4ee3ux8868ux6574ux4e2aux94feux8868}{%
+\subsection{头指针：用一个指针代表整个链表}\label{ux5934ux6307ux9488ux7528ux4e00ux4e2aux6307ux9488ux4ee3ux8868ux6574ux4e2aux94feux8868}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{表示一个单链表需要什么？\texttt{LNode\ *L} 和 \texttt{LinkList\ L}
+有什么区别？}各个结点靠 \texttt{next}
+一个连一个，所以只要找到第一个结点，就找到了整个链表。表示一个单链表只需要声明一个\uln{头指针}
+\texttt{L}，指向单链表的第一个结点：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{L}\OperatorTok{;}       \CommentTok{// 声明一个指向单链表第一个结点的指针}
+\NormalTok{LinkList L}\OperatorTok{;}     \CommentTok{// 同上，效果完全一样，但代码可读性更强}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{两种写法等价，只是强调的东西不同}：
+
+\begin{itemize}
+\tightlist
+\item
+  用 \texttt{LinkList}：强调这是\textbf{一个单链表}；
+\item
+  用 \texttt{LNode\ *}：强调这是\textbf{一个结点}。
+\end{itemize}
+
+老师用后面要学的按位查找举例（函数体 2.3.2\_2 再讲）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{GetElem}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 返回值强调"返回的是一个结点"}
+    \OperatorTok{...}                               \CommentTok{// 参数 L 强调"这是一个单链表"}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+参数 \texttt{L} 本来也可以写成
+\texttt{LNode\ *L}，但这里要把它看成一个单链表，所以用
+\texttt{LinkList}；返回的是第 \(i\) 个结点，所以返回值类型写
+\texttt{LNode\ *}。王道书的头插法建立单链表也是这样两种混用（\texttt{LinkList}
+表示链表，\texttt{LNode\ *s} 表示新结点）。
+
+\slidefig{assets/2.3.1-p08.jpg}{0.65}{课件：LinkList 与 LNode * 的使用场合}
+
+\begin{teacherbox}
+
+老师提醒：课本很多示例代码两种写法都会出现，这里没理解的话看代码会很懵。以后的树等数据结构也会用类似的重命名方式，开始学的时候就把这些细节理解透，之后吸收会越来越快。
+
+\end{teacherbox}
+
+\begin{bookbox}
+
+王道书注意：设 \texttt{p} 为指向链表结点的结构体指针，则 \texttt{*p}
+表示该结点本身。可以用 \texttt{p-\textgreater{}data} 或
+\texttt{(*p).data} 访问数据域，两者完全等价。成员运算符 \texttt{.}
+左侧是\textbf{结构体变量}，指向运算符 \texttt{-\textgreater{}}
+左侧是\textbf{结构体指针}。例如
+\texttt{p-\textgreater{}next-\textgreater{}data} 等价于
+\texttt{(*(*p).next).data}，表示当前结点的后继结点的数据。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux4e24ux79cdux5b9eux73b0ux5e26ux5934ux7ed3ux70b9ux548cux4e0dux5e26ux5934ux7ed3ux70b9}{%
+\section{三、两种实现：带头结点和不带头结点}\label{ux4e09ux4e24ux79cdux5b9eux73b0ux5e26ux5934ux7ed3ux70b9ux548cux4e0dux5e26ux5934ux7ed3ux70b9}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{带头结点和不带头结点的单链表，初始化和判空各怎么写？}}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9}{%
+\subsection{不带头结点}\label{ux4e0dux5e26ux5934ux7ed3ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化一个空的单链表}
+\DataTypeTok{bool}\NormalTok{ InitList}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    L }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}           \CommentTok{// 空表，暂时还没有任何结点（防止脏数据）}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断单链表是否为空}
+\DataTypeTok{bool}\NormalTok{ Empty}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+
+\DataTypeTok{void}\NormalTok{ test}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    LinkList L}\OperatorTok{;}         \CommentTok{// 声明一个指向单链表的指针（注意此处并没有创建一个结点）}
+\NormalTok{    InitList}\OperatorTok{(}\NormalTok{L}\OperatorTok{);}        \CommentTok{// 初始化一个空表}
+    \CommentTok{// ......后续代码......}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{LinkList\ L;} 执行后，内存里只开辟了一小块放\textbf{头指针}
+  \texttt{L} 的空间，\uln{并没有创建任何结点}。
+\item
+  \texttt{L\ =\ NULL}
+  表示当前是空表，也是为了防止这块内存里遗留的\textbf{脏数据}（和 2.2.1
+  静态分配初始化 \texttt{length=0} 一个道理）。
+\item
+  \texttt{L} 要加 \texttt{\&}：不加的话，函数里改的是头指针 \texttt{L}
+  的复制品（2.1 笔记“三”）。
+\item
+  \textbf{判空}：看 \hlred{\texttt{L\ ==\ NULL}}。
+\end{itemize}
+
+判空还可以写得更简洁，因为 \texttt{L\ ==\ NULL} 的运算结果本身就是
+\texttt{true} 或 \texttt{false}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ Empty}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{return} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{);}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/2.3.1-p10.jpg}{0.65}{课件：不带头结点的单链表}
+
+\hypertarget{ux5e26ux5934ux7ed3ux70b9}{%
+\subsection{带头结点}\label{ux5e26ux5934ux7ed3ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化一个单链表（带头结点）}
+\DataTypeTok{bool}\NormalTok{ InitList}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}   \CommentTok{// 分配一个头结点}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                         \CommentTok{// 内存不足，分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                        \CommentTok{// 头结点之后暂时还没有结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断单链表是否为空（带头结点）}
+\DataTypeTok{bool}\NormalTok{ Empty}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+执行完 \texttt{InitList(L)} 后的内存：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.667\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 谁} & \textcolor{white}{\bfseries 内容} \\
+\endfirsthead
+头指针 \texttt{L} & 指向 \texttt{malloc} 分配的那个结点（头结点） \\ \hline
+头结点的 \texttt{data} & \uln{不存数据} \\ \hline
+头结点的 \texttt{next} & \texttt{NULL}（后面还没有存数据的结点） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{头结点不存数据}，加它只是为了之后实现某些基本操作时更方便。
+\item
+  \textbf{判空}：看
+  \hlred{\texttt{L-\textgreater{}next\ ==\ NULL}}，不是看
+  \texttt{L}（\texttt{L} 一直指着头结点，不会是 \texttt{NULL}）。
+\end{itemize}
+
+\slidefig{assets/2.3.1-p11.jpg}{0.65}{课件：带头结点的单链表}
+
+\begin{bookbox}
+
+王道书 §2.3.2 的带头结点初始化没有判断 \texttt{malloc} 是否失败：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ InitList}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{)} \OperatorTok{\{}             \CommentTok{// 带头结点的单链表初始化}
+\NormalTok{    L }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));} \CommentTok{// 创建头结点}
+\NormalTok{    L}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                      \CommentTok{// 头结点之后暂无数据结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+不带头结点的写法和课件一样（\texttt{L\ =\ NULL;\ return\ true;}）。这和
+2.2.2\_1
+记的书上那条注意一致：书上的实现可以忽略内存分配失败等细节。课件多写的
+\texttt{if\ (L\ ==\ NULL)\ return\ false;} 更健壮。
+
+\end{bookbox}
+
+\hypertarget{ux4e24ux79cdux5b9eux73b0ux600eux4e48ux9009}{%
+\subsection{两种实现怎么选}\label{ux4e24ux79cdux5b9eux73b0ux600eux4e48ux9009}}
+
+\cueblock{\cuenote}{\relax{为什么一般都用带头结点的？}}
+
+\slidefig{assets/2.3.1-book-fig2.4.png}{0.8}{王道书图 2.4：(a) 带头结点的单链表，头指针 L
+指向头结点（阴影部分不存数据）；(b) 不带头结点的单链表，L
+直接指向第一个数据结点。表尾结点的指针域为 NULL（图中 ∧）}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 不带头结点} & \textcolor{white}{\bfseries 带头结点} \\
+\endfirsthead
+头指针 \texttt{L} 指向 & 第一个\textbf{数据结点} & \textbf{头结点}（不存数据） \\ \hline
+第一个数据结点 & \texttt{L} 指向的结点 & \texttt{L-\textgreater{}next} 指向的结点 \\ \hline
+空表 & \texttt{L\ ==\ NULL} & \texttt{L-\textgreater{}next\ ==\ NULL} \\ \hline
+写代码 & 麻烦 & 方便，\hlred{大多数情况用这种} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+老师：不带头结点时，对第一个数据结点和后续数据结点的处理要用不同的代码逻辑，对空表和非空表的处理也要用不同的逻辑，写代码更麻烦。具体麻烦在哪，下一节
+2.3.2\_1 用代码亲自感受。
+
+\begin{bookbox}
+
+王道书把这两点叫引入头结点的两个优点：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{操作一致性}：第一个数据结点的位置存在头结点的指针域中，所以在链表首部插入、删除等操作，和在其他位置的操作逻辑一致，无须特殊处理。
+\item
+  \textbf{空表与非空表处理统一}：无论链表是否为空，头指针始终是一个非空指针（指向头结点），空表只表现为头结点的
+  \texttt{next} 为 \texttt{NULL}，避免了对空表的单独判断。
+\end{enumerate}
+
+\textbf{头指针与头结点的关系}：头指针始终指向链表的第一个结点（不论带不带头结点）；头结点只是带头结点的链表的第一个结点，数据域通常不存实际数据（书上补充：也可以用来记录表长等信息）。
+
+书上还说：如无特殊说明，§2.3.2 的算法均默认链表\textbf{带头结点}。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987e}{%
+\section{四、知识回顾}\label{ux56dbux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\begin{summarybox}
+
+\textbf{单链表 = 用链式存储实现的线性表}：每个结点存一个数据元素（数据域
+\texttt{data}）和一个指向下一个结点的指针（指针域
+\texttt{next}），元素之间的先后关系靠指针表示。优点：不要求大片连续空间、改变容量方便；缺点：\hlred{不能随机存取}，还要花空间存指针。
+
+定义：\texttt{typedef\ struct\ LNode\ \{\ ElemType\ data;\ struct\ LNode\ *next;\ \}\ LNode,\ *LinkList;}。\texttt{LinkList}
+等价于
+\texttt{LNode\ *}，前者强调“这是一个链表”，后者强调“这是一个结点”，在合适的地方用合适的名字，可读性更高。
+
+两种实现：\textbf{不带头结点}，\texttt{L} 直接指向第一个数据结点，初始化
+\texttt{L\ =\ NULL}，判空
+\texttt{L\ ==\ NULL}；\textbf{带头结点}，\texttt{L}
+指向一个不存数据的头结点，初始化时 \texttt{malloc} 头结点并令
+\texttt{L-\textgreater{}next\ =\ NULL}，判空
+\texttt{L-\textgreater{}next\ ==\ NULL}。带头结点写代码更方便，一般都用它。
+
+\textbf{自测}：① \texttt{LinkList\ L;} 执行后，内存里有没有结点？②
+结构体里的 \texttt{next} 为什么写 \texttt{struct\ LNode\ *next} 而不写
+\texttt{LNode\ *next}？③ 带头结点的单链表，判空写 \texttt{L\ ==\ NULL}
+对不对？④ \texttt{p-\textgreater{}next-\textgreater{}data} 用 \texttt{*}
+和 \texttt{.} 怎么写？
+
+\end{summarybox}
+\end{document}
