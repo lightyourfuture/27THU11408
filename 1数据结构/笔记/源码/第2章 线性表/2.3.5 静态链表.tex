@@ -1,0 +1,546 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.5
+静态链表},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.5 静态链表 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.5
+静态链表 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.5
+静态链表}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.5 · 正课字幕 P18 · 王道书
+§2.3.5（第 38 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{这一节讲静态链表的哪三件事？}三件事：什么是静态链表；怎么用代码定义一个静态链表；简述基本操作怎么实现。老师说这个考点考得不多，也很少考代码实现，主要想借它补充一些
+C 语言的知识，\uln{至少要能看懂书上给的代码}。
+
+\hypertarget{ux4e00ux4ec0ux4e48ux662fux9759ux6001ux94feux8868}{%
+\section{一、什么是静态链表}\label{ux4e00ux4ec0ux4e48ux662fux9759ux6001ux94feux8868}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{静态链表的“指针”是什么？表尾怎么表示？第 \(i\) 号结点的地址怎么算？}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{单链表}：各个结点离散地分布在内存的各个角落（课件：“星罗棋布、散落天涯”），每个结点存数据元素和指向下一个结点的指针（下一个结点的内存地址）。
+\item
+  \textbf{静态链表}：分配\uln{一整片连续的内存空间}，各个结点集中安置在这片空间中的某些位置。每个结点存数据元素和\textbf{下一个结点的数组下标}。
+\end{itemize}
+
+看课件的例子（数组下标 0～9）：
+
+\begin{itemize}
+\tightlist
+\item
+  \uln{0 号结点充当“头结点”}，不存实际的数据元素；它的游标是
+  2，所以第一个数据结点（位序为 1）存在下标 2 处（\(e_1\)），\(e_1\)
+  的游标是 1，下一个就是下标 1 处的
+  \(e_2\)，依此类推：\(e_1 \to e_2 \to e_3 \to e_4\)，存放的下标依次为
+  2、1、6、3。
+\item
+  数组下标也叫\textbf{游标}，作用和单链表的指针差不多：指针指明具体的内存地址，游标只指明下一个元素的数组下标。
+\item
+  单链表表尾的 \texttt{next} 指向
+  \texttt{NULL}；静态链表中\uln{游标为 \(-1\) 表示已经到达表尾}，后面没有结点了。
+\end{itemize}
+
+\slidefig{assets/2.3.5-p03.jpg}{0.65}{课件：什么是静态链表}
+
+\textbf{地址怎么算}：各结点的空间连续。设每个数据元素 4B、每个游标
+4B（每个结点共 8B），起始地址为 \texttt{addr}，则下标为 2 的结点 \(e_1\)
+的存放地址为 \(\texttt{addr}+8\times2\)。即：
+
+\[\text{下标为 } i \text{ 的结点的地址} = \texttt{addr} + \text{每个结点的大小} \times i\]
+
+用这种方式就能把游标（数组下标）映射成对应结点的实际存放地址，这就是静态链表的基本原理。
+
+\hypertarget{ux4e8cux7528ux4ee3ux7801ux5b9aux4e49ux9759ux6001ux94feux8868}{%
+\section{二、用代码定义静态链表}\label{ux4e8cux7528ux4ee3ux7801ux5b9aux4e49ux9759ux6001ux94feux8868}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{课本的 \texttt{typedef\ struct\ \{…\}\ SLinkList{[}MaxSize{]};}
+是什么意思？为什么不直接写 \texttt{struct\ Node\ a{[}MaxSize{]}}？}}
+
+\hypertarget{ux5bb9ux6613ux60f3ux5230ux7684ux5199ux6cd5}{%
+\subsection{容易想到的写法}\label{ux5bb9ux6613ux60f3ux5230ux7684ux5199ux6cd5}}
+
+定义一个结点结构体，再声明一个结点数组：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}\PreprocessorTok{           }\CommentTok{// 静态链表的最大长度}
+\KeywordTok{struct}\NormalTok{ Node }\OperatorTok{\{}                \CommentTok{// 静态链表结构类型的定义}
+\NormalTok{    ElemType data}\OperatorTok{;}           \CommentTok{// 存储数据元素}
+    \DataTypeTok{int}\NormalTok{ next}\OperatorTok{;}                \CommentTok{// 下一个元素的数组下标}
+\OperatorTok{\};}
+
+\DataTypeTok{void}\NormalTok{ testSLinkList}\OperatorTok{()} \OperatorTok{\{}
+    \KeywordTok{struct}\NormalTok{ Node a}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}  \CommentTok{// 数组 a 作为静态链表}
+    \CommentTok{// ……后续代码}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{a} 有 \texttt{MaxSize}（10）个元素，每个元素是一个
+\texttt{struct\ Node}，占内存中一整片连续空间。
+
+\hypertarget{ux8bfeux672cux7684ux5199ux6cd5}{%
+\subsection{课本的写法}\label{ux8bfeux672cux7684ux5199ux6cd5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}\PreprocessorTok{           }\CommentTok{// 静态链表的最大长度}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}             \CommentTok{// 静态链表结构类型的定义}
+\NormalTok{    ElemType data}\OperatorTok{;}           \CommentTok{// 存储数据元素}
+    \DataTypeTok{int}\NormalTok{ next}\OperatorTok{;}                \CommentTok{// 下一个元素的数组下标}
+\OperatorTok{\}}\NormalTok{ SLinkList}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}
+
+\DataTypeTok{void}\NormalTok{ testSLinkList}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    SLinkList a}\OperatorTok{;}
+    \CommentTok{// ……后续代码}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+老师说这种写法挺少见，问了身边好几个常用 C/C++
+的同学也很少有人见过。它等价于：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{struct}\NormalTok{ Node }\OperatorTok{\{}
+\NormalTok{    ElemType data}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ next}\OperatorTok{;}
+\OperatorTok{\};}
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ Node SLinkList}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}
+\end{Highlighting}
+\end{Shaded}
+
+即：\uln{可用 \texttt{SLinkList} 定义“一个长度为 \texttt{MaxSize} 的
+\texttt{Node} 型数组”}。\texttt{SLinkList\ a;} 和
+\texttt{struct\ Node\ a{[}MaxSize{]};} 等价。
+
+\slidefig{assets/2.3.5-p05.jpg}{0.65}{课件：两种定义方式等价}
+
+\textbf{为什么课本这么写}：和 2.3.1 的 \texttt{LinkList} /
+\texttt{LNode\ *} 完全相通。用前一种写法声明，从代码上看 \texttt{a}
+是一个 \texttt{Node} 型数组；用 \texttt{SLinkList\ a}
+声明，效果一样，但一看就知道 \uln{\texttt{a} 是一个静态链表}。
+
+\hypertarget{ux8001ux5e08ux7684ux9a8cux8bc1ux7a0bux5e8f}{%
+\subsection{老师的验证程序}\label{ux8001ux5e08ux7684ux9a8cux8bc1ux7a0bux5e8f}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}
+\KeywordTok{struct}\NormalTok{ Node }\OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ data}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ next}\OperatorTok{;}
+\OperatorTok{\};}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ data}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ next}\OperatorTok{;}
+\OperatorTok{\}}\NormalTok{ SLinkList}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}
+
+\DataTypeTok{void}\NormalTok{ testSLinkList}\OperatorTok{()} \OperatorTok{\{}
+    \KeywordTok{struct}\NormalTok{ Node x}\OperatorTok{;}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"sizeX=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,} \KeywordTok{sizeof}\OperatorTok{(}\NormalTok{x}\OperatorTok{));}   \CommentTok{// 8}
+    \KeywordTok{struct}\NormalTok{ Node a}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"sizeA=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,} \KeywordTok{sizeof}\OperatorTok{(}\NormalTok{a}\OperatorTok{));}   \CommentTok{// 80}
+\NormalTok{    SLinkList b}\OperatorTok{;}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"sizeB=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,} \KeywordTok{sizeof}\OperatorTok{(}\NormalTok{b}\OperatorTok{));}   \CommentTok{// 80}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+运行结果
+\texttt{sizeX=8}、\texttt{sizeA=80}、\texttt{sizeB=80}：一个结点含两个
+4B 的 \texttt{int}，共 8B；\texttt{b} 和 \texttt{a} 一样大，说明
+\texttt{SLinkList\ b}
+\uln{相当于定义了一个长度为 \texttt{MaxSize} 的 \texttt{Node} 型数组}。
+
+\begin{bookbox}
+
+王道书第 38
+页：静态链表是用\textbf{数组}来模拟线性表的链式存储结构。每个结点包含
+\texttt{data} 域和 \texttt{next}
+域；与动态链表不同，这里的指针实际上是结点在数组中的相对地址（数组下标），也称\textbf{游标}。类似于顺序表，静态链表也需要预先分配一块连续的内存空间。书上的结构类型定义和课件相同（书上
+\texttt{MaxSize} 为 50）。
+
+\end{bookbox}
+
+\slidefig{assets/2.3.5-book-fig2.14.png}{0.75}{王道书图 2.14：(a) 静态链表示例；(b) 静态链表对应的单链表}
+
+\hypertarget{ux4e09ux7b80ux8ff0ux57faux672cux64cdux4f5cux7684ux5b9eux73b0}{%
+\section{三、简述基本操作的实现}\label{ux4e09ux7b80ux8ff0ux57faux672cux64cdux4f5cux7684ux5b9eux73b0}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{怎么初始化？查找是 \(O(1)\)
+吗？插入、删除分几步？怎么判断一个结点是空闲的？}老师只讲思路，感兴趣的可以自己动手实现代码。
+
+\hypertarget{ux521dux59cbux5316}{%
+\subsection{初始化}\label{ux521dux59cbux5316}}
+
+单链表初始化时把头结点的 \texttt{next} 指向
+\texttt{NULL}；对应到静态链表，\uln{把 \texttt{a{[}0{]}} 的 \texttt{next} 设为 \(-1\)}（\(-1\)
+相当于 \texttt{NULL}，不指向任何元素）。
+
+\hypertarget{ux67e5ux627e}{%
+\subsection{查找}\label{ux67e5ux627e}}
+
+只能从头结点出发，顺着游标记录的线索依次往后找，直到找到想要的结点。所以找某个\textbf{位序}的结点，时间复杂度
+\hlred{\(O(n)\)}。
+
+\begin{pitfallbox}
+
+注意说的是“某个\textbf{位序}的结点”，而不是“某个\textbf{数组下标}的结点”。位序是各结点在\textbf{逻辑上}的顺序；数组下标只反映各结点在\textbf{物理上}的顺序。
+
+\end{pitfallbox}
+
+\hypertarget{ux63d2ux5165ux4f4dux5e8fux4e3a-i-ux7684ux7ed3ux70b9}{%
+\subsection{插入位序为 i
+的结点}\label{ux63d2ux5165ux4f4dux5e8fux4e3a-i-ux7684ux7ed3ux70b9}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  找到一个空的结点，存入数据元素（可以按某种算法，比如从上到下扫描）；
+\item
+  从头结点出发，找到位序为 \(i-1\) 的结点；
+\item
+  修改新结点的 \texttt{next}；
+\item
+  修改 \(i-1\) 号结点的 \texttt{next}。
+\end{enumerate}
+
+老师的例子：表中已有 4 个元素，要在位序 5（表尾）插入新元素
+\(e_5\)，假设存到下标 4：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 下标} & \textcolor{white}{\bfseries 插入前 \texttt{(data,\ next)}} & \textcolor{white}{\bfseries 插入后 \texttt{(data,\ next)}} \\
+\endfirsthead
+0 & 头, 2 & 头, 2 \\ \hline
+1 & \(e_2\), 6 & \(e_2\), 6 \\ \hline
+2 & \(e_1\), 1 & \(e_1\), 1 \\ \hline
+3 & \(e_4\), \(-1\) & \(e_4\), \hlred{\textbf{4}} \\ \hline
+4 & 空 & \hlred{\(e_5\), \(-1\)} \\ \hline
+6 & \(e_3\), 3 & \(e_3\), 3 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+前驱是第 4 个元素 \(e_4\)（下标 3），把它的 \texttt{next} 改成
+4，指向新结点的存放位置；新结点成为表尾，\texttt{next} 设为 \(-1\)。
+
+\hypertarget{ux600eux4e48ux5224ux65adux7ed3ux70b9ux662fux7a7aux95f2ux7684}{%
+\subsection{怎么判断结点是空闲的}\label{ux600eux4e48ux5224ux65adux7ed3ux70b9ux662fux7a7aux95f2ux7684}}
+
+刚才找空结点时，我们是用肉眼看出 4、5、7、8、9
+没存数据。但从计算机的视角，内存中任何地方都有数据，只不过是\textbf{脏数据}。所以要让计算机识别空闲结点：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{初始化时}还要把空闲结点的 \texttt{next} 设为某个特殊值，比如
+  \hlred{\(-2\)}，写代码时判断 \texttt{next\ ==\ -2}
+  就知道它是空闲的（这是前面初始化漏掉的一步）；
+\item
+  \textbf{删除时}除了修改游标，也要把被删除结点的 \texttt{next} 设为
+  \(-2\)，表示它已经被回收。
+\end{itemize}
+
+\hypertarget{ux5220ux9664ux67d0ux4e2aux7ed3ux70b9}{%
+\subsection{删除某个结点}\label{ux5220ux9664ux67d0ux4e2aux7ed3ux70b9}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  从头结点出发找到前驱结点；
+\item
+  修改前驱结点的游标；
+\item
+  被删除结点的 \texttt{next} 设为 \(-2\)。
+\end{enumerate}
+
+\slidefig{assets/2.3.5-p08.jpg}{0.65}{课件：简述基本操作的实现}
+
+\begin{bookbox}
+
+王道书第 38 页：静态链表以 \texttt{next\ ==\ -1}
+作为其结束标志。插入、删除操作与动态链表类似，只需修改指针（数组下标），而无须移动元素。尽管静态链表在灵活性上不及动态链表，但在一些不支持指针的编程语言（如
+Basic）中，它提供了一种巧妙的设计方案。
+
+\end{bookbox}
+
+\newpage
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987e}{%
+\section{四、知识回顾}\label{ux56dbux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/2.3.5-p09.jpg}{0.65}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{静态链表}：用数组的方式实现的链表。存储空间是一整片连续空间，但在这片空间内，逻辑上相邻的元素物理上也可以不相邻，先后关系靠\textbf{游标}（下一个结点的数组下标）表示。0
+号结点充当头结点；游标 \(-1\) 表示表尾；可以用 \(-2\)
+等特殊值标记空闲结点。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{优点}：增、删操作不需要大量移动元素，只需修改相关结点的游标；
+\item
+  \textbf{缺点}：不能随机存取，只能从头结点开始依次往后查找；\hlred{容量固定不可变}，声明后最大容量就定死了，不可扩展；
+\item
+  \textbf{适用场景}：①
+  不支持指针的低级语言（早期用它实现和单链表同样的功能）；②
+  数据元素数量固定不变的场景，如操作系统文件管理中的\textbf{文件分配表
+  FAT}，本质上就是一个静态链表（老师建议先在操作系统课本上做个记号，学到文件管理时回头体会）。
+\end{itemize}
+
+\texttt{typedef\ struct\ \{…\}\ SLinkList{[}MaxSize{]};} 让
+\texttt{SLinkList} 代表“长度为 \texttt{MaxSize}
+的结点数组”，\texttt{SLinkList\ a;} 等价于
+\texttt{struct\ Node\ a{[}MaxSize{]};}，写法上强调 \texttt{a}
+是一个静态链表。
+
+\textbf{自测}：① 静态链表的游标和单链表的指针有什么异同？② 结点
+8B、起始地址 \texttt{addr}，下标 5 的结点地址是多少？③
+\texttt{SLinkList\ a;} 等价于什么声明？④ 为什么初始化时要把空闲结点的
+\texttt{next} 设为 \(-2\)？⑤ 静态链表找位序为 \(i\)
+的结点，时间复杂度是多少？
+
+\end{summarybox}
+\end{document}
