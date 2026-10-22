@@ -1,0 +1,509 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.2.2\_2
+顺序表的查找},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.2.2\_2 顺序表的查找 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.2.2\_2
+顺序表的查找 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.2.2\_2
+顺序表的查找}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.2.2\_2 · 正课字幕 P11 ·
+王道书 §2.2.2（第 18 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{顺序表的查找分哪两种？}2.1
+的基本操作里，“查”有两个，这一节在顺序表上实现它们，并分析时间复杂度：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{按位查找} \texttt{GetElem(L,i)}：取第 \(i\) 个元素的值；
+\item
+  \textbf{按值查找} \texttt{LocateElem(L,e)}：找值等于 \(e\)
+  的元素在哪。
+\end{itemize}
+
+两个都只读不改，所以 \texttt{L} 都\uln{不加 \texttt{\&}}（2.1
+笔记“三”的道理）。
+
+\begin{fixbox}
+
+\textbf{名字对照}：课件叫“按位查找”，王道书叫“\uln{按序号查找}”，是同一个操作。
+
+\end{fixbox}
+
+\hypertarget{ux4e00ux6309ux4f4dux67e5ux627e}{%
+\section{一、按位查找}\label{ux4e00ux6309ux4f4dux67e5ux627e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{GetElem} 一句话怎么写？静态、动态分配写法一样吗？}\texttt{GetElem(L,i)}：获取表
+\(L\) 中第 \(i\) 个位置的元素的值。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ElemType GetElem}\OperatorTok{(}\NormalTok{SqList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{// 静态分配}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{];}
+\OperatorTok{\}}
+
+\NormalTok{ElemType GetElem}\OperatorTok{(}\NormalTok{SeqList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}    \CommentTok{// 动态分配，写法完全一样}
+    \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{];}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  返回值类型和元素类型相同，所以写 \texttt{ElemType}。
+\item
+  还是那个坑：第 \(i\) 个元素在下标 \hlred{\(i-1\)}。
+\item
+  想更健壮的话，可以先判断 \(i\) 是否在 \([1,\ \texttt{length}]\)
+  内，老师说很简单，没展开。
+\end{itemize}
+
+\hypertarget{ux6307ux9488ux4e3aux4ec0ux4e48ux4e5fux80fdux7528ux4e0bux6807}{%
+\subsection{指针为什么也能用下标}\label{ux6307ux9488ux4e3aux4ec0ux4e48ux4e5fux80fdux7528ux4e0bux6807}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{动态分配时 \texttt{data} 是指针，\texttt{L.data{[}i-1{]}}
+为什么还能用？一次取几个字节由什么决定？}动态分配时 \texttt{data}
+是一个\textbf{指针}，指向 \texttt{malloc}
+申请的那片连续空间的起始地址。但它同样可以用 \texttt{data{[}i{]}}
+这种\uln{数组下标的方式}访问元素，老师说这可能是跨考同学不知道的点。
+
+计算机在背后做的事：\textbf{根据指针所指向的类型的大小，算出每个下标对应哪几个字节}。
+
+老师的例子：\texttt{data} 指向地址 2000，图中一格代表 1 字节，假设一个
+\texttt{ElemType} 占 6B（\texttt{sizeof(ElemType)==6}）。再定义一个
+\texttt{int\ *p} 也指向 2000，\texttt{int} 占 4B：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.800\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=0.800\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \texttt{ElemType\ *data}} & \textcolor{white}{\bfseries 取的字节} & \textcolor{white}{\bfseries \texttt{int\ *p}} & \textcolor{white}{\bfseries 取的字节} \\
+\endfirsthead
+\texttt{data{[}0{]}} & 2000～2005（6B） & \texttt{p{[}0{]}} & 2000～2003（4B） \\ \hline
+\texttt{data{[}1{]}} & 2006～2011 & \texttt{p{[}1{]}} & 2004～2007 \\ \hline
+\texttt{data{[}2{]}} & 2012～2017 & \texttt{p{[}2{]}} & 2008～2011 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+同一个地址，指针类型不同，每次取的字节数就不同。
+
+\slidefig{assets/2.2.2_2-p04.jpg}{0.65}{课件：ElemType 占 6B 时，data{[}i{]} 对应的内存}
+
+\begin{pitfallbox}
+
+这就解释了 2.2.1 里强调的：\texttt{malloc}
+返回的指针要\hlred{强制转换成和元素类型相同的指针}，比如 \texttt{int}
+表写
+\texttt{(int\ *)}。指针指向同一个地址，但类型定义错了，按下标访问元素时取的字节数就错了，取出来的数据也就错了。
+
+\end{pitfallbox}
+
+\slidefig{assets/2.2.2_2-p06.jpg}{0.65}{课件：int 指针按 4B 一格取数据；再次理解 malloc 返回值为什么要强转}
+
+\hypertarget{ux65f6ux95f4ux590dux6742ux5ea6o1}{%
+\subsection{时间复杂度：O(1)}\label{ux65f6ux95f4ux590dux6742ux5ea6o1}}
+
+只有一句 \texttt{return}，没有循环也没有递归，时间复杂度
+\hlred{\(O(1)\)}。
+
+这就是 2.2.1
+说的\hlred{随机存取}：元素在内存里\textbf{连续存放}，且\textbf{类型相同、每个占的空间一样大}，所以只要知道起始地址和每个元素的大小，就能立即算出第
+\(i\) 个元素在哪。王道书：“直接通过数组下标访问即可，时间复杂度为
+\(O(1)\)。”
+
+\hypertarget{ux4e8cux6309ux503cux67e5ux627e}{%
+\section{二、按值查找}\label{ux4e8cux6309ux503cux67e5ux627e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{LocateElem} 返回的是下标还是位序？找不到返回什么？}\texttt{LocateElem(L,e)}：在表
+\(L\) 中查找第一个值等于 \(e\)
+的元素，并返回其\uln{位序}。从第一个元素开始，依次往后比较：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 在顺序表 L 中查找第一个元素值等于 e 的元素，并返回其位序}
+\DataTypeTok{int}\NormalTok{ LocateElem}\OperatorTok{(}\NormalTok{SeqList L}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ i }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)}
+        \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==}\NormalTok{ e}\OperatorTok{)}
+            \ControlFlowTok{return}\NormalTok{ i }\OperatorTok{+} \DecValTok{1}\OperatorTok{;}    \CommentTok{// 数组下标为 i 的元素值等于 e，返回其位序 i+1}
+    \ControlFlowTok{return} \DecValTok{0}\OperatorTok{;}                \CommentTok{// 退出循环，说明查找失败}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{i} 是\textbf{数组下标}，要返回的是\textbf{位序}，所以
+  \texttt{return\ i\ +\ 1}。
+\item
+  位序从 1 开始，\texttt{0}
+  不可能是合法位序，所以\uln{返回 0 表示查找失败}。
+\end{itemize}
+
+老师的例子：表里依次是 6、2、9、4、9、3（\texttt{length=6}），调用
+\texttt{LocateElem(L,\ 9)}：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.500\hsize\raggedright\arraybackslash}X>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.667\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \texttt{i}} & \textcolor{white}{\bfseries \texttt{L.data{[}i{]}}} & \textcolor{white}{\bfseries \texttt{==\ 9}？} & \textcolor{white}{\bfseries 结果} \\
+\endfirsthead
+0 & 6 & 否 & \texttt{i++} \\ \hline
+1 & 2 & 否 & \texttt{i++} \\ \hline
+2 & 9 & 是 & \texttt{return\ 3} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\texttt{data{[}4{]}} 也是 9，但找到\textbf{第一个}就返回了，后面不再看。
+
+\slidefig{assets/2.2.2_2-p09.jpg}{0.65}{课件：LocateElem(L, 9) 的执行过程}
+
+\hypertarget{ux7ed3ux6784ux4f53ux4e0dux80fdux76f4ux63a5ux7528}{%
+\subsection{\texorpdfstring{结构体不能直接用
+\texttt{==}}{结构体不能直接用 ==}}\label{ux7ed3ux6784ux4f53ux4e0dux80fdux76f4ux63a5ux7528}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{如果元素是 \texttt{struct}，\texttt{L.data{[}i{]}\ ==\ e}
+还能用吗？考试里怎么办？}\texttt{int}、\texttt{char}、\texttt{double}、\texttt{float}
+这些\uln{基本数据类型}可以直接用 \texttt{==}
+比较。但\textbf{结构类型不行}：老师定义了 2.2.1 里的
+\texttt{Customer}，让 \texttt{a}、\texttt{b} 两个变量的字段全设成
+1，再写 \texttt{if\ (a\ ==\ b)}，IDE 直接报错，\hlred{连编译都过不了}。
+
+正确做法：逐个比较各个分量，都相等才算相等。更好的办法是写成一个函数，用起来方便：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ num}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ people}\OperatorTok{;}
+\OperatorTok{\}}\NormalTok{ Customer}\OperatorTok{;}
+
+\DataTypeTok{bool}\NormalTok{ isCustomerEqual}\OperatorTok{(}\NormalTok{Customer a}\OperatorTok{,}\NormalTok{ Customer b}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{a}\OperatorTok{.}\NormalTok{num }\OperatorTok{==}\NormalTok{ b}\OperatorTok{.}\NormalTok{num }\OperatorTok{\&\&}\NormalTok{ a}\OperatorTok{.}\NormalTok{people }\OperatorTok{==}\NormalTok{ b}\OperatorTok{.}\NormalTok{people}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+C++ 可以重载 \texttt{==} 运算符，照顾跨考同学没展开。
+
+\slidefig{assets/2.2.2_2-p10.jpg}{0.65}{课件：结构类型的比较}
+
+\begin{teacherbox}
+
+老师的考试建议：如果报考学校考的科目叫\textbf{数据结构}，判断两个元素是否相等时，\uln{不管是基本类型还是结构类型都可以直接写 \texttt{==}}，这门课考的是对数据结构和算法的理解，不会过分严格要求语法。如果考的是\textbf{C
+语言程序设计}，阅卷可能会在意语法是否严格，最好看看该校历年真题的要求。
+
+\end{teacherbox}
+
+\hypertarget{ux6309ux503cux67e5ux627eux7684ux65f6ux95f4ux590dux6742ux5ea6}{%
+\subsection{按值查找的时间复杂度}\label{ux6309ux503cux67e5ux627eux7684ux65f6ux95f4ux590dux6742ux5ea6}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{按值查找平均要比较几次？为什么是 \(\dfrac{n+1}{2}\)？}\(n\)
+是表长，最深层语句是 \texttt{if\ (L.data{[}i{]}\ ==\ e)}，看它执行几次。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{最好}：目标元素在表头，循环 1 次，\hlred{\(O(1)\)}。
+\item
+  \textbf{最坏}：目标元素在表尾（王道书补一句：或者不存在），要比较
+  \(n\) 次，\hlred{\(O(n)\)}。
+\item
+  \textbf{平均}：假设目标元素出现在每个位置的概率相同，都是
+  \(\dfrac1n\)。在第 \(i\) 位就要循环 \(i\) 次：
+\end{itemize}
+
+\[\text{平均循环次数}=1\cdot\frac1n+2\cdot\frac1n+\cdots+n\cdot\frac1n=\frac{n(n+1)}{2}\cdot\frac1n=\frac{n+1}{2}\]
+
+平均时间复杂度 \hlred{\(O(n)\)}。
+
+和插入删除的区别：那两个数的是“移动几次”，最好情况是 0
+次；这里数的是“比较几次”，最好也要比 1 次，所以平均是 \(\dfrac{n+1}{2}\)
+而不是 \(\dfrac{n-1}{2}\)。
+
+\begin{teacherbox}
+
+如果顺序表里的元素是\textbf{有序}的（从小到大或从大到小），有更高效的查找算法，第
+7 章“查找”再学。元素无序时，只能从第一个开始依次往后找，平均 \(O(n)\)。
+
+\end{teacherbox}
+
+\hypertarget{ux4e09ux77e5ux8bc6ux56deux987e}{%
+\section{三、知识回顾}\label{ux4e09ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/2.2.2_2-p13.jpg}{0.6}{课件：知识回顾与重要考点}
+
+2.2.2 两节课学的四个基本操作放在一起：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.415\hsize\raggedright\arraybackslash}X>{\hsize=0.849\hsize\raggedright\arraybackslash}X>{\hsize=0.849\hsize\raggedright\arraybackslash}X>{\hsize=1.038\hsize\raggedright\arraybackslash}X>{\hsize=0.849\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 最好} & \textcolor{white}{\bfseries 最坏} & \textcolor{white}{\bfseries 平均次数} & \textcolor{white}{\bfseries 平均} \\
+\endfirsthead
+插入 \texttt{ListInsert} & \(O(1)\) & \(O(n)\) & 移动 \(\dfrac n2\) & \(O(n)\) \\ \hline
+删除 \texttt{ListDelete} & \(O(1)\) & \(O(n)\) & 移动 \(\dfrac{n-1}{2}\) & \(O(n)\) \\ \hline
+按位查找 \texttt{GetElem} & \(O(1)\) & \(O(1)\) & --- & \(O(1)\) \\ \hline
+按值查找 \texttt{LocateElem} & \(O(1)\) & \(O(n)\) & 比较 \(\dfrac{n+1}{2}\) & \(O(n)\) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{summarybox}
+
+\textbf{按位查找}一句
+\texttt{return\ L.data{[}i-1{]};}，静态、动态分配都这么写（指针也能用下标，每次取几个字节由指针指向的类型决定，所以
+\texttt{malloc}
+的返回值要强转成对应类型）；\(O(1)\)，这就是顺序表的\textbf{随机存取}。
+
+\textbf{按值查找}从头依次比较，找到第一个相等的返回\textbf{位序
+\(i+1\)}，找不到返回 0；最好 \(O(1)\)、最坏 \(O(n)\)、平均比较
+\(\dfrac{n+1}{2}\) 次，\(O(n)\)。基本类型可以直接 \texttt{==}，结构体在
+C 里不行，要逐个比较分量（考数据结构时可以直接写 \texttt{==}）。
+
+\textbf{自测}：① 动态分配的 \texttt{data} 是
+\texttt{ElemType\ *}，\texttt{sizeof(ElemType)==8}，首地址
+1000，\texttt{data{[}3{]}} 从哪个地址开始？② \texttt{LocateElem}
+为什么返回 \texttt{i+1}？返回 0 是什么意思？③ 表长为
+\(n\)，按值查找平均比较几次？④ 两个 \texttt{Customer} 变量在 C
+语言里能直接用 \texttt{==} 比较吗？
+
+\end{summarybox}
+\end{document}

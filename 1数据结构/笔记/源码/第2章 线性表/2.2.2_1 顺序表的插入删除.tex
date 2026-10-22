@@ -1,0 +1,638 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.2.2\_1
+顺序表的插入删除},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.2.2\_1
+顺序表的插入删除 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.2.2\_1
+顺序表的插入删除 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.2.2\_1
+顺序表的插入删除}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.2.2\_1 · 正课字幕 P10 ·
+王道书 §2.2.2（第 16--18 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{2.2.1 把顺序表定义好了，这一节做什么？}上一节会定义顺序表、会初始化了，刚建好的表是空表。这一节在顺序表上实现
+2.1 里的两个基本操作，并分析时间复杂度：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{插入} \texttt{ListInsert(\&L,i,e)}
+\item
+  \textbf{删除} \texttt{ListDelete(\&L,i,\&e)}
+\end{itemize}
+
+本节代码都基于\uln{静态分配}的顺序表（\texttt{SqList}），动态分配的写法也一样。元素类型用
+\texttt{int}。
+
+\begin{bookbox}
+
+王道书 §2.2.2 考点追踪：\textbf{顺序表上操作的时间复杂度分析（2023）}。
+
+书上这一小节先讲初始化（静态分配只需 \texttt{L.length=0;}，动态分配
+\texttt{malloc} 后再设 \texttt{length=0}、\texttt{MaxSize=InitSize}，和
+2.2.1
+正课讲的一致），再讲插入、删除、按值查找。书上还有一条注意：各种操作的实现中通常可以忽略边界条件判断、变量定义、内存分配失败等细节，\uln{不要求代码具有实际可执行性}，重点体现算法的核心思想与逻辑步骤。
+
+\end{bookbox}
+
+\hypertarget{ux4e00ux63d2ux5165}{%
+\section{一、插入}\label{ux4e00ux63d2ux5165}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{在第 \(i\) 个位置插入，哪些元素要动？往哪边动？}\texttt{ListInsert(\&L,i,e)}：在表
+\(L\) 的\hlred{第 \(i\) 个位置}（位序，从 1 开始）插入元素 \(e\)。
+
+顺序表要用\textbf{存储位置相邻}来体现逻辑上的相邻。在第 \(i\)
+个位置插入，就得先把第 \(i\)
+个及之后的元素\uln{都往后移一位}，腾出位置，再把 \(e\) 放进去。
+
+\slidefig{assets/2.2.2_1-p03.jpg}{0.65}{课件：插入，后面的元素依次后移}
+
+\hypertarget{ux5148ux5199ux4e00ux4e2aux6700ux7b80ux5355ux7684ux7248ux672c}{%
+\subsection{先写一个最简单的版本}\label{ux5148ux5199ux4e00ux4e2aux6700ux7b80ux5355ux7684ux7248ux672c}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ data}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}
+    \DataTypeTok{int}\NormalTok{ length}\OperatorTok{;}
+\OperatorTok{\}}\NormalTok{ SqList}\OperatorTok{;}
+
+\DataTypeTok{void}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{SqList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ j }\OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{;}\NormalTok{ j }\OperatorTok{\textgreater{}=}\NormalTok{ i}\OperatorTok{;}\NormalTok{ j}\OperatorTok{{-}{-})}   \CommentTok{// 第 i 个及之后的元素后移}
+\NormalTok{        L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{]} \OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{];}
+\NormalTok{    L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{]} \OperatorTok{=}\NormalTok{ e}\OperatorTok{;}                       \CommentTok{// 在位置 i 处放入 e}
+\NormalTok{    L}\OperatorTok{.}\NormalTok{length}\OperatorTok{++;}                            \CommentTok{// 长度加 1}
+\OperatorTok{\}}
+
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    SqList L}\OperatorTok{;}
+\NormalTok{    InitList}\OperatorTok{(}\NormalTok{L}\OperatorTok{);}
+    \CommentTok{// ...此处省略一些代码，插入几个元素...}
+\NormalTok{    ListInsert}\OperatorTok{(}\NormalTok{L}\OperatorTok{,} \DecValTok{3}\OperatorTok{,} \DecValTok{3}\OperatorTok{);}
+    \ControlFlowTok{return} \DecValTok{0}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+老师的例子：表里已有 1、2、4、5、6（\texttt{length=5}），调用
+\texttt{ListInsert(L,\ 3,\ 3)}，在第 3 个位置插入 3。一步一步看
+\texttt{for} 循环：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.364\hsize\raggedright\arraybackslash}X>{\hsize=1.018\hsize\raggedright\arraybackslash}X>{\hsize=1.164\hsize\raggedright\arraybackslash}X>{\hsize=1.455\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 轮} & \textcolor{white}{\bfseries \texttt{j}} & \textcolor{white}{\bfseries 执行} & \textcolor{white}{\bfseries 数组 \texttt{data{[}0..5{]}}} \\
+\endfirsthead
+前 & --- & --- & 1　2　4　5　6　\_ \\ \hline
+1 & 5 & \texttt{data{[}5{]}\ =\ data{[}4{]}} & 1　2　4　5　6　\textbf{6} \\ \hline
+2 & 4 & \texttt{data{[}4{]}\ =\ data{[}3{]}} & 1　2　4　5　\textbf{5}　6 \\ \hline
+3 & 3 & \texttt{data{[}3{]}\ =\ data{[}2{]}} & 1　2　4　\textbf{4}　5　6 \\ \hline
+停 & 2 & \texttt{j\ \textgreater{}=\ i} 即 \texttt{2\ \textgreater{}=\ 3} 不成立，退出 &  \\ \hline
+后 & --- & \texttt{data{[}2{]}\ =\ 3}，\texttt{length} 变 6 & 1　2　\textbf{3}　4　5　6 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{pitfallbox}
+
+参数 \(i\) 是\textbf{位序}（从 1 开始），落到数组里是\textbf{下标
+\(i-1\)}。所以最后一句是 \texttt{L.data{[}i-1{]}\ =\ e}，不是
+\texttt{L.data{[}i{]}}。老师：自己做题写代码时一定要注意。
+
+\end{pitfallbox}
+
+\hypertarget{ux8ba9ux4ee3ux7801ux5065ux58eeux5224ux65adux5408ux6cd5ux6027ux8fd4ux56de-bool}{%
+\subsection{\texorpdfstring{让代码“健壮”：判断合法性，返回
+bool}{让代码健壮：判断合法性，返回 bool}}\label{ux8ba9ux4ee3ux7801ux5065ux58eeux5224ux65adux5408ux6cd5ux6027ux8fd4ux56de-bool}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{传进来的 \(i\) 不合法、或表已经满了，怎么办？}上面的版本有问题。比如队友调用
+\texttt{ListInsert(L,\ 9,\ 3)}：表里只有 5 个元素，循环一次都不执行，3
+被放进 \texttt{data{[}8{]}}，中间
+\texttt{data{[}5{]}}～\texttt{data{[}7{]}}
+空着。顺序表的元素必须\uln{一个挨一个}存放，这就错了。
+
+所以要加两个判断：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\(i\) 的合法范围是
+  \([1,\ \texttt{length}+1]\)}：可以插在已有元素之间，也可以插在表尾后面那一格（第
+  length+1 个位置），再往后就不行了。
+\item
+  \textbf{表满了不能插}：\texttt{length\ \textgreater{}=\ MaxSize}
+  时拒绝。
+\end{itemize}
+
+不能插的时候，调用者至少得知道“这次失败了”，所以函数返回
+\texttt{bool}：失败返回 \texttt{false}，成功返回 \texttt{true}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{SqList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1} \OperatorTok{||}\NormalTok{ i }\OperatorTok{\textgreater{}}\NormalTok{ L}\OperatorTok{.}\NormalTok{length }\OperatorTok{+} \DecValTok{1}\OperatorTok{)}     \CommentTok{// 判断 i 的范围是否有效}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{.}\NormalTok{length }\OperatorTok{\textgreater{}=}\NormalTok{ MaxSize}\OperatorTok{)}           \CommentTok{// 当前存储空间已满，不能插入}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ j }\OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{;}\NormalTok{ j }\OperatorTok{\textgreater{}=}\NormalTok{ i}\OperatorTok{;}\NormalTok{ j}\OperatorTok{{-}{-})}  \CommentTok{// 将第 i 个元素及之后的元素后移}
+\NormalTok{        L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{]} \OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{];}
+\NormalTok{    L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{]} \OperatorTok{=}\NormalTok{ e}\OperatorTok{;}                   \CommentTok{// 在位置 i 处放入 e}
+\NormalTok{    L}\OperatorTok{.}\NormalTok{length}\OperatorTok{++;}                        \CommentTok{// 长度加 1}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/2.2.2_1-p05.jpg}{0.65}{课件：好的算法应该具有健壮性}
+
+\begin{teacherbox}
+
+老师借这个例子强调：代码除了逻辑正确，还要\hlred{健壮}（能处理异常情况），并且\uln{让别人用起来方便}（给使用者反馈）。这种意识从刚开始学就要有，以后的算法、甚至以后实习工作都一样。
+
+\end{teacherbox}
+
+\begin{bookbox}
+
+王道书注意：\textbf{为什么判断插入位置用 \texttt{length+1}，而
+\texttt{for} 循环里用 \texttt{length}？} 因为合法的插入位置包括第
+\(n+1\) 位（表尾之后），但移动元素时最多从第 \(n\) 位开始后移（表里只有
+\(n\) 个元素）。
+
+\end{bookbox}
+
+\hypertarget{ux63d2ux5165ux7684ux65f6ux95f4ux590dux6742ux5ea6}{%
+\subsection{插入的时间复杂度}\label{ux63d2ux5165ux7684ux65f6ux95f4ux590dux6742ux5ea6}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{插入的最好、最坏、平均情况各是什么？平均移动多少次？}按 1.2.2
+的方法，看\textbf{最深层循环}的执行次数和问题规模 \(n\) 的关系。这里
+\(n\) = 表长 \texttt{L.length}，最深层的语句是
+\texttt{L.data{[}j{]}\ =\ L.data{[}j-1{]};}，每执行一次就移动一个元素。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{最好}：插在表尾（\(i=n+1\)），不用移动元素，循环 0
+  次，\hlred{\(O(1)\)}。
+\item
+  \textbf{最坏}：插在表头（\(i=1\)），原有 \(n\) 个元素全部后移，循环
+  \(n\) 次，\hlred{\(O(n)\)}。
+\item
+  \textbf{平均}：假设插到每个位置的概率相同。合法位置
+  \(i=1,2,\cdots,n+1\) 共 \(n+1\) 个，每个的概率 \(p=\dfrac{1}{n+1}\)。
+\end{itemize}
+
+\slidefig{assets/2.2.2_1-p06.jpg}{0.65}{课件：插入操作的时间复杂度}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries 1} & \textcolor{white}{\bfseries 2} & \textcolor{white}{\bfseries \(\cdots\)} & \textcolor{white}{\bfseries \(n+1\)} \\
+\endfirsthead
+循环次数 & \(n\) & \(n-1\) & \(\cdots\) & 0 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\[\text{平均循环次数}=np+(n-1)p+\cdots+1\cdot p+0\cdot p=\frac{n(n+1)}{2}\cdot\frac{1}{n+1}=\frac{n}{2}\]
+
+所以平均时间复杂度 \(O\!\left(\dfrac n2\right)=\) \hlred{\(O(n)\)}。
+
+\begin{bookbox}
+
+王道书写法：设在第 \(i\) 个位置插入的概率 \(p_i=\dfrac{1}{n+1}\)，第
+\(i\) 个位置要移动 \(n-i+1\) 个元素，
+
+\[\sum_{i=1}^{n+1}p_i(n-i+1)=\frac{1}{n+1}\cdot\frac{n(n+1)}{2}=\frac n2\]
+
+和老师的结果一样，只是把“循环次数”写成了 \(n-i+1\)。
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux5220ux9664}{%
+\section{二、删除}\label{ux4e8cux5220ux9664}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{删除第 \(i\) 个元素，哪些元素要动？被删的值怎么“带回去”？}\texttt{ListDelete(\&L,i,\&e)}：删除表
+\(L\) 中第 \(i\)
+个位置的元素，\uln{用 \(e\) 返回被删元素的值}。做法：先把被删的值存到
+\(e\)，再把它\uln{后面的元素都往前移一位}，最后 \texttt{length} 减 1。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListDelete}\OperatorTok{(}\NormalTok{SqList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,} \DataTypeTok{int} \OperatorTok{\&}\NormalTok{e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1} \OperatorTok{||}\NormalTok{ i }\OperatorTok{\textgreater{}}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{)}         \CommentTok{// 判断 i 的范围是否有效}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    e }\OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{];}                   \CommentTok{// 将被删除的元素赋值给 e}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ j }\OperatorTok{=}\NormalTok{ i}\OperatorTok{;}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{;}\NormalTok{ j}\OperatorTok{++)} \CommentTok{// 将第 i 个位置后的元素前移}
+\NormalTok{        L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{{-}}\DecValTok{1}\OperatorTok{]} \OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{];}
+\NormalTok{    L}\OperatorTok{.}\NormalTok{length}\OperatorTok{{-}{-};}                        \CommentTok{// 线性表长度减 1}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\DataTypeTok{int}\NormalTok{ main}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    SqList L}\OperatorTok{;}
+\NormalTok{    InitList}\OperatorTok{(}\NormalTok{L}\OperatorTok{);}
+    \CommentTok{// ...此处省略一些代码，插入几个元素...}
+    \DataTypeTok{int}\NormalTok{ e }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{;}                        \CommentTok{// 用变量 e 把删除的元素"带回来"}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{ListDelete}\OperatorTok{(}\NormalTok{L}\OperatorTok{,} \DecValTok{3}\OperatorTok{,}\NormalTok{ e}\OperatorTok{))}
+\NormalTok{        printf}\OperatorTok{(}\StringTok{"已删除第3个元素，删除元素值为=}\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ e}\OperatorTok{);}
+    \ControlFlowTok{else}
+\NormalTok{        printf}\OperatorTok{(}\StringTok{"位序i不合法，删除失败}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{);}
+    \ControlFlowTok{return} \DecValTok{0}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+注意删除的合法范围是
+\([1,\ \texttt{length}]\)：只能删\uln{已经存在}的元素，和插入的
+\([1,\ \texttt{length}+1]\) 差 1。
+
+老师的例子：表里 1～6 六个元素，\texttt{int\ e\ =\ -1;}
+先在内存里开一小块放 \texttt{e}，值是 −1；调用
+\texttt{ListDelete(L,\ 3,\ e)} 删第 3 个：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.345\hsize\raggedright\arraybackslash}X>{\hsize=0.897\hsize\raggedright\arraybackslash}X>{\hsize=1.241\hsize\raggedright\arraybackslash}X>{\hsize=1.517\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 轮} & \textcolor{white}{\bfseries \texttt{j}} & \textcolor{white}{\bfseries 执行} & \textcolor{white}{\bfseries 数组 \texttt{data{[}0..5{]}}，\texttt{e}} \\
+\endfirsthead
+前 & --- & \(i=3\) 合法；\texttt{e\ =\ data{[}2{]}} & 1　2　3　4　5　6，\textbf{e=3} \\ \hline
+1 & 3 & \texttt{data{[}2{]}\ =\ data{[}3{]}} & 1　2　\textbf{4}　4　5　6 \\ \hline
+2 & 4 & \texttt{data{[}3{]}\ =\ data{[}4{]}} & 1　2　4　\textbf{5}　5　6 \\ \hline
+3 & 5 & \texttt{data{[}4{]}\ =\ data{[}5{]}} & 1　2　4　5　\textbf{6}　6 \\ \hline
+停 & 6 & \texttt{j\ \textless{}\ length} 即 \texttt{6\ \textless{}\ 6} 不成立，退出 &  \\ \hline
+后 & --- & \texttt{length} 变 5，返回 \texttt{true} & 1　2　4　5　6（\texttt{data{[}5{]}} 那个 6 已不在表内） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\texttt{if} 收到 \texttt{true}，打印“已删除第3个元素，删除元素值为=3”。
+
+\slidefig{assets/2.2.2_1-p08.jpg}{0.65}{课件：删除，后面的元素依次前移}
+
+\hypertarget{ux4e3aux4ec0ux4e48-e-ux548c-l-ux90fdux8981ux52a0}{%
+\subsection{\texorpdfstring{为什么 \texttt{e} 和 \texttt{L} 都要加
+\texttt{\&}}{为什么 e 和 L 都要加 \&}}\label{ux4e3aux4ec0ux4e48-e-ux548c-l-ux90fdux8981ux52a0}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{ListDelete} 的 \texttt{e} 如果不加 \texttt{\&}，\texttt{main}
+里打印出来是多少？}和 2.1 讲的道理一样（2.1 笔记“三、什么时候要传引用
+\texttt{\&}”）：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{\&e}}：加了 \texttt{\&}，函数里的 \texttt{e} 和
+  \texttt{main} 里的 \texttt{e}
+  是\uln{同一份数据}，\texttt{e\ =\ L.data{[}i-1{]}} 改的就是
+  \texttt{main} 的 \texttt{e}。不加的话，函数里处理的是 \texttt{main} 里
+  \texttt{e} 的\textbf{复制品}，被删的值赋给了复制品，\texttt{main} 里的
+  \texttt{e} 还是 \textbf{−1}。
+\item
+  \textbf{\texttt{\&L}}：同理，不加 \texttt{\&}
+  的话，删除的一系列操作都做在 \texttt{L} 的复制品上，回到 \texttt{main}
+  后表的数据和长度都没变。
+\end{itemize}
+
+\hypertarget{ux63d2ux5165ux548cux5220ux9664ux79fbux52a8ux987aux5e8fux76f8ux53cd}{%
+\subsection{插入和删除，移动顺序相反}\label{ux63d2ux5165ux548cux5220ux9664ux79fbux52a8ux987aux5e8fux76f8ux53cd}}
+
+\begin{pitfallbox}
+
+老师专门提醒跨考同学：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{插入}（往后移）：\hlred{先移后面的}，\texttt{j} 从
+  \texttt{length}
+  往下减。如果先移前面的，前面的值会把后面还没移走的值覆盖掉。
+\item
+  \textbf{删除}（往前移）：\hlred{先移前面的}，\texttt{j} 从 \texttt{i}
+  往上加。
+\end{itemize}
+
+自己没把握时，就像上面两张表一样在纸上一轮一轮推一遍。
+
+\end{pitfallbox}
+
+\hypertarget{ux5220ux9664ux7684ux65f6ux95f4ux590dux6742ux5ea6}{%
+\subsection{删除的时间复杂度}\label{ux5220ux9664ux7684ux65f6ux95f4ux590dux6742ux5ea6}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{删除的平均移动次数为什么是 \(\dfrac{n-1}{2}\)，不是 \(\dfrac n2\)？}\(n\)
+仍是表长，最深层语句是 \texttt{L.data{[}j-1{]}\ =\ L.data{[}j{]};}。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{最好}：删表尾元素（\(i=n\)），不用移动，\hlred{\(O(1)\)}。
+\item
+  \textbf{最坏}：删表头元素（\(i=1\)），后面 \(n-1\)
+  个元素全部前移，循环 \(n-1\) 次，\hlred{\(O(n)\)}。
+\item
+  \textbf{平均}：假设删每个元素的概率相同。合法位置 \(i=1,\cdots,n\) 共
+  \(n\) 个，\(p=\dfrac1n\)。
+\end{itemize}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries 1} & \textcolor{white}{\bfseries 2} & \textcolor{white}{\bfseries \(\cdots\)} & \textcolor{white}{\bfseries \(n\)} \\
+\endfirsthead
+循环次数 & \(n-1\) & \(n-2\) & \(\cdots\) & 0 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\[\text{平均循环次数}=(n-1)p+(n-2)p+\cdots+1\cdot p+0\cdot p=\frac{n(n-1)}{2}\cdot\frac1n=\frac{n-1}{2}\]
+
+平均时间复杂度 \hlred{\(O(n)\)}。
+
+和插入对比：插入有 \(n+1\) 个位置、最多移 \(n\) 个；删除只有 \(n\)
+个位置、最多移 \(n-1\) 个（被删的那个不用移）。所以插入平均
+\(\dfrac n2\)，删除平均 \(\dfrac{n-1}{2}\)。
+
+\begin{bookbox}
+
+王道书写法：\(p_i=\dfrac1n\)，删第 \(i\) 个要移动 \(n-i\)
+个元素，\(\displaystyle\sum_{i=1}^{n}p_i(n-i)=\frac1n\cdot\frac{n(n-1)}{2}=\frac{n-1}{2}\)。
+
+书上的结论：顺序表插入和删除的时间\hlred{主要耗费在移动元素上}，移动元素的个数取决于插入、删除的位置。
+
+\end{bookbox}
+
+\slidefig{assets/2.2.2_1-book-fig2.2.png}{0.75}{王道书图 2.2：(a) 在第 4 个位置插入 50，第 4～7
+个元素从后往前依次后移；(b) 删除第 4 个元素 16，第 5～7
+个元素从前往后依次前移}
+
+\hypertarget{ux4e09ux77e5ux8bc6ux56deux987e}{%
+\section{三、知识回顾}\label{ux4e09ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=1.083\hsize\raggedright\arraybackslash}X>{\hsize=1.083\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 插入 \texttt{ListInsert(\&L,i,e)}} & \textcolor{white}{\bfseries 删除 \texttt{ListDelete(\&L,i,\&e)}} \\
+\endfirsthead
+\(i\) 的合法范围 & \(1\le i\le \texttt{length}+1\) & \(1\le i\le \texttt{length}\) \\ \hline
+还要判断 & 表满（\texttt{length\ \textgreater{}=\ MaxSize}） & --- \\ \hline
+元素怎么动 & 第 \(i\) 个及之后后移，\textbf{从后往前}移 & 第 \(i\) 个之后前移，\textbf{从前往后}移 \\ \hline
+\texttt{length} & \texttt{++} & \texttt{-\/-} \\ \hline
+最好 / 最坏 & 表尾 \(O(1)\) / 表头 \(O(n)\) & 表尾 \(O(1)\) / 表头 \(O(n)\) \\ \hline
+平均移动次数 & \(\dfrac n2\) & \(\dfrac{n-1}{2}\) \\ \hline
+平均时间复杂度 & \(O(n)\) & \(O(n)\) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{summarybox}
+
+顺序表要求逻辑相邻 =
+物理相邻，所以\textbf{插入}要把后面的元素依次后移，\textbf{删除}要把后面的元素依次前移，时间主要花在移动元素上，平均都是
+\(O(n)\)，插入平均移 \(\dfrac n2\) 个，删除平均移 \(\dfrac{n-1}{2}\)
+个。
+
+写代码的四个要点：① 别忘了改 \texttt{length}；②
+题目说的是\textbf{位序}还是\textbf{数组下标}一定要审清，位序 \(i\)
+对应下标 \(i-1\)；③ 代码要\textbf{健壮}，先判断 \(i\)
+是否合法（插入还要判满），用 \texttt{bool} 返回成败；④ 理解为什么
+\texttt{L} 和删除的 \texttt{e} 要加
+\texttt{\&}。没怎么写过代码的同学，在纸上把插入、删除各默写一遍。
+
+\textbf{自测}：① 表长为 5，\texttt{ListInsert(L,7,x)}
+会怎样？\texttt{ListInsert(L,6,x)} 呢？② 插入时 \texttt{for}
+循环如果写成从前往后移，会出什么错？③ 表长为
+\(n\)，删除操作平均要移动几个元素？④ \texttt{ListDelete} 的 \texttt{e}
+去掉 \texttt{\&}，\texttt{main} 里打印出的 \texttt{e} 是多少？
+
+\end{summarybox}
+
+\slidefig{assets/2.2.2_1-p10.jpg}{0.6}{课件：知识回顾与重要考点}
+\end{document}
