@@ -1,0 +1,580 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.2\_2
+单链表的查找},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.2\_2 单链表的查找 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.2\_2
+单链表的查找 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.2\_2
+单链表的查找}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.2\_2 · 正课字幕 P14 ·
+王道书 §2.3.2 第 2、3、4 点（第 32--33 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{单链表的查找有哪几个操作？讨论的是带头还是不带头结点？}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{按位查找} \texttt{GetElem(L,i)}：获取表 \texttt{L} 中第 \(i\)
+  个位置的结点；
+\item
+  \textbf{按值查找} \texttt{LocateElem(L,e)}：在表 \texttt{L}
+  中查找具有给定关键字值的结点；
+\item
+  顺带讲 \textbf{求表长} \texttt{Length(L)}。
+\end{itemize}
+
+本节代码\uln{只讨论带头结点}的情况。不带头结点怎么写、有什么区别，老师留给大家主动思考（下面给了我的答案）。
+
+\hypertarget{ux4e00ux6309ux4f4dux67e5ux627e}{%
+\section{一、按位查找}\label{ux4e00ux6309ux4f4dux67e5ux627e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{GetElem} 和上一节“找第 \(i-1\) 个结点”的循环有什么关系？}上一节的按位插入、按位删除里，已经写过“找第
+\(i-1\) 个结点”的循环。要找第 \(i\) 个，把 \texttt{j\ \textless{}\ i-1}
+改成 \texttt{j\ \textless{}\ i} 就行：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 按位查找，返回第 i 个元素（带头结点）}
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{GetElem}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{0}\OperatorTok{)}
+        \ControlFlowTok{return}\NormalTok{ NULL}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{;}        \CommentTok{// 指针 p 指向当前扫描到的结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}       \CommentTok{// 当前 p 指向的是第几个结点}
+\NormalTok{    p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}           \CommentTok{// L 指向头结点，头结点是第 0 个结点（不存数据）}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ p}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  头结点看作第 0 个，所以合法的 \(i\) 从 0 开始，\(i<0\) 才返回
+  \texttt{NULL}。
+\item
+  返回值类型写 \texttt{LNode\ *}：强调返回的是\textbf{一个结点}（2.3.1
+  讲的命名习惯）。
+\end{itemize}
+
+\hypertarget{ux4e00ux6b65ux4e00ux6b65ux770b}{%
+\subsection{一步一步看}\label{ux4e00ux6b65ux4e00ux6b65ux770b}}
+
+表里有 \(a_1\sim a_4\) 四个数据结点：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=1.733\hsize\raggedright\arraybackslash}X>{\hsize=0.933\hsize\raggedright\arraybackslash}X>{\hsize=0.933\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries \texttt{while} 每轮结束后 \texttt{(j,\ p\ 指向)}} & \textcolor{white}{\bfseries 停下原因} & \textcolor{white}{\bfseries 返回} \\
+\endfirsthead
+0 & 不进循环：\texttt{(0,\ 头结点)} & \texttt{j\textless{}0} 不成立 & \textbf{头结点}（边界情况） \\ \hline
+3 & \texttt{(1,a₁)} → \texttt{(2,a₂)} → \texttt{(3,a₃)} & \texttt{j\textless{}3} 不成立 & \(a_3\)（普通情况） \\ \hline
+8 & \texttt{(1,a₁)} → \ldots{} → \texttt{(4,a₄)} → \texttt{(5,\ NULL)} & \texttt{p!=NULL} 不成立 & \texttt{NULL}（\(i\) 超过表长） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\(i\) 不合法时返回的是 \texttt{NULL}。所以调用者只要判断返回值是不是
+\texttt{NULL}，就知道这次按位查找是否成功。老师：这些\uln{边界情况}写程序时必须考虑到，要让算法有健壮性。
+
+平均时间复杂度 \hlred{\(O(n)\)}。“平均”指 \(i\)
+取合法范围内任何一个数的概率都相同，分析方法和顺序表一样（2.2.2\_1、2.2.2\_2），不再展开。
+
+\slidefig{assets/2.3.2_2-p06.jpg}{0.65}{课件：按位查找，普通情况 i=3}
+
+\hypertarget{ux738bux9053ux4e66ux7684ux5199ux6cd5}{%
+\subsection{王道书的写法}\label{ux738bux9053ux4e66ux7684ux5199ux6cd5}}
+
+\begin{bookbox}
+
+课件里标着“王道书版本”的写法和上面略有不同：\texttt{j} 初值为
+1，\texttt{p} 一开始就指向第 1
+个\textbf{数据结点}（\texttt{p\ =\ L-\textgreater{}next}），再单独判断
+\(i=0\) 时返回头结点，\(i<1\) 时返回 \texttt{NULL}，之后的循环逻辑一样。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{GetElem}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 课件上的"王道书版本"}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{==} \DecValTok{0}\OperatorTok{)}
+        \ControlFlowTok{return}\NormalTok{ L}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return}\NormalTok{ NULL}\OperatorTok{;}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ p}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{bookbox}
+
+\begin{fixbox}
+
+\textbf{补充（以手上这本 2027 版王道书为准）}：书第 32 页 §2.3.2 第 3
+点“按序号查找结点”的代码已经\textbf{不是}课件上那个版本了，而是和老师自己的写法基本相同（\texttt{p\ =\ L;\ j\ =\ 0;}，头结点为第
+0 个），只是\uln{没有 \texttt{if\ (i\ \textless{}\ 0)\ return\ NULL;}}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{GetElem}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}            \CommentTok{// 指针 p 指向当前扫描结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}               \CommentTok{// j 记录当前位序，头结点为第 0 个结点}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ p}\OperatorTok{;}                \CommentTok{// 返回第 i 个结点的指针或 NULL}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+书上的说法：从第一个数据结点开始沿 \texttt{next} 逐个查找，返回第 \(i\)
+个结点的指针；若 \(i\) 超出表长，则返回 \texttt{NULL}。按序号查找
+\(O(n)\)。
+
+我的补充：按这份代码，传入 \(i<0\)
+时循环不执行，返回的是\textbf{头结点}而不是
+\texttt{NULL}。和上一节书上的 \texttt{ListInsert} 一样，书上省略了 \(i\)
+下界的检查。名字上，书叫“按序号查找”，课件叫“按位查找”（2.2.2\_2
+已对照过）。
+
+\end{fixbox}
+
+\hypertarget{ux5c01ux88c5ux63d2ux5165ux5220ux9664ux76f4ux63a5ux8c03ux7528-getelem}{%
+\subsection{封装：插入、删除直接调用
+GetElem}\label{ux5c01ux88c5ux63d2ux5165ux5220ux9664ux76f4ux63a5ux8c03ux7528-getelem}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{有了 \texttt{GetElem}，按位插入可以写成哪两步？为什么后插里的
+\texttt{p\ ==\ NULL} 判断很重要？}按位插入和按位删除都要找第 \(i-1\)
+个结点，现在直接调用 \texttt{GetElem(L,\ i-1)}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ GetElem}\OperatorTok{(}\NormalTok{L}\OperatorTok{,}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{);}    \CommentTok{// 找到第 i{-}1 个结点}
+    \ControlFlowTok{return}\NormalTok{ InsertNextNode}\OperatorTok{(}\NormalTok{p}\OperatorTok{,}\NormalTok{ e}\OperatorTok{);}     \CommentTok{// p 后插入新元素 e}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{ListDelete} 同理，用
+\texttt{LNode\ *p\ =\ GetElem(L,\ i\ -\ 1);} 代替那段循环，其余不变。
+
+封装（基本操作）的好处：\textbf{避免重复代码，简洁、易维护}。老师解释“易维护”：如果插入、删除里各写一份查找循环，哪天发现这段逻辑有
+bug，两处都要改；封装成 \texttt{GetElem}
+后，只改一处，所有调用的地方都跟着对了。这些思想考试不考，但以后一定用得到。
+
+\textbf{上一节后插 \texttt{InsertNextNode} 里的
+\texttt{if\ (p\ ==\ NULL)\ return\ false;}
+在这里派上了用场}：有人可能觉得“谁会故意传一个空指针进来”，但 \(i\)
+不合法时 \texttt{GetElem} 返回的就是 \texttt{NULL}，传给
+\texttt{InsertNextNode} 的 \texttt{p} 真的可能是
+\texttt{NULL}。此时后插返回 \texttt{false}，\texttt{ListInsert}
+直接把这个 \texttt{false}
+返回，表示按位插入失败。老师：\uln{边界情况是程序最容易出 bug 的地方}，不要嫌这些判断麻烦。
+
+\slidefig{assets/2.3.2_2-p08.jpg}{0.65}{课件：封装（基本操作）的好处}
+
+\hypertarget{ux4e8cux6309ux503cux67e5ux627e}{%
+\section{二、按值查找}\label{ux4e8cux6309ux503cux67e5ux627e}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{按值查找从哪个结点开始比？找不到返回什么？}\texttt{LocateElem(L,e)}：找数据域等于
+\(e\) 的结点。从第 1 个数据结点开始，依次往后比：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 按值查找，找到数据域 == e 的结点}
+\NormalTok{LNode }\OperatorTok{*}\NormalTok{LocateElem}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+    \CommentTok{// 从第 1 个结点开始查找数据域为 e 的结点}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{!=}\NormalTok{ e}\OperatorTok{)}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+    \ControlFlowTok{return}\NormalTok{ p}\OperatorTok{;}        \CommentTok{// 找到后返回该结点指针，否则返回 NULL}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+老师的例子（设 \texttt{ElemType} 为 \texttt{int}）：表里依次是
+5、8、10、2。
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.368\hsize\raggedright\arraybackslash}X>{\hsize=1.474\hsize\raggedright\arraybackslash}X>{\hsize=1.158\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(e\)} & \textcolor{white}{\bfseries \texttt{p} 依次指向} & \textcolor{white}{\bfseries 结果} \\
+\endfirsthead
+8 & 5（\texttt{5\ !=\ 8}，后移）→ 8（\texttt{8\ !=\ 8} 不成立，退出） & 返回值为 8 的结点 \\ \hline
+6 & 5 → 8 → 10 → 2 → \texttt{NULL}（\texttt{p\ !=\ NULL} 不成立，退出） & 返回 \texttt{NULL}，表中没有 6 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{p} 从 \texttt{L-\textgreater{}next}
+  开始，因为头结点不存数据，不用比。
+\item
+  如果 \texttt{ElemType} 是 \texttt{struct}，不能直接用
+  \texttt{!=}，要逐个比较分量（2.2.2\_2 讲过）。
+\item
+  只能从第一个结点开始依次扫描，时间复杂度 \hlred{\(O(n)\)}。
+\end{itemize}
+
+\slidefig{assets/2.3.2_2-p09.jpg}{0.65}{课件：按值查找，不能找到的情况 e=6}
+
+\begin{bookbox}
+
+王道书第 32--33
+页的按值查找代码和课件一致：从第一个数据结点开始，依次比较各结点的数据域，若等于给定值
+\(e\) 则返回该结点指针，否则返回 \texttt{NULL}。按值查找 \(O(n)\)。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux6c42ux8868ux957f}{%
+\section{三、求表长}\label{ux4e09ux6c42ux8868ux957f}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{求表长的循环条件为什么是 \texttt{p-\textgreater{}next\ !=\ NULL}？}核心还是让
+\texttt{p} 从头到尾依次扫描，用一个变量累加：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 求表的长度}
+\DataTypeTok{int}\NormalTok{ Length}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}
+    \DataTypeTok{int}\NormalTok{ len }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}     \CommentTok{// 统计表长}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{!=}\NormalTok{ NULL}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        len}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ len}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{p} 从头结点出发，每往后走一步 \texttt{len} 加
+  1，走到最后一个结点（\texttt{p-\textgreater{}next\ ==\ NULL}）停下，\texttt{len}
+  正好等于数据结点个数。
+\item
+  时间复杂度 \hlred{\(O(n)\)}。
+\end{itemize}
+
+\slidefig{assets/2.3.2_2-p11.jpg}{0.6}{课件：求表的长度}
+
+\begin{bookbox}
+
+王道书：求表长是统计单链表中\textbf{数据结点的个数（不包括头结点）}，代码和课件相同。书上还提醒：由于表长不包括头结点，带头结点和不带头结点的实现细节略有不同。
+
+\end{bookbox}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199}{%
+\subsection{不带头结点怎么写}\label{ux4e0dux5e26ux5934ux7ed3ux70b9ux600eux4e48ux5199}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{老师留的思考：不带头结点时，求表长、按位查找有什么不同？}我的答案（课件和书都没给代码）：不带头结点时
+\texttt{L} 直接指向第 1 个数据结点，可能为
+\texttt{NULL}（空表），所以循环要从 \texttt{L} 本身开始数，条件改成
+\texttt{p\ !=\ NULL}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{int}\NormalTok{ Length}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{)} \OperatorTok{\{}     \CommentTok{// 不带头结点}
+    \DataTypeTok{int}\NormalTok{ len }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL}\OperatorTok{)} \OperatorTok{\{}      \CommentTok{// 每数到一个数据结点就加 1}
+\NormalTok{        len}\OperatorTok{++;}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ len}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+按位查找同理：没有“第 0 个”结点，令 \texttt{p\ =\ L;\ j\ =\ 1;}，\(i<1\)
+时返回 \texttt{NULL}，其余循环不变（和 2.3.2\_1 不带头结点按位插入的
+\texttt{j\ =\ 1} 是一个道理）。
+
+\newpage
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987e}{%
+\section{四、知识回顾}\label{ux56dbux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.804\hsize\raggedright\arraybackslash}X>{\hsize=0.804\hsize\raggedright\arraybackslash}X>{\hsize=1.393\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 从哪开始} & \textcolor{white}{\bfseries 循环条件 / 返回} \\
+\endfirsthead
+按位查找 \texttt{GetElem} & \texttt{p\ =\ L,\ j\ =\ 0} & \texttt{p\ !=\ NULL\ \&\&\ j\ \textless{}\ i}；返回第 \(i\) 个结点或 \texttt{NULL} \\ \hline
+按值查找 \texttt{LocateElem} & \texttt{p\ =\ L-\textgreater{}next} & \texttt{p\ !=\ NULL\ \&\&\ p-\textgreater{}data\ !=\ e}；返回结点或 \texttt{NULL} \\ \hline
+求表长 \texttt{Length} & \texttt{p\ =\ L,\ len\ =\ 0} & \texttt{p-\textgreater{}next\ !=\ NULL}；返回 \texttt{len} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/2.3.2_2-p12.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+单链表\textbf{不具备随机访问的特性}，按位查找、按值查找、求表长都只能从头依次往后扫描，三个基本操作的时间复杂度都是
+\hlred{\(O(n)\)}（指平均和最坏情况）。对比顺序表：按位查找
+\(O(1)\)，按值查找 \(O(n)\)。
+
+三个要点（课件 Key）：① 三种基本操作都是 \(O(n)\)；② 会写让 \texttt{p}
+从头到尾扫描各个结点的循环；③ 注意边界条件的处理（\(i=0\)
+返回头结点，\(i\) 太大或找不到返回 \texttt{NULL}）。
+
+\texttt{GetElem(L,\ i-1)} + \texttt{InsertNextNode(p,\ e)}
+就是按位插入：封装让代码简洁、易维护，后插里的 \texttt{p\ ==\ NULL}
+判断保证 \(i\) 不合法时也能正确返回 \texttt{false}。
+
+\textbf{自测}：① 带头结点的 \texttt{GetElem(L,\ 0)}
+返回什么？\texttt{GetElem(L,\ 100)} 呢（表长 4）？② \texttt{LocateElem}
+为什么从 \texttt{L-\textgreater{}next} 开始？③ 用 \texttt{GetElem} 和
+\texttt{InsertNextNode} 写出按位插入。④
+不带头结点的求表长，循环条件是什么？
+
+\end{summarybox}
+\end{document}
