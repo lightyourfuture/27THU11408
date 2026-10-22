@@ -1,0 +1,854 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.2\_1
+单链表的插入删除},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.2\_1
+单链表的插入删除 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.2\_1
+单链表的插入删除 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.2\_1
+单链表的插入删除}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.2\_1 · 正课字幕 P13 ·
+王道书 §2.3.2 第 5、6 点（第 33--34 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{单链表的插入、删除各有哪几种？}在 2.3.1
+定义好的单链表上实现插入和删除。一共六个操作：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.500\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.500\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 给你什么} \\
+\endfirsthead
+插入 & 按位序插入（带头 / 不带头结点） & 位序 \(i\) 和元素 \(e\) \\ \hline
+ & 指定结点的\textbf{后插} & 结点指针 \texttt{p} 和元素 \(e\)，插在 \texttt{p} 之后 \\ \hline
+ & 指定结点的\textbf{前插} & 结点指针 \texttt{p} 和元素 \(e\)，插在 \texttt{p} 之前 \\ \hline
+删除 & 按位序删除（带头结点） & 位序 \(i\)，用 \(e\) 带回被删的值 \\ \hline
+ & 指定结点的删除 & 结点指针 \texttt{p} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+老师说明：前面已经用内存图把 \texttt{malloc}、\texttt{free}
+背后的过程讲透了，从这节起图示会\textbf{简化}：只画结点和指针，不再画结点在内存里怎么分布。
+
+\begin{bookbox}
+
+王道书考点追踪：\textbf{单链表插入操作的过程（2016、2024）}。另外书上
+§2.3.2 的算法如无特殊说明都默认\textbf{带头结点}（2.3.1 笔记已记）。
+
+\end{bookbox}
+
+\hypertarget{ux4e00ux6309ux4f4dux5e8fux63d2ux5165ux5e26ux5934ux7ed3ux70b9}{%
+\section{一、按位序插入（带头结点）}\label{ux4e00ux6309ux4f4dux5e8fux63d2ux5165ux5e26ux5934ux7ed3ux70b9}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{在第 \(i\) 个位置插入，要先找到哪个结点？头结点算第几个？}\texttt{ListInsert(\&L,i,e)}：在表
+\texttt{L} 的第 \(i\) 个位置插入元素 \(e\)。
+
+思路：\hlred{找到第 \(i-1\) 个结点}，把新结点插到它后面。因为要改的是第
+\(i-1\) 个结点的 \texttt{next} 指针。
+
+那 \(i=1\) 时，第 0
+个结点是谁？带头结点的好处在这里体现：\textbf{头结点可以看成“第 0
+个”结点}，同一套逻辑也适用。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 在第 i 个位置插入元素 e（带头结点）}
+\DataTypeTok{bool}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{;}        \CommentTok{// 指针 p 指向当前扫描到的结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}       \CommentTok{// 当前 p 指向的是第几个结点}
+\NormalTok{    p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}           \CommentTok{// L 指向头结点，头结点是第 0 个结点（不存数据）}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i{-}1 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}   \CommentTok{// i 值不合法}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ e}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}   \CommentTok{// ①}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}         \CommentTok{// ② 将结点 s 连到 p 之后}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}         \CommentTok{// 插入成功}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{j} 记的是 \uln{\texttt{p} 当前指向第几个结点}；整个
+  \texttt{while} 只有一个目的：让 \texttt{p} 停在第 \(i-1\) 个结点上。
+\item
+  虽然“杜撰”了一个第 0 个结点，但真正存数据的结点从 1 开始编号，所以
+  \(i<1\) 不合法。
+\item
+  老师：看代码除了看懂每一句，还要有\textbf{全局思维}：前半段 = 找第
+  \(i-1\) 个结点，后半段 = 在它后面插新结点，逻辑就很清晰。
+\end{itemize}
+
+\hypertarget{ux4e00ux6b65ux4e00ux6b65ux770b}{%
+\subsection{一步一步看}\label{ux4e00ux6b65ux4e00ux6b65ux770b}}
+
+老师的例子：表里有 \(a_1\sim a_4\) 四个结点，分别插入 \(i=1,3,5,6\)：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.547\hsize\raggedright\arraybackslash}X>{\hsize=0.625\hsize\raggedright\arraybackslash}X>{\hsize=1.875\hsize\raggedright\arraybackslash}X>{\hsize=1.016\hsize\raggedright\arraybackslash}X>{\hsize=0.938\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries \(i-1\)} & \textcolor{white}{\bfseries \texttt{while} 每轮结束后 \texttt{(j,\ p\ 指向)}} & \textcolor{white}{\bfseries 停下原因} & \textcolor{white}{\bfseries 结果} \\
+\endfirsthead
+1 & 0 & 不进循环：\texttt{(0,\ 头结点)} & \texttt{j\textless{}0} 不成立 & 插在头结点后，成为第 1 个，\uln{\(O(1)\)，最好} \\ \hline
+3 & 2 & \texttt{(1,\ a₁)} → \texttt{(2,\ a₂)} & \texttt{j\textless{}2} 不成立 & 插在 \(a_2\) 后，成为第 3 个 \\ \hline
+5 & 4 & \texttt{(1,a₁)} → \texttt{(2,a₂)} → \texttt{(3,a₃)} → \texttt{(4,a₄)} & \texttt{j\textless{}4} 不成立 & 插在表尾，循环最多，\uln{\(O(n)\)，最坏} \\ \hline
+6 & 5 & \ldots→ \texttt{(4,a₄)} → \texttt{(5,\ NULL)} & \texttt{p!=NULL} 不成立 & \texttt{p==NULL}，第 5 个结点不存在，返回 \texttt{false} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\(i=6\) 时表长只有 4，最多只能插到第 5 个位置。连第 \(i-1\)
+个结点都找不到，当然插不进第 \(i\) 个，所以 \(i\) 太大时会因为
+\texttt{p} 走到 \texttt{NULL} 跳出循环，返回 \texttt{false}。
+
+平均时间复杂度 \hlred{\(O(n)\)}（老师没展开）。
+
+\slidefig{assets/2.3.2_1-p05.jpg}{0.65}{课件：i=1，插在表头（绿 ①、黄 ② 两句）}
+
+\hypertarget{ux4e24ux53e5ux4e0dux80fdux98a0ux5012}{%
+\subsection{①②
+两句不能颠倒}\label{ux4e24ux53e5ux4e0dux80fdux98a0ux5012}}
+
+\begin{pitfallbox}
+
+\texttt{s-\textgreater{}next\ =\ p-\textgreater{}next;}（①）和
+\texttt{p-\textgreater{}next\ =\ s;}（②）\hlred{顺序不能颠倒}。
+
+如果先执行 ②，\texttt{p-\textgreater{}next} 已经变成 \texttt{s}，再执行
+① 就成了 \texttt{s-\textgreater{}next\ =\ s}，\textbf{\texttt{s}
+指向它自己}。原来 \texttt{p}
+后面的那串结点再也找不到了，老师：“后面这些小朋友就都走丢了，这个链已经断了。”
+
+王道书的说法：若先执行
+\texttt{p-\textgreater{}next=s}，则原后继地址丢失，导致
+\texttt{s-\textgreater{}next=p-\textgreater{}next} 实际变为
+\texttt{s-\textgreater{}next=s}，形成自环。
+
+\end{pitfallbox}
+
+\slidefig{assets/2.3.2_1-p06.jpg}{0.6}{课件：先连黄色再连绿色，“翻车了鸭”}
+
+\hypertarget{ux4e8cux6309ux4f4dux5e8fux63d2ux5165ux4e0dux5e26ux5934ux7ed3ux70b9}{%
+\section{二、按位序插入（不带头结点）}\label{ux4e8cux6309ux4f4dux5e8fux63d2ux5165ux4e0dux5e26ux5934ux7ed3ux70b9}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{不带头结点时，插第 1 个为什么要特殊处理？}思路一样：找到第
+\(i-1\)
+个结点，插到它后面。但不带头结点就\uln{不存在“第 0 个”结点}，\(i=1\)
+时必须单独处理：新结点成为第一个结点，要\textbf{修改头指针 \texttt{L}}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{==} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}    \CommentTok{// 插入第 1 个结点的操作与其他结点操作不同}
+\NormalTok{        LNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ e}\OperatorTok{;}
+\NormalTok{        s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}
+\NormalTok{        L }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}       \CommentTok{// 头指针指向新结点}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \OperatorTok{\}}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{;}        \CommentTok{// 指针 p 指向当前扫描到的结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{1}\OperatorTok{;}       \CommentTok{// 当前 p 指向的是第几个结点}
+\NormalTok{    p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}           \CommentTok{// p 指向第 1 个结点（注意：不是头结点）}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i{-}1 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}   \CommentTok{// i 值不合法}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ e}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}     \CommentTok{// 插入成功}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \(i>1\)
+  的部分和带头结点完全一样，唯一区别：\uln{\texttt{j\ =\ 1}}，因为
+  \texttt{p\ =\ L} 指向的已经是第 1 个数据结点。
+\item
+  不带头结点时，插入或删除\textbf{第一个结点}都要改头指针
+  \texttt{L}；带头结点时 \texttt{L} 永远指向头结点，不用改。这就是 2.3.1
+  说的“不带头结点写代码更麻烦”。
+\end{itemize}
+
+\slidefig{assets/2.3.2_1-p12.jpg}{0.65}{课件：不带头结点，i=1 要修改头指针 L}
+
+\begin{teacherbox}
+
+结论：不带头结点写代码更不方便，推荐用带头结点。\textbf{之后除非特别声明，默认带头结点}。但考试中带头、不带头都有可能考，做题时一定要审题。
+
+\end{teacherbox}
+
+\hypertarget{ux4e09ux6307ux5b9aux7ed3ux70b9ux7684ux540eux63d2ux64cdux4f5c}{%
+\section{三、指定结点的后插操作}\label{ux4e09ux6307ux5b9aux7ed3ux70b9ux7684ux540eux63d2ux64cdux4f5c}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{给定结点 \texttt{p}，在它后面插 \(e\)，为什么是 \(O(1)\)？}单链表只能往后找：给定结点
+\texttt{p}，它后面的结点都能顺着 \texttt{next}
+找到，\textbf{前面的结点却无从知道}。在 \texttt{p}
+之后插入正好只用到后面，很容易：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 后插操作：在 p 结点之后插入元素 e}
+\DataTypeTok{bool}\NormalTok{ InsertNextNode}\OperatorTok{(}\NormalTok{LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{s }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}       \CommentTok{// 内存分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ e}\OperatorTok{;}         \CommentTok{// 用结点 s 保存数据元素 e}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}         \CommentTok{// 将结点 s 连到 p 之后}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  没有循环，时间复杂度 \hlred{\(O(1)\)}。
+\item
+  \texttt{if\ (s\ ==\ NULL)}：\texttt{malloc}
+  有可能失败（比如内存满了），这个细节之前没说过。考试手写代码不写也没关系，但要知道有这种可能。
+\end{itemize}
+
+\slidefig{assets/2.3.2_1-p14.jpg}{0.65}{课件：指定结点的后插操作}
+
+\hypertarget{ux5c01ux88c5ux7684ux597dux5904}{%
+\subsection{封装的好处}\label{ux5c01ux88c5ux7684ux597dux5904}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{按位序插入怎么用后插操作改写？}按位序插入的后半段，正是“在第
+\(i-1\) 个结点之后插入 \(e\)”，也就是后插操作。所以可以改写成：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListInsert}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{;}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+\NormalTok{    p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 指针 p 指向第 i{-}1 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ InsertNextNode}\OperatorTok{(}\NormalTok{p}\OperatorTok{,}\NormalTok{ e}\OperatorTok{);}       \CommentTok{// p 后插入新元素 e}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{p\ ==\ NULL} 的判断也交给了
+\texttt{InsertNextNode}。把小功能\textbf{模块化}，代码逻辑更清晰。老师：封装出来的函数也可以叫“基本操作”，对书本的概念理解不要教条化。前半段“找第
+\(i-1\) 个结点”也可以封装，下一节 2.3.2\_2 讲。
+
+\slidefig{assets/2.3.2_1-p25.jpg}{0.65}{课件：封装的好处}
+
+\hypertarget{ux56dbux6307ux5b9aux7ed3ux70b9ux7684ux524dux63d2ux64cdux4f5c}{%
+\section{四、指定结点的前插操作}\label{ux56dbux6307ux5b9aux7ed3ux70b9ux7684ux524dux63d2ux64cdux4f5c}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{找不到 \texttt{p} 的前驱，怎么在 \texttt{p} 之前插入？}在
+\texttt{p} 之前插入，要改的是 \texttt{p} 的\textbf{前驱}的
+\texttt{next}，可单链表找不到前驱（老师：前面那片区域“被打了马赛克”）。两种办法：
+
+\textbf{方法 1：传入头指针}。有了头指针，整条链都能看到，从头遍历找到
+\texttt{p} 的前驱 \texttt{q}，再对 \texttt{q} 后插：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ InsertPriorNode}\OperatorTok{(}\NormalTok{LinkList L}\OperatorTok{,}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+要循环查找，时间复杂度
+\hlred{\(O(n)\)}。而且有时候根本不给你头指针，这个办法就用不了。
+
+\slidefig{assets/2.3.2_1-p16.jpg}{0.6}{课件：前插方法 1，传入头指针，循环找 p 的前驱}
+
+\textbf{方法
+2：“偷天换日”}。结点挪不动，但结点里的\textbf{数据可以挪}：先把新结点
+\texttt{s} 后插到 \texttt{p} 之后，再把 \texttt{p} 原来的数据搬到
+\texttt{s} 里，把 \(e\) 放进 \texttt{p}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 前插操作：在 p 结点之前插入元素 e}
+\DataTypeTok{bool}\NormalTok{ InsertPriorNode}\OperatorTok{(}\NormalTok{LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{,}\NormalTok{ ElemType e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LNode }\OperatorTok{*)}\NormalTok{ malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LNode}\OperatorTok{));}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{s }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}       \CommentTok{// 内存分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}         \CommentTok{// 新结点 s 连到 p 之后}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}   \CommentTok{// 将 p 中元素复制到 s 中}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ e}\OperatorTok{;}         \CommentTok{// p 中元素覆盖为 e}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+设 \texttt{p} 里原来是 \(x\)，后继是 \(y\)：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.319\hsize\raggedright\arraybackslash}X>{\hsize=1.021\hsize\raggedright\arraybackslash}X>{\hsize=1.660\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步} & \textcolor{white}{\bfseries 执行} & \textcolor{white}{\bfseries 链表（从 \texttt{p} 开始）} \\
+\endfirsthead
+前 & --- & \texttt{p{[}x{]}} → \texttt{y} \\ \hline
+1 & \texttt{s-\textgreater{}next\ =\ p-\textgreater{}next;\ p-\textgreater{}next\ =\ s;} & \texttt{p{[}x{]}} → \texttt{s{[}?{]}} → \texttt{y} \\ \hline
+2 & \texttt{s-\textgreater{}data\ =\ p-\textgreater{}data;} & \texttt{p{[}x{]}} → \texttt{s{[}x{]}} → \texttt{y} \\ \hline
+3 & \texttt{p-\textgreater{}data\ =\ e;} & \texttt{p{[}e{]}} → \texttt{s{[}x{]}} → \texttt{y} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+结点 \texttt{p} 的位置没变，但从逻辑上看，\(e\) 已经排在了 \(x\)
+前面。时间复杂度
+\hlred{\(O(1)\)}（老师：“这个偷天换日的操作还是挺骚的”）。
+
+\slidefig{assets/2.3.2_1-p17.jpg}{0.6}{课件：前插方法 2，偷天换日}
+
+\begin{bookbox}
+
+王道书给的版本直接传入要插入的结点 \texttt{s}，处理方法一样：先把
+\texttt{s} 连到 \texttt{p} 之后，再\textbf{交换} \texttt{p} 和
+\texttt{s} 的数据域。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 前插操作：在 p 结点之前插入结点 s}
+\DataTypeTok{bool}\NormalTok{ InsertPriorNode}\OperatorTok{(}\NormalTok{LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{,}\NormalTok{ LNode }\OperatorTok{*}\NormalTok{s}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL }\OperatorTok{||}\NormalTok{ s }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}              \CommentTok{// s 连到 p 之后（修改指针域，不能颠倒）}
+\NormalTok{    ElemType temp }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}  \CommentTok{// 交换数据域部分}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ s}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ temp}\OperatorTok{;}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+书上的说法：任何前插操作都可以转化为后插操作，从头查找前驱是
+\(O(n)\)；交换数据域的技巧“适用于数据可复制的情况”，逻辑上等效于前插，\(O(1)\)。
+
+\end{bookbox}
+
+\hypertarget{ux4e94ux6309ux4f4dux5e8fux5220ux9664ux5e26ux5934ux7ed3ux70b9}{%
+\section{五、按位序删除（带头结点）}\label{ux4e94ux6309ux4f4dux5e8fux5220ux9664ux5e26ux5934ux7ed3ux70b9}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{删除第 \(i\) 个结点，要找谁？比插入多判断了什么？}\texttt{ListDelete(\&L,i,\&e)}：删除表
+\texttt{L} 中第 \(i\) 个位置的元素，并用 \(e\) 返回被删元素的值。
+
+思路：同样\hlred{找到第 \(i-1\) 个结点}，把它的 \texttt{next} 指向第
+\(i+1\) 个结点，再用 \texttt{free} 释放第 \(i\) 个结点。头结点仍看作第 0
+个。（删除只讨论带头结点的情况。）
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListDelete}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{e}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{\textless{}} \DecValTok{1}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{;}        \CommentTok{// 指针 p 指向当前扫描到的结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}       \CommentTok{// 当前 p 指向的是第几个结点}
+\NormalTok{    p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}           \CommentTok{// L 指向头结点，头结点是第 0 个结点（不存数据）}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i{-}1 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}            \CommentTok{// i 值不合法}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}      \CommentTok{// 第 i{-}1 个结点之后已无其他结点}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{q }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}       \CommentTok{// 令 q 指向被删除结点}
+\NormalTok{    e }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}              \CommentTok{// 用 e 返回元素的值}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}        \CommentTok{// 将 *q 结点从链中"断开"}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{q}\OperatorTok{);}                  \CommentTok{// 释放结点的存储空间}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}              \CommentTok{// 删除成功}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  比插入多一个判断 \texttt{p-\textgreater{}next\ ==\ NULL}：第 \(i-1\)
+  个结点存在，但它后面没有第 \(i\) 个了，比如表长 4 时删第 5 个。
+\item
+  \texttt{e} 加 \texttt{\&}：要把被删的值带回给调用者（和 2.2.2\_1
+  顺序表删除一样）。
+\end{itemize}
+
+老师的例子：表 \(a_1\sim a_4\)，删 \(i=4\)。找第 3
+个结点的过程和插入一样，\texttt{p} 停在
+\(a_3\)；\texttt{q\ =\ p-\textgreater{}next} 指向
+\(a_4\)；\texttt{e\ =\ q-\textgreater{}data} 带回
+\(a_4\)；\texttt{p-\textgreater{}next\ =\ q-\textgreater{}next} 即
+\texttt{NULL}；\texttt{free(q)}。
+
+时间复杂度：要循环找第 \(i-1\) 个结点，最坏、平均 \hlred{\(O(n)\)}；删第
+1 个不用循环，最好 \hlred{\(O(1)\)}。
+
+\slidefig{assets/2.3.2_1-p20.jpg}{0.65}{课件：按位序删除（带头结点），i=4}
+
+\begin{bookbox}
+
+王道书的写法把判断合在了循环条件里：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ ListDelete}\OperatorTok{(}\NormalTok{LinkList }\OperatorTok{\&}\NormalTok{L}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{e}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}                   \CommentTok{// 指针 p 指向当前扫描到的结点}
+    \DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                      \CommentTok{// 记录当前结点的位序，头结点是第 0 个结点}
+    \ControlFlowTok{while} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{!=}\NormalTok{ NULL }\OperatorTok{\&\&}\NormalTok{ j }\OperatorTok{\textless{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}   \CommentTok{// 循环找到第 i{-}1 个结点}
+\NormalTok{        p }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{        j}\OperatorTok{++;}
+    \OperatorTok{\}}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ NULL }\OperatorTok{||}\NormalTok{ j }\OperatorTok{\textgreater{}}\NormalTok{ i }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)}        \CommentTok{// i 值不合法}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{q }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}             \CommentTok{// 令 q 指向被删除结点}
+\NormalTok{    e }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}                    \CommentTok{// 用 e 返回元素的值}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}              \CommentTok{// 将 *q 结点从链中"断开"}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{q}\OperatorTok{);}                        \CommentTok{// 释放结点的存储空间}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+和课件对一下，两份代码效果相同：
+
+\begin{itemize}
+\tightlist
+\item
+  课件循环条件是 \texttt{p\ !=\ NULL}，书上是
+  \texttt{p-\textgreater{}next\ !=\ NULL}：书上的 \texttt{p}
+  最远停在最后一个结点，不会走到 \texttt{NULL}。
+\item
+  课件开头的 \texttt{if\ (i\ \textless{}\ 1)}，书上用
+  \texttt{j\ \textgreater{}\ i\ -\ 1} 代替：\(i<1\)
+  时循环一次也不执行，\texttt{j\ =\ 0\ \textgreater{}\ i\ -\ 1}，返回
+  \texttt{false}。
+\item
+  课件的 \texttt{p\ ==\ NULL}、\texttt{p-\textgreater{}next\ ==\ NULL}
+  两个判断，书上合成一句 \texttt{p-\textgreater{}next\ ==\ NULL}：\(i\)
+  太大时 \texttt{p} 停在最后一个结点，\texttt{p-\textgreater{}next} 为
+  \texttt{NULL}。
+\end{itemize}
+
+书上还说：删除和插入一样，主要耗时在查找上，\(O(n)\)。
+
+\end{bookbox}
+
+\begin{addbox}
+
+\textbf{我的补充：王道书的 \texttt{ListInsert} 没有写
+\texttt{if\ (i\ \textless{}\ 1)}}（书上代码从
+\texttt{LNode\ *p=L;\ int\ j=0;}
+开始，其余和课件相同）。按这份代码，传入 \(i\le 0\)
+时循环一次不执行，\texttt{p} 停在头结点，\texttt{p\ !=\ NULL}，于是把
+\(e\) \textbf{插成了第 1 个}，而不是返回
+\texttt{false}。课件的写法更健壮，自己写代码时把
+\texttt{if\ (i\ \textless{}\ 1)\ return\ false;} 带上。
+
+\end{addbox}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9ux65f6ux5220ux9664ux7b2c-1-ux4e2a}{%
+\subsection{不带头结点时删除第 1
+个}\label{ux4e0dux5e26ux5934ux7ed3ux70b9ux65f6ux5220ux9664ux7b2c-1-ux4e2a}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{老师留的思考：不带头结点删第 1 个，要不要特殊处理？}要。和插入一样，删除第
+1
+个结点后头指针要指向新的第一个结点。王道书的回答：当链表不带头结点时，需判断被删结点是否为首结点，若是则要特殊处理，\uln{将头指针 \texttt{L} 指向新的首结点}；带头结点时，删除首结点和删除其他结点的操作是相同的。
+
+按这个思路自己写出特殊处理的部分（我的补充，课件没有给）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{==} \DecValTok{1}\OperatorTok{)} \OperatorTok{\{}               \CommentTok{// 不带头结点，删除第 1 个结点}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}          \CommentTok{// 空表，没有可删的}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{q }\OperatorTok{=}\NormalTok{ L}\OperatorTok{;}
+\NormalTok{    e }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}
+\NormalTok{    L }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}            \CommentTok{// 头指针指向新的首结点}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{q}\OperatorTok{);}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\CommentTok{// i \textgreater{} 1：令 j = 1，p = L，其余和带头结点相同}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux516dux6307ux5b9aux7ed3ux70b9ux7684ux5220ux9664}{%
+\section{六、指定结点的删除}\label{ux516dux6307ux5b9aux7ed3ux70b9ux7684ux5220ux9664}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{只给结点 \texttt{p}，怎么 \(O(1)\) 删除它？什么时候这招失效？}\texttt{DeleteNode(LNode\ *p)}：删除结点
+\texttt{p}。按常规思路要改 \texttt{p} 的前驱的
+\texttt{next}，又遇到找不到前驱的问题。办法和前插一样两种：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{方法 1}：传入头指针，循环寻找 \texttt{p} 的前驱，\(O(n)\)；
+\item
+  \textbf{方法 2}：偷天换日，把\textbf{后继结点的数据}搬进
+  \texttt{p}，然后删掉后继结点。
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 删除指定结点 p}
+\DataTypeTok{bool}\NormalTok{ DeleteNode}\OperatorTok{(}\NormalTok{LNode }\OperatorTok{*}\NormalTok{p}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    LNode }\OperatorTok{*}\NormalTok{q }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}         \CommentTok{// 令 q 指向 *p 的后继结点}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}    \CommentTok{// 和后继结点交换数据域}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ q}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}          \CommentTok{// 将 *q 结点从链中"断开"}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{q}\OperatorTok{);}                    \CommentTok{// 释放后继结点的存储空间}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+设 \texttt{p} 里是 \(x\)，后继 \texttt{q} 里是 \(y\)，再往后是 \(z\)：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.319\hsize\raggedright\arraybackslash}X>{\hsize=1.149\hsize\raggedright\arraybackslash}X>{\hsize=1.532\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步} & \textcolor{white}{\bfseries 执行} & \textcolor{white}{\bfseries 链表} \\
+\endfirsthead
+前 & --- & \texttt{p{[}x{]}} → \texttt{q{[}y{]}} → \texttt{z} \\ \hline
+1 & \texttt{q\ =\ p-\textgreater{}next;\ p-\textgreater{}data\ =\ p-\textgreater{}next-\textgreater{}data;} & \texttt{p{[}y{]}} → \texttt{q{[}y{]}} → \texttt{z} \\ \hline
+2 & \texttt{p-\textgreater{}next\ =\ q-\textgreater{}next;} & \texttt{p{[}y{]}} → \texttt{z}（\texttt{q} 已断开） \\ \hline
+3 & \texttt{free(q);} & \texttt{p{[}y{]}} → \texttt{z} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\(x\) 不见了，逻辑上等于删掉了 \texttt{p}，时间复杂度
+\hlred{\(O(1)\)}。\texttt{q-\textgreater{}next}
+可能是一个实际结点，也可能是
+\texttt{NULL}，都没关系。（注释写“交换数据域”，实际只是把后继的数据\textbf{复制}进
+\texttt{p}，后继反正要被删掉。）
+
+\slidefig{assets/2.3.2_1-p22.jpg}{0.6}{课件：指定结点的删除，偷天换日}
+
+\begin{pitfallbox}
+
+\textbf{\texttt{p} 是最后一个结点时，这段代码有 bug。} 此时
+\texttt{q\ =\ p-\textgreater{}next} 是 \texttt{NULL}，执行
+\texttt{p-\textgreater{}data\ =\ p-\textgreater{}next-\textgreater{}data}
+时去取 \texttt{NULL} 的
+\texttt{data}，出现\textbf{空指针错误}。王道书上给的也是这段代码。
+
+这种情况只能用方法 1：从表头开始依次寻找 \texttt{p}
+的前驱，\(O(n)\)。老师说考试中迫不得已这么写，估计最多扣 1
+分甚至不扣分。
+
+王道书：该方法的局限性在于不能用于删除尾结点（因其无后继）。
+
+\end{pitfallbox}
+
+\slidefig{assets/2.3.2_1-p23.jpg}{0.6}{课件：p 是最后一个结点时，只能从表头开始找前驱}
+
+这里能体会到单链表的局限：\uln{只能单向往后检索，不能逆向检索}，有时很不方便。如果结点里还有一个往前的指针，就能双向检索，这就是
+2.3.3 的\textbf{双链表}。
+
+\hypertarget{ux4e03ux77e5ux8bc6ux56deux987e}{%
+\section{七、知识回顾}\label{ux4e03ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.873\hsize\raggedright\arraybackslash}X>{\hsize=0.709\hsize\raggedright\arraybackslash}X>{\hsize=1.418\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 时间复杂度} & \textcolor{white}{\bfseries 关键} \\
+\endfirsthead
+按位序插入 & 最好 \(O(1)\)，平均、最坏 \(O(n)\) & 找第 \(i-1\) 个结点再后插；不带头结点时 \(i=1\) 要改 \texttt{L} \\ \hline
+后插 \texttt{InsertNextNode} & \(O(1)\) & \texttt{s-\textgreater{}next\ =\ p-\textgreater{}next;} 在前，\texttt{p-\textgreater{}next\ =\ s;} 在后 \\ \hline
+前插 \texttt{InsertPriorNode} & 传头指针 \(O(n)\) / 偷天换日 \(O(1)\) & 后插 + 交换数据 \\ \hline
+按位序删除 & 最好 \(O(1)\)，平均、最坏 \(O(n)\) & 找第 \(i-1\) 个结点，多判断 \texttt{p-\textgreater{}next\ ==\ NULL} \\ \hline
+删除指定结点 \texttt{DeleteNode} & 偷天换日 \(O(1)\) & 复制后继数据再删后继；\hlred{\texttt{p} 是尾结点时不能用} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/2.3.2_1-p26.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+单链表的插入、删除都绕不开一件事：\hlred{要改前驱的 \texttt{next}}。按位序操作就先循环找到第
+\(i-1\) 个结点（带头结点时头结点算第 0 个，所以 \(i=1\)
+不用特殊处理；不带头结点时 \(i=1\)
+要改头指针），主要耗时在查找，\(O(n)\)。插入时
+\texttt{s-\textgreater{}next\ =\ p-\textgreater{}next;} 和
+\texttt{p-\textgreater{}next\ =\ s;} 不能颠倒，否则自环断链。
+
+给定结点时，后插直接做，\(O(1)\)；前插和删除找不到前驱，要么传头指针从头找（\(O(n)\)），要么“偷天换日”交换
+/ 复制数据域（\(O(1)\)），但删除的偷天换日不能用于尾结点。
+
+老师的四点提示：这些代码都要会写；打牢基础，慢慢加速；体会带头、不带头结点的代码区别；体会封装的好处。
+
+\textbf{自测}：① 带头结点按位序插入，\texttt{j} 的初值为什么是
+0？不带头结点为什么是 1？② 插入时先写
+\texttt{p-\textgreater{}next\ =\ s;} 会怎样？③ 怎样 \(O(1)\) 在结点
+\texttt{p} 之前插入 \(e\)？④ \texttt{DeleteNode}
+的偷天换日什么时候不能用？⑤ 王道书的 \texttt{ListInsert} 传入 \(i=0\)
+会发生什么？
+
+\end{summarybox}
+\end{document}
