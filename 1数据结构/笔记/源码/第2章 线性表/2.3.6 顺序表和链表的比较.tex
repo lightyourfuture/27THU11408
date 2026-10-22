@@ -1,0 +1,540 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={2.3.6
+顺序表和链表的比较},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第2章 线性表}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}2.3.6 顺序表和链表的比较 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}2.3.6
+顺序表和链表的比较 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第2章
+线性表 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 2.3.6
+顺序表和链表的比较}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 2.3.6 · 正课字幕 P19 · 王道书
+§2.3.6（第 38--39 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{这一节按什么思路比较顺序表和链表？}对顺序表和链表的特性做一个对比，也算是对第
+2 章的总结。思路是\textbf{数据结构的三要素}（1.1
+讲过），分三轮回忆，最后讨论怎么选：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Round 1}：逻辑结构；
+\item
+  \textbf{Round 2}：物理结构 / 存储结构；
+\item
+  \textbf{Round 3}：数据的运算 / 基本操作；
+\item
+  \textbf{如何抉择}：什么时候用顺序表，什么时候用链表。
+\end{itemize}
+
+\hypertarget{ux4e00round-1ux903bux8f91ux7ed3ux6784}{%
+\section{一、Round
+1：逻辑结构}\label{ux4e00round-1ux903bux8f91ux7ed3ux6784}}
+
+\tocback
+
+顺序表和链表在逻辑上看\uln{都是线性结构}，都属于线性表，各个数据元素之间是一对一的关系。
+
+\hypertarget{ux4e8cround-2ux5b58ux50a8ux7ed3ux6784}{%
+\section{二、Round
+2：存储结构}\label{ux4e8cround-2ux5b58ux50a8ux7ed3ux6784}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{顺序存储和链式存储各有什么优缺点？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.517\hsize\raggedright\arraybackslash}X>{\hsize=1.241\hsize\raggedright\arraybackslash}X>{\hsize=1.241\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 顺序表（顺序存储）} & \textcolor{white}{\bfseries 链表（链式存储）} \\
+\endfirsthead
+优点 & 支持\uln{随机存取}（知道起始地址就能立即找到第 \(i\) 个元素）；\uln{存储密度高}（结点只存数据元素，不存冗余信息） & 离散的小空间分配方便（每次用 \texttt{malloc} 申请一小片空间）；改变容量方便 \\ \hline
+缺点 & 要求大片连续空间，分配不方便；改变容量不方便 & \uln{不可随机存取}（找第 \(i\) 个只能从表头依次往后找）；\uln{存储密度低}（还要花空间存指针） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/2.3.6-p04.jpg}{0.6}{课件：Round 2 存储结构}
+
+\begin{bookbox}
+
+王道书第 38
+页“存取（读/写）方式”：顺序表支持随机存取，可通过下标直接访问任意位置元素，\(O(1)\)，同时也支持顺序存取；链表仅支持顺序存取，必须从头结点开始逐个遍历。例如访问第
+\(i\) 个元素时，顺序表只需一次操作，链表需要遍历 \(i\) 个结点，平均
+\(O(n)\)。
+
+“逻辑结构与物理结构”：顺序存储中，逻辑上相邻的元素在物理内存中也连续存放，邻接关系由地址自然体现；链式存储中，逻辑相邻的元素在物理上未必相邻，逻辑关系通过指针显式维护。
+
+\end{bookbox}
+
+\newpage
+
+\hypertarget{ux4e09round-3ux57faux672cux64cdux4f5c}{%
+\section{三、Round
+3：基本操作}\label{ux4e09round-3ux57faux672cux64cdux4f5c}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{复习一个数据结构的基本操作，按什么顺序回忆？}老师的复习思路：\textbf{创、销、增删改查}。
+
+\begin{itemize}
+\tightlist
+\item
+  “改”很简单：只要查到要改的元素，改值就是一次赋值，所以之前一直没单独讲；
+\item
+  “销毁”考研考得不多，但实际写代码时很重要，这里快速带过。
+\end{itemize}
+
+\hypertarget{ux521bux521dux59cbux5316}{%
+\subsection{创（初始化）}\label{ux521bux521dux59cbux5316}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{顺序表}：要预分配大片连续空间。分配得太小，之后不方便拓展容量；分配得太大，大量空间长时间空闲，\uln{浪费内存资源}。
+
+  \begin{itemize}
+  \tightlist
+  \item
+    静态分配：静态数组，\uln{容量不可改变}；
+  \item
+    动态分配：动态数组（\texttt{malloc}、\texttt{free}），容量可以改变，但需要移动大量元素，时间代价高。
+  \end{itemize}
+\item
+  \textbf{链表}：只需分配一个头结点（也可以不要头结点，只声明一个头指针），之后需要拓展时再
+  \texttt{malloc} 一小片空间，用指针连进来，很方便。
+\end{itemize}
+
+所以从“创”联想到\textbf{存储空间的灵活性（弹性）}，链表更胜一筹。
+
+\hypertarget{ux9500ux9500ux6bc1}{%
+\subsection{销（销毁）}\label{ux9500ux9500ux6bc1}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{链表}：依次删除各个结点（\texttt{free}）。核心就是写一个循环扫描各个结点，把它们一一
+  \texttt{free} 掉。
+\item
+  \textbf{顺序表}：先把 \texttt{length} 改为
+  0，这只是在\textbf{逻辑上}把它标记为空表；存储空间怎么回收分两种情况：
+
+  \begin{itemize}
+  \tightlist
+  \item
+    静态分配（静态数组）：生命周期结束后，\uln{系统自动回收空间}，不用管；
+  \item
+    动态分配（\texttt{malloc}
+    申请的动态数组）：\uln{需要手动 \texttt{free}}。
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{L}\OperatorTok{.}\NormalTok{data }\OperatorTok{=} \OperatorTok{(}\NormalTok{ElemType }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{ElemType}\OperatorTok{)} \OperatorTok{*}\NormalTok{ InitSize}\OperatorTok{);}   \CommentTok{// 创}
+\NormalTok{free}\OperatorTok{(}\NormalTok{L}\OperatorTok{.}\NormalTok{data}\OperatorTok{);}                                               \CommentTok{// 销}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{pitfallbox}
+
+\texttt{malloc}
+申请的空间属于内存中的\textbf{堆区}，系统不会自动回收，所以\hlred{\texttt{malloc} 和 \texttt{free} 必须成对出现}；链表的每个结点都是
+\texttt{malloc} 申请的，销毁时也要对每个结点
+\texttt{free}。声明数组或变量申请的空间由系统自动回收。（堆区、栈区是什么，老师暂不展开。）
+
+\end{pitfallbox}
+
+\slidefig{assets/2.3.6-p07.jpg}{0.5}{课件：Round 3 基本操作之“销”}
+
+\hypertarget{ux589eux5220}{%
+\subsection{增、删}\label{ux589eux5220}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{顺序表}：插入、删除要把后续元素都后移 / 前移。时间复杂度
+  \(O(n)\)，\uln{时间开销主要来自移动元素}；若数据元素很大，移动的时间代价很高。
+\item
+  \textbf{链表}：只需修改指针。时间复杂度也是
+  \(O(n)\)，但\uln{时间开销主要来自查找目标元素}，查找元素的时间代价更低。
+\end{itemize}
+
+老师的例子：一个数据元素占 1MB，移动一个可能要 10ms 左右，移动 \(n\)
+个代价很高；链表往后找一个结点假设只要 1μs，找 \(n\)
+个也远小于移动元素的开销。所以虽然大 \(O\) 表示都是
+\(O(n)\)，结合现实因素，\uln{链表的插入、删除效率要比顺序表高得多}。
+
+\slidefig{assets/2.3.6-p08.jpg}{0.5}{课件：Round 3 基本操作之“增、删”}
+
+\hypertarget{ux67e5}{%
+\subsection{查}\label{ux67e5}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 顺序表} & \textcolor{white}{\bfseries 链表} \\
+\endfirsthead
+按位查找 & \(O(1)\)（随机存取） & \(O(n)\) \\ \hline
+按值查找 & 无序 \(O(n)\)；有序时可用折半查找等算法，\(O(\log_2 n)\) & 不论有序无序，都只能从头遍历，\(O(n)\) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+所以查找相关的操作，顺序表的效率高很多。
+
+\slidefig{assets/2.3.6-p09.jpg}{0.5}{课件：Round 3 基本操作之“查”}
+
+\newpage
+
+\begin{bookbox}
+
+王道书第 39 页“查找、插入和删除操作”：按值查找，表无序时两者都是
+\(O(n)\)，表有序时顺序表可采用折半查找，\(O(\log_2 n)\)；按序号查找，顺序表
+\(O(1)\)，链表 \(O(n)\)。插入 /
+删除，顺序表平均需移动约一半的元素，开销较大；链表只需修改指针，无须移动元素，\uln{但前提是已知操作位置}（否则仍需
+\(O(n)\) 的时间定位）。
+
+“空间分配”：顺序表在静态分配下需预先设定容量，过大造成内存浪费，过小则易在插入时溢出；动态分配虽支持运行时扩容，但要申请新的连续内存块并复制全部原有数据，不仅耗时，还可能因系统缺乏足够连续空闲空间而失败。链表按需扩展，灵活性高，但每个结点额外存储指针域，导致\uln{存储密度小于 1}，空间利用率较低。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux7528ux987aux5e8fux8868ux8fd8ux662fux94feux8868}{%
+\section{四、用顺序表还是链表？}\label{ux56dbux7528ux987aux5e8fux8868ux8fd8ux662fux94feux8868}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{表长难以估计、经常增删时用哪个？表长稳定、查询多时用哪个？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.235\hsize\raggedright\arraybackslash}X>{\hsize=0.882\hsize\raggedright\arraybackslash}X>{\hsize=0.882\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 顺序表} & \textcolor{white}{\bfseries 链表} \\
+\endfirsthead
+弹性（可扩容） & 差 & 好 \\ \hline
+增、删 & 差 & 好 \\ \hline
+查 & 好 & 差 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{表长难以预估、经常要增加 / 删除元素} →
+  \hlred{链表}。例：奶茶店排队取号小程序，很难估计会有多少顾客来取号；新顾客取号要插入一个元素，顾客取到餐要删除一个元素。
+\item
+  \textbf{表长可预估、查询（搜索）操作较多} →
+  \hlred{顺序表}。例：课堂点名小程序，一个班的学生在一学期内基本固定，点名主要是查询表里的元素。
+\end{itemize}
+
+\slidefig{assets/2.3.6-p10.jpg}{0.6}{课件：用顺序表 or 链表？}
+
+\begin{bookbox}
+
+王道书第 39 页“在实际应用中，该如何选择合适的存储结构”，分三方面：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{基于存储的考虑}：线性表的长度或规模难以预估时，顺序表因需预先分配固定容量而不适用；链表无须预设容量，可按需动态扩展，但每个结点需额外存储指针，带来一定的空间开销。
+\item
+  \textbf{基于运算的考虑}：若频繁按序号访问（随机访问），顺序表有
+  \(O(1)\)
+  的优势；以插入和删除为主的操作，链表在定位目标位置后仅需调整指针，开销较小。尽管定位过程本身仍需
+  \(O(n)\) 时间，但在增删密集的场景下，链表的整体性能通常更优。
+\item
+  \textbf{基于环境的考虑}：顺序表基于数组实现，几乎所有高级语言都支持，实现简单；链表依赖指针操作，在部分环境中实现较为复杂。因此开发语言和运行环境也是重要的考量因素。
+\end{enumerate}
+
+综上，规模稳定、以随机访问为主的场景，宜采用顺序存储；动态性强、频繁进行插入和删除操作的场景，更适合链式存储。
+
+\end{bookbox}
+
+\begin{addbox}
+
+书上的第 3 点“基于环境的考虑”课件没有讲。可以和 2.3.5
+联系起来：在不支持指针的语言里，可以用静态链表实现链表的功能。
+
+\end{addbox}
+
+\hypertarget{ux4e94ux5f00ux653eux5f0fux95eeux9898ux7684ux7b54ux9898ux601dux8def}{%
+\section{五、开放式问题的答题思路}\label{ux4e94ux5f00ux653eux5f0fux95eeux9898ux7684ux7b54ux9898ux601dux8def}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{遇到“请描述顺序表和链表的\ldots\ldots，实现线性表时用顺序表还是链表好？”这类简答题，怎么组织答案？}很多自主命题的学校喜欢考这种简答题，分值还不低（比如一题
+6 分），答题逻辑的清晰度很重要。按三要素的框架来答：
+
+\begin{quote}
+顺序表和链表的\textbf{逻辑结构}都是线性结构，都属于线性表。
+
+但是二者的\textbf{存储结构}不同，顺序表采用顺序存储\ldots\ldots（特点，带来的优点缺点）；链表采用链式存储\ldots\ldots（特点、导致的优缺点）。
+
+由于采用不同的存储方式实现，因此\textbf{基本操作}的实现效率也不同。当初始化时\ldots\ldots；当插入一个数据元素时\ldots\ldots；当删除一个数据元素时\ldots\ldots；当查找一个数据元素时\ldots\ldots{}
+\end{quote}
+
+最后再得出结论：用顺序表好还是链表好。
+
+\slidefig{assets/2.3.6-p11.jpg}{0.6}{课件：知识回顾与重要考点：开放式问题的答题思路}
+
+\begin{teacherbox}
+
+老师强调的是这种\textbf{框架性思维}：很多理科生怕开放式问题，不知道从哪答起；脑子里有这张“思路导航地图”，答题思路就会清晰很多。不是所有内容都要写上去，但可以按这个思路回忆、分析，再决定答哪些。这种思维也有助于自己回忆复习。
+
+第 2 章到此结束。老师提醒：不要急着进入第 3
+章，先把课后习题做一做，把基础打牢。
+
+\end{teacherbox}
+
+\begin{summarybox}
+
+\textbf{三要素对比}：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{逻辑结构}：都是线性表、线性结构；
+\item
+  \textbf{存储结构}：顺序表随机存取、存储密度高，但要大片连续空间、改容量不便；链表离散小空间分配方便、改容量方便，但不可随机存取、存储密度低；
+\item
+  \textbf{基本操作}：创------链表空间更灵活；销------链表逐个
+  \texttt{free}，顺序表
+  \texttt{length=0}，静态数组系统回收、动态数组手动
+  \texttt{free}（\texttt{malloc} 和 \texttt{free}
+  成对出现）；增删------都是
+  \(O(n)\)，顺序表开销在移动元素，链表开销在查找，链表实际效率更高；查------顺序表按位
+  \(O(1)\)、有序时按值 \(O(\log_2 n)\)，链表都是 \(O(n)\)。
+\end{itemize}
+
+\textbf{怎么选}：表长难以预估、经常增删 → 链表；表长可预估、查询多 →
+顺序表。
+
+\textbf{自测}：① 顺序表和链表各自的存储结构优缺点？②
+静态分配和动态分配的顺序表，销毁时空间分别怎么回收？③ 两者插入删除都是
+\(O(n)\)，为什么说链表实际效率更高？④
+有序顺序表按值查找能做到多少？链表呢？⑤
+按三要素框架，口述“实现线性表时用顺序表还是链表好”。
+
+\end{summarybox}
+\end{document}
