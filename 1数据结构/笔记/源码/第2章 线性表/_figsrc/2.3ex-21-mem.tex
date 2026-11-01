@@ -1,0 +1,31 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{xeCJK}\setCJKmainfont{Noto Sans CJK SC}\setCJKsansfont{Noto Sans CJK SC}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning,calc}
+\begin{document}\begin{tikzpicture}[
+ c/.style={draw,minimum height=7mm,inner sep=1pt,font=\ttfamily\small},
+ a/.style={-{Stealth[length=2mm]},thick,black!70},
+ R/.style={-{Stealth[length=2mm]},very thick,red!80!black},
+ lab/.style={font=\small},font=\small]
+% 左：逻辑图
+\node[c,minimum width=9mm,fill=gray!25] (hd) at (0,0) {};
+\node[c,minimum width=9mm,fill=orange!35] (hn) at (0.9,0) {next};
+\node[lab,above=1.2cm of hd.north east] (L) {L};
+\draw[a] (L) -- (hd.north east);
+\draw[R] (hn.east) -- ++(0.5,0) -- ++(0,-0.9) -| (hd.south);
+\node[lab,below=1.15cm of hd.south east,align=center] {空表：头结点的 next\\指回头结点自己};
+% 右：内存
+\begin{scope}[shift={(7.2,1.6)}]
+\node[c,minimum width=32mm,fill=gray!25] (m1) at (0,0) {data（不关心）};
+\node[c,minimum width=32mm,fill=orange!35,below=0 of m1] (m2) {985};
+\node[c,minimum width=32mm,fill=white,below=0 of m2,minimum height=10mm] (gap) {\(\cdots\)};
+\node[c,minimum width=32mm,fill=blue!15,below=0 of gap] (m3) {985};
+\node[lab,left=2mm of m1.north west,anchor=north east] {地址 985};
+\node[lab,left=2mm of m3.west,anchor=east] {地址 211};
+\node[lab,right=2mm of m1] {头结点 data 域};
+\node[lab,right=2mm of m2] {头结点 next 域};
+\node[lab,right=2mm of m3] {指针变量 L};
+\node[lab,below=4mm of m3,align=left,text width=72mm] {
+L 的\textbf{值} = 985（它存的内容）；L 的\textbf{地址} = 211\\
+头结点的指针域 = 985 = L 的值 \(\Rightarrow\) 选 C};
+\end{scope}
+\end{tikzpicture}\end{document}

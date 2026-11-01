@@ -1,0 +1,31 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{xeCJK}\setCJKmainfont{Noto Sans CJK SC}\setCJKsansfont{Noto Sans CJK SC}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning,calc}
+\begin{document}\begin{tikzpicture}[
+ c/.style={draw,minimum height=7mm,inner sep=1pt,font=\ttfamily\small},
+ a/.style={-{Stealth[length=2mm]},thick,black!70},
+ R/.style={-{Stealth[length=2mm]},very thick,red!80!black},
+ lab/.style={font=\small},font=\small]
+\node[c,minimum width=11mm,fill=orange!35] (p) at (0,0) {prior};
+\node[c,minimum width=11mm,fill=gray!25,right=0 of p] (d) {data};
+\node[c,minimum width=11mm,fill=orange!35,right=0 of d] (n) {next};
+\node[lab,above=1.1cm of d] (L) {L};
+\draw[a] (L) -- (d.north);
+\draw[R] (n.east) -- ++(0.45,0) -- ++(0,-0.95) -| ([xshift=3mm]d.south);
+\draw[R] (p.west) -- ++(-0.45,0) -- ++(0,-0.95) -| ([xshift=-3mm]d.south);
+\node[lab,below=1.2cm of d,align=center] {空表：prior、next 都指回头结点};
+\begin{scope}[shift={(7.6,1.2)}]
+\node[c,minimum width=28mm,fill=orange!35] (m0) at (0,0) {985};
+\node[c,minimum width=28mm,fill=gray!25,below=0 of m0] (m1) {data（不关心）};
+\node[c,minimum width=28mm,fill=orange!35,below=0 of m1] (m2) {985};
+\node[c,minimum width=28mm,below=0 of m2,minimum height=9mm] (gap) {\(\cdots\)};
+\node[c,minimum width=28mm,fill=blue!15,below=0 of gap] (m3) {985};
+\node[lab,left=2mm of m0.north west,anchor=north east] {地址 985};
+\node[lab,left=2mm of m3.west,anchor=east] {地址 211};
+\node[lab,right=2mm of m0] {prior 域};
+\node[lab,right=2mm of m1] {data 域};
+\node[lab,right=2mm of m2] {next 域};
+\node[lab,right=2mm of m3] {指针变量 L};
+\node[lab,below=3mm of m3] {L->prior == L \&\& L->next == L};
+\end{scope}
+\end{tikzpicture}\end{document}

@@ -1,0 +1,27 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{xeCJK}\setCJKmainfont{Noto Sans CJK SC}\setCJKsansfont{Noto Sans CJK SC}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning,calc}
+\begin{document}\begin{tikzpicture}[
+ c/.style={draw,minimum height=7mm,inner sep=1pt,font=\ttfamily\small},
+ a/.style={-{Stealth[length=2mm]},thick,black!70},
+ R/.style={-{Stealth[length=2mm]},very thick,red!80!black},
+ lab/.style={font=\small},font=\small]
+\newcommand{\nd}[3]{\node[c,minimum width=7mm,fill=#3] (#1D) at (#2,0) {}; \node[c,minimum width=4mm,fill=gray!15,right=0 of #1D] (#1N) {};}
+\begin{scope}
+\node[lab,anchor=west] at (-0.6,1.5) {删除前：r 指向最后一个结点 d};
+\nd{h}{0}{gray!45} \nd{a}{1.6}{orange!35} \nd{b}{3.2}{orange!35} \nd{d}{4.8}{orange!35}
+\node at (aD) {a}; \node at (bD) {b}; \node at (dD) {d};
+\draw[a] (hN.center) -- (aD.west); \draw[a] (aN.center) -- (bD.west); \draw[a] (bN.center) -- (dD.west);
+\node[font=\small] at ([xshift=4mm]dN.east) {$\wedge$};
+\node[lab] (r) at (5.1,-1.3) {r}; \draw[a] (r) -- (dD.south);
+\end{scope}
+\begin{scope}[shift={(8.6,0)}]
+\node[lab,anchor=west] at (-0.6,1.5) {删除 d 后：r 必须改指新的表尾 b};
+\nd{h}{0}{gray!45} \nd{a}{1.6}{orange!35} \nd{b}{3.2}{orange!35}
+\node at (aD) {a}; \node at (bD) {b};
+\draw[a] (hN.center) -- (aD.west); \draw[a] (aN.center) -- (bD.west);
+\node[font=\small,red!80!black] at ([xshift=4mm]bN.east) {$\wedge$};
+\node[lab,red!80!black] (r) at (3.5,-1.3) {r}; \draw[R] (r) -- (bD.south);
+\node[lab,gray,align=left] at (6.3,-0.6) {若 r 不改，\\就指向已被 free 的结点};
+\end{scope}
+\end{tikzpicture}\end{document}

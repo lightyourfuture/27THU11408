@@ -1293,6 +1293,9 @@ C。A：指针域存的是 985，不空；B：\texttt{L} 的值是
 \texttt{L-\textgreater{}next=L}，右边是内存图（头结点在
 985，\texttt{next} 域存 985；指针 \texttt{L} 在 211，里面存 985）}
 
+\slidefig{assets/2.3ex-21-mem.png}{0.8}{重画：左边是空的带头结点循环单链表，右边是它在内存中的样子（地址沿用老师的
+985、211）}
+
 \begin{jiexibox}
 
 带头结点的循环单链表 \texttt{L} 为空表时，满足
@@ -1337,6 +1340,8 @@ C.
 985（头结点自己的地址），\texttt{L} 里也是 985。
 
 \end{videobox}
+
+\slidefig{assets/2.3ex-22-mem.png}{0.8}{重画：空的带头结点循环双链表及其内存图}
 
 \begin{jiexibox}
 
@@ -2161,6 +2166,9 @@ C. 将 \texttt{p} 所指结点移至 \texttt{L} 的头结点之后　D. 将 \tex
 \slidefig{assets/2.3ex-36v.jpg}{0.75}{习题讲解视频：四步法和易错点；右下是老师画的特殊情况，尾指针 \texttt{r}
 指向的最后一个结点被删掉后，\texttt{r} 要改指倒数第二个}
 
+\slidefig{assets/2.3ex-36-tail.png}{0.8}{重画老师右下角的小图：有尾指针 \texttt{r} 时删除最后一个结点，\texttt{r}
+要改指新的表尾}
+
 \slidefig{assets/2.3ex-36.png}{0.85}{王道书第 49 页第 36 题解析图：①～⑤ 依次为初始状态和执行每一句后的状态}
 
 \begin{jiexibox}
@@ -2185,6 +2193,8 @@ C. 将 \texttt{p} 所指结点移至 \texttt{L} 的头结点之后　D. 将 \tex
 头插回头结点之后。本题就是把 \texttt{p} 的后继“取下来头插”一次。
 
 \end{recallbox}
+
+\newpage
 
 \hypertarget{ux4e03ux603bux7ed3}{%
 \section{七、总结}\label{ux4e03ux603bux7ed3}}
