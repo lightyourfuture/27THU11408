@@ -300,11 +300,11 @@
 \tightlist
 \item
   \textbf{P14 的 21、22}：老师画内存图（头结点地址 985、指针 \texttt{L}
-  地址 211）讲“\texttt{L} 的值”和“\texttt{L}
-  的地址”，下面用表格记了，看视频更直观；
+  地址 211）讲“\texttt{L} 的值”和“\texttt{L} 的地址”，板书截图放在 21
+  题下；
 \item
   \textbf{P10 的 05}：顺序表 \(O(n)\) 删除所有值为 \(x\)
-  的元素的双指针算法，是新知识（下面记了代码）；
+  的元素的双指针算法，是新知识（代码截图放在 05 题下）；
 \item
   \textbf{P16 的 34、P17 的 36}：两位老师都讲了模拟指针语句的方法，尤其
   36 的“四步法”，几分钟就看完。
@@ -543,23 +543,22 @@ D. 交换第 \(i\) 个元素和第 \(2n-i-1\) 个元素的值（\(i=0,\dots,n-1\
 \item
   A：很多同学以为顺序表每删一个都要整体前移，要 \(O(n^2)\)。其实有
   \(O(n)\) 的双指针算法：\texttt{i} 扫描每个元素，\texttt{j}
-  记录保留下来的元素该放的位置，不等于 \(x\) 的才往前搬：
+  记录保留下来的元素该放的位置，不等于 \(x\) 的才往前搬，最后把表长改成
+  \texttt{j}（代码见下面第二张截图）。
 \end{itemize}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\DataTypeTok{int}\NormalTok{ j }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
-\ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ i }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ L}\OperatorTok{.}\NormalTok{length}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)}
-    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{!=}\NormalTok{ x}\OperatorTok{)}
-\NormalTok{        L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{j}\OperatorTok{++]} \OperatorTok{=}\NormalTok{ L}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{i}\OperatorTok{];}   \CommentTok{// 保留：搬到第 j 个位置}
-\NormalTok{L}\OperatorTok{.}\NormalTok{length }\OperatorTok{=}\NormalTok{ j}\OperatorTok{;}
-\end{Highlighting}
-\end{Shaded}
 
 所以两者都是
 \(O(n)\)，但单链表删除只改指针、不搬元素，常数更小，效率还是更高。
 
 \end{videobox}
+
+\slidefig{assets/2.3ex-05a.jpg}{0.75}{习题讲解视频板书：B 顺序表 \texttt{A{[}2n{]}=new} 一句；D 用
+\texttt{temp} 交换
+\texttt{A{[}i{]}}、\texttt{A{[}2n-i-1{]}}；单链表都要从 \texttt{p}
+开始遍历}
+
+\slidefig{assets/2.3ex-05b.jpg}{0.75}{习题讲解视频：顺序表 \(O(n)\) 删除所有值为 \(x\) 的元素（\texttt{i}
+遍历，\texttt{j} 跟踪有效元素的位置）}
 
 \begin{jiexibox}
 
@@ -1290,6 +1289,10 @@ C。A：指针域存的是 985，不空；B：\texttt{L} 的值是
 头结点的 \texttt{next} 域 & --- & 985（空表时指向头结点自己） \\ \hline
 \end{xltabular}\par\vspace{4pt}}
 
+\slidefig{assets/2.3ex-21.jpg}{0.7}{习题讲解视频板书：空的循环单链表
+\texttt{L-\textgreater{}next=L}，右边是内存图（头结点在
+985，\texttt{next} 域存 985；指针 \texttt{L} 在 211，里面存 985）}
+
 \begin{jiexibox}
 
 带头结点的循环单链表 \texttt{L} 为空表时，满足
@@ -1880,6 +1883,8 @@ C. 1014H、1010H、1004H　　　　D. 1014H、1004H、1010H
 
 \end{questionbox}
 
+\Needspace{10\baselineskip}
+
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X}
 \rowcolor{wdblue}\textcolor{white}{\bfseries 地址} & \textcolor{white}{\bfseries 元素} & \textcolor{white}{\bfseries 链接地址} \\
@@ -2152,6 +2157,9 @@ C. 将 \texttt{p} 所指结点移至 \texttt{L} 的头结点之后　D. 将 \tex
 易错点：一是没考虑特殊情况；二是模拟时画错，建议每执行一条就检查一下，“步步为营”。
 
 \end{videobox}
+
+\slidefig{assets/2.3ex-36v.jpg}{0.75}{习题讲解视频：四步法和易错点；右下是老师画的特殊情况，尾指针 \texttt{r}
+指向的最后一个结点被删掉后，\texttt{r} 要改指倒数第二个}
 
 \slidefig{assets/2.3ex-36.png}{0.85}{王道书第 49 页第 36 题解析图：①～⑤ 依次为初始状态和执行每一句后的状态}
 
