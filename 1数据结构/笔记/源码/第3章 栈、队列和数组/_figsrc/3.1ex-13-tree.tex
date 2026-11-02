@@ -1,0 +1,28 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{xeCJK}\setCJKmainfont{Noto Sans CJK SC}\setCJKsansfont{Noto Sans CJK SC}
+\usepackage{tikz}\usetikzlibrary{arrows.meta,positioning,calc}
+\begin{document}\begin{tikzpicture}[
+ n/.style={draw,rounded corners=2pt,fill=gray!12,inner sep=3pt,font=\small},
+ s/.style={draw,very thick,red!75!black,fill=red!6,inner sep=3pt,font=\ttfamily\bfseries},
+ a/.style={-{Stealth[length=2mm]},thick,black!65},
+ q/.style={font=\small,black!60}]
+\def\W{3.3}
+\node[n] (r) at (0,0) {a 入};
+\node[n] (L) at (-1.5*\W,-1.4) {a 出，b 入};
+\node[n] (R) at (1.0*\W,-1.4) {b 入};
+\node[n] (LL) at (-2*\W,-2.8) {b 出，c 入，c 出};
+\node[n] (LR) at (-1*\W,-2.8) {c 入，c 出，b 出};
+\node[n] (RL) at (0.5*\W,-2.8) {b 出};
+\node[n] (RR) at (2*\W,-2.8) {c 入，c 出，b 出，a 出};
+\node[n] (RLL) at (0,-4.2) {a 出，c 入，c 出};
+\node[n] (RLR) at (1*\W,-4.2) {c 入，c 出，a 出};
+\node[s] (s1) at (-2*\W,-5.6) {a b c};
+\node[s] (s2) at (-1*\W,-5.6) {a c b};
+\node[s] (s3) at (0,-5.6) {b a c};
+\node[s] (s4) at (1*\W,-5.6) {b c a};
+\node[s] (s5) at (2*\W,-5.6) {c b a};
+\foreach \x/\y in {r/L,r/R,L/LL,L/LR,R/RL,R/RR,RL/RLL,RL/RLR,LL/s1,LR/s2,RLL/s3,RLR/s4,RR/s5}
+  \draw[a] (\x) -- (\y);
+\node[q,anchor=west] at (-2*\W-1.2,0) {左分支：刚进栈的元素马上出栈};
+\node[q,anchor=west] at (-2*\W-1.2,-0.5) {右分支：先不出，下一个元素进栈};
+\end{tikzpicture}\end{document}
