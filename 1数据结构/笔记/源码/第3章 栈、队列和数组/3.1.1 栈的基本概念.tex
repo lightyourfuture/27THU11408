@@ -1,0 +1,394 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.1.1
+栈的基本概念},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.1.1 栈的基本概念 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.1.1
+栈的基本概念 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.1.1
+栈的基本概念}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.1.1 · 正课字幕 P20 · 王道书
+§3.1.1（第 63--64 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{学一种新的数据结构，从哪三个方面入手？这一节讲哪两个？}第 3
+章开始学栈和队列。和学线性表时一样，从\textbf{数据结构的三要素}出发：逻辑结构、数据的运算、存储结构。这一节只讲前两个，即栈的\textbf{定义}（逻辑结构）和\textbf{基本操作}（运算）；用不同的存储结构实现栈，放在后面两节（3.1.2
+顺序栈、3.1.3 链栈）。存储结构不同，运算的实现方式也不同。
+
+\begin{bookbox}
+
+王道书第 64
+页“注意”：每接触一种新的数据结构，都应从其逻辑结构、存储结构和基本运算三方面进行系统理解。
+
+\end{bookbox}
+
+\hypertarget{ux4e00ux6808ux7684ux5b9aux4e49}{%
+\section{一、栈的定义}\label{ux4e00ux6808ux7684ux5b9aux4e49}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{栈和普通线性表的区别在哪？栈顶、栈底、空栈分别指什么？}先回顾线性表：具有相同数据类型的
+\(n\,(n\ge 0)\) 个数据元素的有限序列，记作
+
+\[L=(a_1,a_2,\dots,a_i,a_{i+1},\dots,a_n)\]
+
+普通线性表可以在任意位置插入、删除。
+
+\textbf{栈（Stack）是\hlred{只允许在一端进行插入或删除操作}的线性表。}
+逻辑结构和普通线性表一样（一对一、一前一后），只是插入、删除受限，是一种\textbf{操作受限的线性表}。
+
+老师的例子：
+
+\begin{itemize}
+\tightlist
+\item
+  英文 stack
+  有“整齐的一堆”的意思，比如一堆石头：新石头只能放在顶上，拿也只能从顶上拿，从中间抽一块整堆就散了；
+\item
+  洗好的盘子一个个摞起来：放只能放顶上，拿只能拿最上面那个；
+\item
+  烤串：串的时候先串下面的，永远从上面插入；吃的时候也只能从上往下吃。
+\end{itemize}
+
+\slidefig{assets/3.1.1-p06.jpg}{0.55}{课件：栈的定义（盘子、烤串）}
+
+\textbf{重要术语}：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{栈顶}：允许插入和删除的一端；最上面的元素叫\textbf{栈顶元素}；
+\item
+  \textbf{栈底}：不允许插入和删除的一端；最下面的元素叫\textbf{栈底元素}；
+\item
+  \textbf{空栈}：不含任何元素的栈（对应线性表的空表）。
+\end{itemize}
+
+\hypertarget{ux540eux8fdbux5148ux51fa}{%
+\subsection{后进先出}\label{ux540eux8fdbux5148ux51fa}}
+
+\(a_1,a_2,a_3,a_4,a_5\) 依次进栈，全部进栈后再依次出栈，出栈顺序是
+\(a_5,a_4,a_3,a_2,a_1\)，刚好是进栈顺序的逆序。所以栈的特点是\hlred{后进先出}：后进入栈的元素先出栈，英文
+\textbf{Last In First Out}，缩写 \textbf{LIFO}。
+
+\slidefig{assets/3.1.1-p07.jpg}{0.65}{课件：栈顶、栈底、空栈；特点：后进先出（LIFO）}
+
+\begin{bookbox}
+
+王道书第 63--64
+页：栈是只允许在一端进行插入和删除操作的线性表，插入叫\textbf{入栈}，删除叫\textbf{出栈}。栈顶（Top）是允许插入和删除的一端；栈底（Bottom）\textbf{固定不变}，不允许插入和删除；空栈不含任何元素。设栈
+\(S=(a_1,a_2,a_3,a_4,a_5)\)，\(a_1\) 为栈底元素，\(a_5\) 为栈顶元素，按
+\(a_1\sim a_5\) 入栈则出栈序列为
+\(a_5\sim a_1\)，栈的操作特性可概括为后进先出（LIFO）。考点追踪：栈的特点（2017）；出入栈序列的分析（2010、2011、2013、2018、2020、2022）。
+
+\end{bookbox}
+
+\slidefig{assets/3.1-book-fig3.1.png}{0.35}{王道书图 3.1：栈的示意图}
+
+\begin{fixbox}
+
+\textbf{名词统一}：课件和字幕说“进栈 / 出栈”，王道书说“入栈 /
+出栈”，是一回事，本笔记统一用\textbf{进栈 / 出栈}。
+
+\end{fixbox}
+
+\hypertarget{ux4e8cux6808ux7684ux57faux672cux64cdux4f5c}{%
+\section{二、栈的基本操作}\label{ux4e8cux6808ux7684ux57faux672cux64cdux4f5c}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{栈要实现哪几个基本操作？\texttt{Pop} 和 \texttt{GetTop} 有什么区别？}回顾线性表的基本操作：创、销、增、删、查（改的第一步也是查）。栈也一样：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.857\hsize\raggedright\arraybackslash}X>{\hsize=0.536\hsize\raggedright\arraybackslash}X>{\hsize=1.607\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 对应} & \textcolor{white}{\bfseries 说明} \\
+\endfirsthead
+\texttt{InitStack(\&S)} & 创 & 初始化栈：构造一个空栈 \texttt{S}，\uln{分配内存空间} \\ \hline
+\texttt{DestroyStack(\&S)} & 销 & 销毁栈：销毁并\uln{释放}栈 \texttt{S} 所占用的内存空间 \\ \hline
+\texttt{Push(\&S,\ x)} & 增 & 进栈：若栈未满，把 \texttt{x} 加入使之成为新的栈顶 \\ \hline
+\texttt{Pop(\&S,\ \&x)} & 删 & 出栈：若栈非空，弹出（删除）栈顶元素，并用 \texttt{x} 返回 \\ \hline
+\texttt{GetTop(S,\ \&x)} & 查 & 读栈顶元素：若栈非空，用 \texttt{x} 返回栈顶元素，\uln{不删除} \\ \hline
+\texttt{StackEmpty(S)} & 判空 & 若 \texttt{S} 为空栈返回 \texttt{true}，否则返回 \texttt{false} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{Pop} 的 \texttt{x} 加了引用符号
+  \texttt{\&}：要把删掉的栈顶元素“带回去”给调用者。
+\item
+  \texttt{Pop} 和 \texttt{GetTop} 都用 \texttt{x} 返回栈顶元素，区别是
+  \hlred{\texttt{Pop} 会把栈顶元素删掉，\texttt{GetTop} 不删}。
+\item
+  “查”只做读栈顶：普通线性表要按位、按值查找，但栈的使用场景里，大多只需要访问栈顶元素。
+\end{itemize}
+
+\slidefig{assets/3.1.1-p09.jpg}{0.6}{课件：栈的基本操作}
+
+\begin{bookbox}
+
+王道书第 64
+页：不同教材对基本操作的命名略有差异，本书采用严蔚敏教材的命名规范，和课件相同。书上的
+\texttt{Push} 写成“若栈未满，则 \texttt{x}
+成为新的栈顶元素”，\texttt{DestroyStack} 写成“销毁栈
+\texttt{S}，并释放其所占用的存储空间（\texttt{\&}
+表示引用调用）”。在解答算法题时，若题目未作特殊限制，\uln{可直接使用上述基本操作函数}。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux5e38ux8003ux9898ux578bux5408ux6cd5ux7684ux51faux6808ux987aux5e8f}{%
+\section{三、常考题型：合法的出栈顺序}\label{ux4e09ux5e38ux8003ux9898ux578bux5408ux6cd5ux7684ux51faux6808ux987aux5e8f}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{进栈顺序 a→b→c→d→e，出栈顺序可能有几种？为什么不止一种？}这是栈最喜欢考的题型：告诉你进栈顺序，问哪些出栈顺序合法。关键在于\uln{出栈和进栈可以穿插进行}。
+
+\begin{itemize}
+\tightlist
+\item
+  全部进栈后再依次出栈：出栈顺序 e、d、c、b、a；
+\item
+  穿插进行：a、b 进栈 → b 出栈（栈里只剩 a）→ c、d、e 进栈 →
+  全部出栈。出栈顺序是 \textbf{b、e、d、c、a}。
+\end{itemize}
+
+逐步看第二种：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.426\hsize\raggedright\arraybackslash}X>{\hsize=1.191\hsize\raggedright\arraybackslash}X>{\hsize=1.191\hsize\raggedright\arraybackslash}X>{\hsize=1.191\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步} & \textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 栈中（左为栈底）} & \textcolor{white}{\bfseries 已出栈} \\
+\endfirsthead
+1 & a、b 进栈 & a b &  \\ \hline
+2 & 出栈 & a & b \\ \hline
+3 & c、d、e 进栈 & a c d e & b \\ \hline
+4 & 依次出栈 4 次 & （空） & b e d c a \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\textbf{结论}：\(n\) 个不同元素进栈，出栈元素不同排列的个数为
+
+\[\frac{1}{n+1}C_{2n}^{n}\]
+
+这个公式叫\textbf{卡特兰（Catalan）数}，可以用数学归纳法证明，\uln{不要求掌握证明}，了解即可。\(n=5\)
+时：
+
+\[\frac{1}{5+1}C_{10}^{5}=\frac{1}{6}\cdot\frac{10\times9\times8\times7\times6}{5\times4\times3\times2\times1}=42\]
+
+42
+种太多，考试几乎不会让你写出全部，一般是选择题：给几个选项，判断某种出栈顺序是否合法。课后习题里会有大量这类题。
+
+\slidefig{assets/3.1.1-p10.jpg}{0.55}{课件：栈的常考题型}
+
+\begin{bookbox}
+
+王道书第 64 页“栈的数学性质”：当 \(n\)
+个不同元素按固定次序入栈时，可能的出栈序列总数为
+\(\frac{1}{n+1}C_{2n}^{n}\)，该数列称为卡特兰（Catalan）数，可通过数学归纳法证明。考点追踪：Catalan
+数的应用（2015）。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux77e5ux8bc6ux56deux987e}{%
+\section{四、知识回顾}\label{ux56dbux77e5ux8bc6ux56deux987e}}
+
+\slidefig{assets/3.1.1-p11.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{栈}：只允许在一端（栈顶）插入、删除的线性表，是一种\uln{操作受限的线性表}。逻辑结构和普通线性表相同；特性是\textbf{后进先出（LIFO）}。术语：栈顶、栈底、空栈。
+
+\textbf{基本操作}：创（\texttt{InitStack}）、销（\texttt{DestroyStack}）；增删只能在栈顶（\texttt{Push}
+进栈、\texttt{Pop}
+出栈）；查只读栈顶（\texttt{GetTop}，不删除）；判空（\texttt{StackEmpty}）。
+
+\textbf{常考}：给进栈顺序判断出栈顺序是否合法；出栈和进栈可以穿插。\(n\)
+个不同元素的合法出栈序列有 \(\frac{1}{n+1}C_{2n}^{n}\)
+种（卡特兰数），\(n=5\) 时 42 种。
+
+\textbf{自测}：① 栈和普通线性表，逻辑结构有区别吗？区别在哪？②
+\texttt{Pop} 和 \texttt{GetTop} 有什么不同？③ a、b、c
+依次进栈，写出所有合法的出栈顺序（应有 \(\frac{1}{4}C_6^3=5\) 种）。④
+a、b、c 依次进栈，c、a、b 能不能是出栈顺序？
+
+\end{summarybox}
+\end{document}

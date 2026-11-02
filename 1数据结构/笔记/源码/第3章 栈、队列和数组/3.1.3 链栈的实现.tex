@@ -1,0 +1,456 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.1.3
+链栈的实现},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.1.3 链栈的实现 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.1.3
+链栈的实现 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.1.3
+链栈的实现}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.1.3 · 正课字幕 P22 · 王道书
+§3.1.3（第 66 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{链栈本质上是什么？进栈、出栈对应单链表的哪两个操作？}用\textbf{链式存储}的方式实现栈，叫\textbf{链栈}。和顺序栈一样，要实现：创（初始化）、增（进栈）、删（出栈）、查（获取栈顶元素）、判空、判满。
+
+老师先“穿越”回单链表的课件：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{头插法建立单链表}（正课
+  2.3.2\_3）：每次都插在头结点之后，也就是对头结点做\textbf{后插}操作。如果规定只能在这一端插入，这就是\hlred{进栈}；
+\item
+  \textbf{单链表的删除}：如果规定只能删除头结点后面的那个结点（对头结点的“后删”操作），这就是\hlred{出栈}。
+\end{itemize}
+
+\slidefig{assets/3.1.3-p03.jpg}{0.6}{课件：穿越，头插法建立单链表 → 对应进栈}
+
+\slidefig{assets/3.1.3-p04.jpg}{0.5}{课件：穿越，单链表的删除操作 → 对应出栈}
+
+所以链栈\uln{本质上就是一个单链表}，只是规定只能在单链表的\textbf{链头}这一端插入和删除，把链头当作栈顶。
+
+\hypertarget{ux4e00ux94feux6808ux7684ux5b9aux4e49}{%
+\section{一、链栈的定义}\label{ux4e00ux94feux6808ux7684ux5b9aux4e49}}
+
+\cueblock{\cuenote}{\relax{带头结点和不带头结点的链栈，初始化和判空分别怎么写？课本推荐哪种？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ Linknode }\OperatorTok{\{}
+\NormalTok{    ElemType data}\OperatorTok{;}                  \CommentTok{// 数据域}
+    \KeywordTok{struct}\NormalTok{ Linknode }\OperatorTok{*}\NormalTok{next}\OperatorTok{;}          \CommentTok{// 指针域}
+\OperatorTok{\}} \OperatorTok{*}\NormalTok{LiStack}\OperatorTok{;}                         \CommentTok{// 栈类型定义}
+\end{Highlighting}
+\end{Shaded}
+
+和单链表的定义几乎没有区别，只是名字改了。
+
+和单链表一样，链栈也有两种实现：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{带头结点}：初始化时 \texttt{S} 指向头结点，头结点的
+  \texttt{next} 为 \texttt{NULL}；进栈、出栈都在头结点之后进行；
+\item
+  \textbf{不带头结点}：初始化时
+  \texttt{S\ =\ NULL}；进栈、出栈都在链头进行，\uln{\texttt{S} 直接指向栈顶结点}。
+\end{itemize}
+
+两种方式判空的条件不一样。进栈、出栈就是单链表在表头位置的插入、删除，单链表那一节已经讲得很详细，老师不再赘述。
+
+\slidefig{assets/3.1.3-p05.jpg}{0.6}{课件：链栈的定义；带头结点 / 不带头结点的初始化}
+
+\begin{bookbox}
+
+王道书第 66
+页：链栈的优点是便于多个栈共享存储空间和提高其效率，且\uln{不存在栈满上溢的情况}，在多栈共存的场景下能更灵活地利用内存。通常采用单链表实现，并规定所有操作都在单链表的表头进行。这里规定链栈\textbf{没有头结点}，栈顶指针
+\texttt{Lhead} 直接指向栈顶元素。
+
+链栈的类型定义和课件相同（书上写作
+\texttt{LinkNode}、\texttt{LiStack}）。由于采用链式存储，结点的插入与删除操作非常高效。注意：对于带头结点的链栈，其初始化、判空及操作细节会有所不同；本节所述实现基于无头结点的设计。
+
+\end{bookbox}
+
+\slidefig{assets/3.1-book-fig3.4.png}{0.6}{王道书图 3.4：栈的链式存储（不带头结点，\texttt{Lhead}
+指向栈顶结点，栈底结点的 \texttt{next} 为 \texttt{NULL}）}
+
+\begin{fixbox}
+
+\textbf{名词统一}：课件结构体名 \texttt{Linknode}，王道书写作
+\texttt{LinkNode}，本笔记代码用课件的
+\texttt{Linknode}。王道书说链栈“不存在栈满上溢的情况”，课件的知识回顾里列了“如何判空、判满？”，所以判满一般不用考虑（只有
+\texttt{malloc} 失败，即内存不足时才进不了栈）。
+
+\end{fixbox}
+
+\hypertarget{ux4e8cux52a8ux624bux5199ux4e00ux904d}{%
+\section{二、动手写一遍}\label{ux4e8cux52a8ux624bux5199ux4e00ux904d}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{不带头结点时，进栈要改 \texttt{S} 吗？出栈时栈空怎么判断？}老师说课本推荐\textbf{不带头结点}，但两种都要会写，并留了作业“动手写一遍”：创（初始化）、增（进栈）、删（出栈）、查（获取栈顶元素）、判空。
+
+\slidefig{assets/3.1.3-p06.jpg}{0.6}{课件：知识回顾与重要考点（动手写一遍）}
+
+\begin{teacherbox}
+
+老师说“可能会有同学认为是我想偷懒，所以没讲，但其实我是真的想偷懒”。他想说的是：学习是知识\textbf{输入}的过程，考试考的是知识\textbf{输出}的能力。看书、听课只增加输入，觉得自己听懂了、看懂了，不代表能输出。要多练输出：自己动手写代码、做题，或者把别人讲明白。把这些基本操作写一遍，相当于把单链表也复习了一遍，“有百利而无一害”。
+
+\end{teacherbox}
+
+\slidefig{assets/3.1.3-p07.jpg}{0.5}{课件：小建议（考试比的是“输出”的能力）}
+
+下面是我的答案，\uln{建议先自己写再对照}。
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9ux8bfeux672cux63a8ux8350}{%
+\subsection{不带头结点（课本推荐）}\label{ux4e0dux5e26ux5934ux7ed3ux70b9ux8bfeux672cux63a8ux8350}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化}
+\DataTypeTok{bool}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{LiStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    S }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                       \CommentTok{// 空栈，没有任何结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判空}
+\DataTypeTok{bool}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{LiStack S}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{return}\NormalTok{ S }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 进栈：新结点插在链头，成为新的栈顶}
+\DataTypeTok{bool}\NormalTok{ Push}\OperatorTok{(}\NormalTok{LiStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    Linknode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=} \OperatorTok{(}\NormalTok{Linknode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{Linknode}\OperatorTok{));}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                  \CommentTok{// 内存不足，分配失败}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ S}\OperatorTok{;}                    \CommentTok{// 新结点指向原栈顶}
+\NormalTok{    S }\OperatorTok{=}\NormalTok{ p}\OperatorTok{;}                          \CommentTok{// S 指向新栈顶}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 出栈：删除链头结点}
+\DataTypeTok{bool}\NormalTok{ Pop}\OperatorTok{(}\NormalTok{LiStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}                  \CommentTok{// 栈空}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    Linknode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ S}\OperatorTok{;}                \CommentTok{// p 指向栈顶结点}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}
+\NormalTok{    S }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}                    \CommentTok{// S 指向新栈顶}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{p}\OperatorTok{);}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 读栈顶元素}
+\DataTypeTok{bool}\NormalTok{ GetTop}\OperatorTok{(}\NormalTok{LiStack S}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ S}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  不带头结点时，进栈、出栈都要\textbf{修改 \texttt{S} 本身}，所以
+  \texttt{Push}、\texttt{Pop} 里的 \texttt{S} 要加引用 \texttt{\&}；
+\item
+  进栈两句的顺序和正课 2.3.2\_1“①② 两句不能颠倒”一样：先
+  \texttt{p-\textgreater{}next\ =\ S} 接上原栈顶，再让
+  \texttt{S\ =\ p}。
+\end{itemize}
+
+\hypertarget{ux5e26ux5934ux7ed3ux70b9}{%
+\subsection{带头结点}\label{ux5e26ux5934ux7ed3ux70b9}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{LiStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    S }\OperatorTok{=} \OperatorTok{(}\NormalTok{Linknode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{Linknode}\OperatorTok{));}   \CommentTok{// 分配头结点}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    S}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}                 \CommentTok{// 头结点之后暂时没有结点}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\DataTypeTok{bool}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{LiStack S}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{return}\NormalTok{ S}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{;}         \CommentTok{// 头结点后面没有结点就是空栈}
+\OperatorTok{\}}
+
+\DataTypeTok{bool}\NormalTok{ Push}\OperatorTok{(}\NormalTok{LiStack S}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}  \CommentTok{// 对头结点做后插}
+\NormalTok{    Linknode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=} \OperatorTok{(}\NormalTok{Linknode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{Linknode}\OperatorTok{));}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{p }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    p}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ S}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    S}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{;}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+
+\DataTypeTok{bool}\NormalTok{ Pop}\OperatorTok{(}\NormalTok{LiStack S}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}  \CommentTok{// 删除头结点的后继}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}          \CommentTok{// 栈空}
+\NormalTok{    Linknode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ S}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}          \CommentTok{// p 指向栈顶结点}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}
+\NormalTok{    S}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{p}\OperatorTok{);}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+带头结点时 \texttt{S} 始终指向头结点，不会被修改，所以
+\texttt{Push}、\texttt{Pop} 的 \texttt{S} 不用加 \texttt{\&}；栈顶元素是
+\texttt{S-\textgreater{}next-\textgreater{}data}。
+
+\begin{recallbox}
+
+正课 2.3.1：带头结点判空
+\texttt{L-\textgreater{}next\ ==\ NULL}，不带头结点判空
+\texttt{L\ ==\ NULL}；2.3.2\_1
+的后插（\texttt{InsertNextNode}）和按位序删除第 1 个结点；2.3.2\_3
+的头插法。链栈的操作全部来自这几处。
+
+\end{recallbox}
+
+\begin{summarybox}
+
+\textbf{链栈} = 只能在链头插入、删除的单链表，链头一端是栈顶。进栈 =
+头插（对头结点的后插），出栈 = 删除链头结点（对头结点的后删）。
+
+\textbf{两种实现}：带头结点（初始化建头结点、\texttt{next} 为
+\texttt{NULL}；判空
+\texttt{S-\textgreater{}next==NULL}）；不带头结点（课本推荐；初始化
+\texttt{S=NULL}；判空 \texttt{S==NULL}；进栈、出栈要修改
+\texttt{S}）。两种都要会写。
+
+\textbf{和顺序栈比}：链栈按需
+\texttt{malloc}，\uln{不会栈满上溢}，便于多个栈共享存储空间；进栈、出栈都是
+\(O(1)\)。
+
+\textbf{老师的建议}：考试比的是“输出”能力，自己动手把这些操作写一遍。
+
+\textbf{自测}：① 不带头结点的链栈，写出 \texttt{Push}、\texttt{Pop}。②
+为什么不带头结点时 \texttt{Push} 的参数要写 \texttt{LiStack\ \&S}？③
+带头结点和不带头结点的链栈分别怎么判空？④ 链栈要判满吗？
+
+\end{summarybox}
+\end{document}

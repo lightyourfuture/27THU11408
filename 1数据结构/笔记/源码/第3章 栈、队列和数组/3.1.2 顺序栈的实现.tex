@@ -1,0 +1,741 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.1.2
+顺序栈的实现},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.1.2 顺序栈的实现 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.1.2
+顺序栈的实现 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.1.2
+顺序栈的实现}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.1.2 · 正课字幕 P21 · 王道书
+§3.1.2（第 64--66 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{顺序栈要实现哪几个基本操作？}用\textbf{顺序存储}的方式实现栈，叫\textbf{顺序栈}。确定存储结构后，再看这些基本操作怎么实现：创（初始化）、增（进栈）、删（出栈）、查（获取栈顶元素）、判空、判满。和顺序表很类似。
+
+\hypertarget{ux4e00ux987aux5e8fux6808ux7684ux5b9aux4e49}{%
+\section{一、顺序栈的定义}\label{ux4e00ux987aux5e8fux6808ux7684ux5b9aux4e49}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{顺序栈的结构体里有哪两样东西？\texttt{top} 存的是什么？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}\PreprocessorTok{                  }\CommentTok{// 定义栈中元素的最大个数}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+\NormalTok{    ElemType data}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}         \CommentTok{// 静态数组存放栈中元素}
+    \DataTypeTok{int}\NormalTok{ top}\OperatorTok{;}                        \CommentTok{// 栈顶指针}
+\OperatorTok{\}}\NormalTok{ SqStack}\OperatorTok{;}                          \CommentTok{// Sq：sequence，顺序}
+
+\DataTypeTok{void}\NormalTok{ testStack}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    SqStack S}\OperatorTok{;}                      \CommentTok{// 声明一个顺序栈（分配空间）}
+    \CommentTok{// ……后续操作}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  执行 \texttt{SqStack\ S;}
+  后，内存里分配一整片连续空间存放元素，大小是栈的最大容量
+  \texttt{MaxSize} 乘以每个元素的大小；另外还有 4 字节存 \texttt{top}。
+\item
+  \texttt{top}
+  叫\textbf{栈顶指针}，指向此时的栈顶元素，记录的是\uln{数组下标}（从 0
+  开始）。例如已经压入 a、b、c、d、e 五个元素，\texttt{top} 的值就是 4。
+\end{itemize}
+
+\slidefig{assets/3.1.2-p03.jpg}{0.6}{课件：顺序栈的定义}
+
+\hypertarget{ux4e8cux521dux59cbux5316ux4e0eux5224ux7a7a}{%
+\section{二、初始化与判空}\label{ux4e8cux521dux59cbux5316ux4e0eux5224ux7a7a}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{初始化时 \texttt{top} 为什么设成 \(-1\) 而不是 0？}\texttt{top}
+要指向栈顶元素。刚开始 \texttt{data{[}0{]}} 里还没有元素，让
+\texttt{top} 指向 0
+不合理，所以\hlred{初始化时 \texttt{top\ =\ -1}}；相应地，判空就看
+\texttt{top} 是否等于 \(-1\)。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化栈}
+\DataTypeTok{void}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{;}                     \CommentTok{// 初始化栈顶指针}
+\OperatorTok{\}}
+
+\CommentTok{// 判断栈空}
+\DataTypeTok{bool}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{SqStack S}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top }\OperatorTok{==} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{)}                \CommentTok{// 栈空}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}                            \CommentTok{// 不空}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/3.1.2-p04.jpg}{0.6}{课件：初始化操作}
+
+\hypertarget{ux4e09ux8fdbux6808}{%
+\section{三、进栈}\label{ux4e09ux8fdbux6808}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{进栈时先移 \texttt{top} 还是先放元素？为什么要写 \texttt{++S.top} 而不是
+\texttt{S.top++}？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 新元素入栈}
+\DataTypeTok{bool}\NormalTok{ Push}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top }\OperatorTok{==}\NormalTok{ MaxSize }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)}       \CommentTok{// 栈满，报错}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top }\OperatorTok{=}\NormalTok{ S}\OperatorTok{.}\NormalTok{top }\OperatorTok{+} \DecValTok{1}\OperatorTok{;}              \CommentTok{// 指针先加 1}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{S}\OperatorTok{.}\NormalTok{top}\OperatorTok{]} \OperatorTok{=}\NormalTok{ x}\OperatorTok{;}              \CommentTok{// 新元素入栈}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  先判断栈满：顺序栈用静态数组实现，有容量上限。\texttt{top}
+  指向栈顶元素，\uln{栈满时 \texttt{top\ ==\ MaxSize\ -\ 1}}（容量 10 时
+  \texttt{top} 为 9），返回 \texttt{false} 给调用者反馈。
+\item
+  栈不满：\texttt{top} 先加 1（例如从 \(-1\) 变为 0），再把 \texttt{x}
+  放到 \texttt{top} 指向的位置，返回 \texttt{true}。
+\end{enumerate}
+
+因为 \texttt{top}
+永远指向栈顶元素，新元素进栈时都要\uln{先让 \texttt{top} 加 1，再放元素}。
+
+\hypertarget{ux66f4ux7b80ux6d01ux7684ux5199ux6cd5}{%
+\subsection{更简洁的写法}\label{ux66f4ux7b80ux6d01ux7684ux5199ux6cd5}}
+
+课本把中间两句合成一句：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[++}\NormalTok{S}\OperatorTok{.}\NormalTok{top}\OperatorTok{]} \OperatorTok{=}\NormalTok{ x}\OperatorTok{;}                \CommentTok{// 等价于上面两句}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{++top}：先让 \texttt{top} 加 1，再使用 \texttt{top}
+的值。跨考的同学注意不要写成 \texttt{top++}（先用 \texttt{top}
+的值，再加 1）。
+
+\begin{pitfallbox}
+
+\textbf{写成 \texttt{S.data{[}S.top++{]}\ =\ x;} 会怎样}：设栈中已有
+a、b，\texttt{top\ =\ 1}，要插入 c，期望放在
+\texttt{data{[}2{]}}。\texttt{top++} 先用 \texttt{top} 的值 1，把 c 放进
+\texttt{data{[}1{]}}，\hlred{覆盖了 b}，然后 \texttt{top} 才变成
+2，指向一个空位置。结果错误。
+
+\end{pitfallbox}
+
+\slidefig{assets/3.1.2-p05.jpg}{0.6}{课件：进栈操作；注意错误写法 \texttt{S.data{[}S.top++{]}=x}}
+
+\hypertarget{ux56dbux51faux6808}{%
+\section{四、出栈}\label{ux56dbux51faux6808}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{出栈后，被删掉的元素还在内存里吗？为什么要写 \texttt{S.top-\/-} 而不是
+\texttt{-\/-S.top}？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 出栈操作}
+\DataTypeTok{bool}\NormalTok{ Pop}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top }\OperatorTok{==} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{)}                \CommentTok{// 栈空，报错}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{S}\OperatorTok{.}\NormalTok{top}\OperatorTok{];}              \CommentTok{// 栈顶元素先出栈}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top }\OperatorTok{=}\NormalTok{ S}\OperatorTok{.}\NormalTok{top }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{;}              \CommentTok{// 指针再减 1}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{x} 加了引用符号：调用者在自己的函数里定义了变量
+  \texttt{x}，\texttt{Pop} 里操作的 \texttt{x} 和调用者的 \texttt{x}
+  是\uln{同一份数据}，不是复制品，这样才能把栈顶元素带回去。
+\item
+  栈空不能出栈，返回 \texttt{false}；否则把栈顶元素赋给
+  \texttt{x}，\texttt{top} 减 1（栈顶指针下移），返回 \texttt{true}。
+\item
+  \texttt{top}
+  下移只是\uln{在逻辑上删除}了栈顶元素，它的数据其实还残留在内存中。
+\end{itemize}
+
+合并成一句：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OperatorTok{=}\NormalTok{ S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{S}\OperatorTok{.}\NormalTok{top}\OperatorTok{{-}{-}];}                \CommentTok{// 先出栈，指针再减 1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{pitfallbox}
+
+\textbf{写成 \texttt{x\ =\ S.data{[}-\/-S.top{]};} 会怎样}：栈顶元素是
+j（\texttt{top} 指向它），期望 \texttt{x} 返回 j。\texttt{-\/-top} 先让
+\texttt{top} 减 1 指向 i，再把 i 赋给
+\texttt{x}，\hlred{返回的是 i 而不是 j}。
+
+老师强调：这些代码千万不要背，要在理解的基础上，能自己分析用哪种写法。
+
+\end{pitfallbox}
+
+\slidefig{assets/3.1.2-p07.jpg}{0.6}{课件：出栈操作（数据还残留在内存中，只是逻辑上被删除了）}
+
+\hypertarget{ux4e94ux8bfbux6808ux9876ux5143ux7d20}{%
+\section{五、读栈顶元素}\label{ux4e94ux8bfbux6808ux9876ux5143ux7d20}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{\texttt{GetTop} 和 \texttt{Pop} 的代码只差哪一处？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 读栈顶元素}
+\DataTypeTok{bool}\NormalTok{ GetTop}\OperatorTok{(}\NormalTok{SqStack S}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top }\OperatorTok{==} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{)}                \CommentTok{// 栈空，报错}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[}\NormalTok{S}\OperatorTok{.}\NormalTok{top}\OperatorTok{];}              \CommentTok{// x 记录栈顶元素}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+和出栈几乎一模一样，\uln{唯一区别是 \texttt{top} 不减 1}：只用
+\texttt{x} 返回栈顶元素，不删除。
+
+\slidefig{assets/3.1.2-p08.jpg}{0.55}{课件：读栈顶元素操作（和出栈的唯一区别）}
+
+\begin{bookbox}
+
+王道书第 64--66
+页：顺序栈利用一组地址连续的存储单元存放自栈底到栈顶的数据元素，并附设一个指针
+\texttt{top} 指示当前栈顶元素的位置（书上 \texttt{MaxSize} 为 50）。
+
+\begin{itemize}
+\tightlist
+\item
+  栈顶指针 \texttt{S.top}，初始时设为 \texttt{S.top=-1}；栈顶元素
+  \texttt{S.data{[}S.top{]}}；
+\item
+  入栈：栈不满时，先将栈顶指针加
+  1，再送值到栈顶；出栈：栈非空时，先取栈顶元素，再将栈顶指针减 1；
+\item
+  栈空条件 \texttt{S.top==-1}；栈满条件
+  \texttt{S.top==MaxSize-1}；\uln{栈长 \texttt{S.top+1}}。
+\end{itemize}
+
+顺序栈的入栈操作受数组上界约束，若对栈的最大使用空间估计不足，可能发生\textbf{栈上溢}，此时应向用户报告错误信息。
+
+书上的初始化、判空、入栈、出栈、读栈顶代码和课件相同（入栈、出栈用的是
+\texttt{++S.top}、\texttt{S.top-\/-} 的一句写法）。\texttt{GetTop}
+后书上补了一句：该操作不改变栈的状态，栈顶元素依然保留在栈中。
+
+\end{bookbox}
+
+\slidefig{assets/3.1-book-fig3.2.png}{0.65}{王道书图 3.2：栈顶指针和栈中元素之间的关系：(a) 空栈 (b) 1 个元素 (c) 5
+个元素 (d) 2 个元素}
+
+\begin{bookbox}
+
+图 3.2 的说明（第 65 页）：图 (d) 是在图 (c) 基础上 E、D、C
+相继出栈后的结果，此时栈中剩余 2 个元素。尽管 C、D、E
+可能仍保留在原存储单元中，但 \texttt{top}
+指针已指向新的栈顶，因此它们已不属于当前栈的内容。\uln{栈顶指针标识了栈中有效元素的边界}。考点追踪：出
+/ 入栈操作的模拟（2009）。
+
+\end{bookbox}
+
+\hypertarget{ux516dux53e6ux4e00ux79cdux65b9ux5f0ftop-ux521dux59cbux5316ux4e3a-0}{%
+\section{六、另一种方式：top 初始化为
+0}\label{ux516dux53e6ux4e00ux79cdux65b9ux5f0ftop-ux521dux59cbux5316ux4e3a-0}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{\texttt{top}
+指向“下一个可以插入的位置”时，进栈、出栈、判空、判满、读栈顶各怎么写？}也可以让
+\texttt{top} 刚开始指向 0，即
+\uln{\texttt{top} 指向栈顶元素的\textbf{下一个}位置}（下一个可以插入元素的位置）。判空就看
+\texttt{top} 是否为 0。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{void}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                      \CommentTok{// 初始指向 0}
+\OperatorTok{\}}
+
+\DataTypeTok{bool}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{SqStack S}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top }\OperatorTok{==} \DecValTok{0}\OperatorTok{)}                 \CommentTok{// 栈空}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+这时进栈、出栈的顺序和前一种刚好相反：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{进栈}：先把 \texttt{x} 放到 \texttt{top} 指向的位置，再让
+  \texttt{top} 加 1：\texttt{S.data{[}S.top++{]}\ =\ x;}
+\item
+  \textbf{出栈}：先让 \texttt{top} 减 1，再把 \texttt{top}
+  指向的元素传回去：\texttt{x\ =\ S.data{[}-\/-S.top{]};}
+\item
+  \textbf{栈满}：\texttt{top\ ==\ MaxSize}（容量 10 时 \texttt{top} 为
+  10）。
+\end{itemize}
+
+两种设计对照：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.692\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries \texttt{top} 初始为 \(-1\)（指向栈顶元素）} & \textcolor{white}{\bfseries \texttt{top} 初始为 0（指向栈顶元素的下一个位置）} \\
+\endfirsthead
+初始化 & \texttt{S.top\ =\ -1} & \texttt{S.top\ =\ 0} \\ \hline
+判空 & \texttt{S.top\ ==\ -1} & \texttt{S.top\ ==\ 0} \\ \hline
+判满 & \texttt{S.top\ ==\ MaxSize\ -\ 1} & \texttt{S.top\ ==\ MaxSize} \\ \hline
+进栈 & \texttt{S.data{[}++S.top{]}\ =\ x} & \texttt{S.data{[}S.top++{]}\ =\ x} \\ \hline
+出栈 & \texttt{x\ =\ S.data{[}S.top-\/-{]}} & \texttt{x\ =\ S.data{[}-\/-S.top{]}} \\ \hline
+读栈顶 & \texttt{x\ =\ S.data{[}S.top{]}} & \texttt{x\ =\ S.data{[}S.top\ -\ 1{]}} \\ \hline
+栈长 & \texttt{S.top\ +\ 1} & \texttt{S.top} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/3.1.2-p09.jpg}{0.55}{课件：另一种方式（top 初始化为 0）}
+
+\slidefig{assets/3.1.2-p10.jpg}{0.55}{课件：另一种方式的进栈、出栈；“注意审题啊喂”}
+
+\begin{pitfallbox}
+
+做题时一定要先看清 \texttt{top}
+指向\textbf{栈顶元素}还是\textbf{栈顶元素的下一个位置}，两种方式的代码不一样，这是比较容易错的地方。
+
+\end{pitfallbox}
+
+\begin{bookbox}
+
+王道书第 64--66 页的两处说明：另一种常见的方式是栈顶指针初始化为
+\texttt{S.top=0}；入栈时先将元素存入栈顶，再将栈顶指针加
+1；出栈时先将栈顶指针减 1，再取出栈顶元素；栈空条件为
+\texttt{S.top==0}；栈满条件为
+\texttt{S.top==MaxSize}。“注意”框：栈和队列的判空、判满条件，会因实际给出的条件不同而变化，做题时务必根据题目设定灵活应对。
+
+\end{bookbox}
+
+\begin{addbox}
+
+上表“读栈顶”和“栈长”两行，课件知识回顾里有
+\texttt{x=S.data{[}S.top-1{]}}（\texttt{top} 初始为 0
+时），栈长是我按两种设计补的，书上给了 \texttt{top} 初始为 \(-1\) 时栈长
+\texttt{S.top+1}。
+
+\end{addbox}
+
+\hypertarget{ux4e03ux5171ux4eabux6808}{%
+\section{七、共享栈}\label{ux4e03ux5171ux4eabux6808}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{顺序栈满了不能扩容，怎么办？共享栈的两个栈顶指针怎么初始化？什么时候栈满？}顺序栈用静态数组存放元素，\hlred{存满后容量不可改变}，这是顺序栈的缺点。解决办法：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  用链式存储实现栈（下一节）；
+\item
+  一开始就分配一大片连续空间。但这会浪费内存资源，可以用\textbf{共享栈}提高这片空间的利用率。
+\end{enumerate}
+
+\textbf{共享栈}：两个栈共享同一片存储空间。设两个栈顶指针：
+
+\begin{itemize}
+\tightlist
+\item
+  0 号栈的栈顶指针 \texttt{top0} 初始为
+  \(-1\)，从下往上（下标从小到大）增长；
+\item
+  1 号栈的栈顶指针 \texttt{top1} 初始为
+  \texttt{MaxSize}，从上往下（下标从大到小）增长。
+\end{itemize}
+
+逻辑上是两个栈，物理上共享同一片存储空间，提高了内存资源的利用率。共享栈也会存满，\hlred{栈满条件：\texttt{top0\ +\ 1\ ==\ top1}}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}\PreprocessorTok{                  }\CommentTok{// 定义栈中元素的最大个数}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+\NormalTok{    ElemType data}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}         \CommentTok{// 静态数组存放栈中元素}
+    \DataTypeTok{int}\NormalTok{ top0}\OperatorTok{;}                       \CommentTok{// 0 号栈栈顶指针}
+    \DataTypeTok{int}\NormalTok{ top1}\OperatorTok{;}                       \CommentTok{// 1 号栈栈顶指针}
+\OperatorTok{\}}\NormalTok{ ShStack}\OperatorTok{;}
+
+\CommentTok{// 初始化栈}
+\DataTypeTok{void}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{ShStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top0 }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{;}                    \CommentTok{// 初始化栈顶指针}
+\NormalTok{    S}\OperatorTok{.}\NormalTok{top1 }\OperatorTok{=}\NormalTok{ MaxSize}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/3.1.2-p11.jpg}{0.6}{课件：共享栈（两个栈共享同一片空间）}
+
+\begin{bookbox}
+
+王道书第 66
+页：利用栈底位置相对固定的特性，可让两个顺序栈共享同一段一维数组空间，将两个栈的栈底分别设置于数组两端，栈顶向中间延伸。\texttt{top0}、\texttt{top1}
+均指向各自的栈顶元素；初始时 \texttt{top0=-1}（0
+号栈空），\texttt{top1=MaxSize}（1 号栈空）；栈满条件为
+\texttt{top1-top0==1}（两栈顶相邻）。0 号栈入栈时 \texttt{top0} 先加 1
+再赋值，1 号栈入栈时 \texttt{top1} 先减 1 再赋值；出栈操作的顺序相反。
+
+共享栈能更高效地利用存储空间，两个栈的空间可相互调节，\uln{仅当整个数组被占满时才发生栈溢出}。存取数据的时间复杂度均为
+\(O(1)\)。
+
+\end{bookbox}
+
+\slidefig{assets/3.1-book-fig3.3.png}{0.55}{王道书图 3.3：两个顺序栈共享存储空间}
+
+\begin{addbox}
+
+老师说共享栈的代码有兴趣可以自己实现。我的答案（进栈，\texttt{i}
+表示往几号栈放，建议先自己写再对照）：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ Push}\OperatorTok{(}\NormalTok{ShStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,} \DataTypeTok{int}\NormalTok{ i}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{S}\OperatorTok{.}\NormalTok{top0 }\OperatorTok{+} \DecValTok{1} \OperatorTok{==}\NormalTok{ S}\OperatorTok{.}\NormalTok{top1}\OperatorTok{)}           \CommentTok{// 栈满（两栈顶相邻）}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{i }\OperatorTok{==} \DecValTok{0}\OperatorTok{)}\NormalTok{ S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[++}\NormalTok{S}\OperatorTok{.}\NormalTok{top0}\OperatorTok{]} \OperatorTok{=}\NormalTok{ x}\OperatorTok{;}   \CommentTok{// 0 号栈：先加 1 再放}
+    \ControlFlowTok{else}\NormalTok{        S}\OperatorTok{.}\NormalTok{data}\OperatorTok{[{-}{-}}\NormalTok{S}\OperatorTok{.}\NormalTok{top1}\OperatorTok{]} \OperatorTok{=}\NormalTok{ x}\OperatorTok{;}   \CommentTok{// 1 号栈：先减 1 再放}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+出栈相反：0 号栈 \texttt{x\ =\ S.data{[}S.top0-\/-{]};}（判空
+\texttt{top0\ ==\ -1}），1 号栈
+\texttt{x\ =\ S.data{[}S.top1++{]};}（判空
+\texttt{top1\ ==\ MaxSize}）。
+
+\end{addbox}
+
+\hypertarget{ux516bux77e5ux8bc6ux56deux987eux4e0eux9500ux6bc1}{%
+\section{八、知识回顾与销毁}\label{ux516bux77e5ux8bc6ux56deux987eux4e0eux9500ux6bc1}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{顺序栈怎么销毁？为什么这一节的代码不用 \texttt{free}？}}
+
+\begin{itemize}
+\tightlist
+\item
+  两种 \texttt{top}
+  的设计，初始化不同，进栈、出栈的代码也不同，是比较容易错的地方；
+\item
+  所有基本操作都可以在 \hlred{\(O(1)\)} 的时间复杂度内完成；
+\item
+  \textbf{销毁}：先在逻辑上清空栈，只要让 \texttt{top}
+  回到初始化的位置；再回收内存。这一节用的是\uln{变量声明}（\texttt{SqStack\ S;}）分配空间，没有用
+  \texttt{malloc}，函数结束后系统会自动回收，所以回收内存不需要管。
+\end{itemize}
+
+\slidefig{assets/3.1.2-p12.jpg}{0.65}{课件：知识回顾与重要考点}
+
+\begin{recallbox}
+
+“声明变量的空间系统自动回收，\texttt{malloc} 的要手动
+\texttt{free}”在正课
+2.3.6“销（销毁）”讲过：静态分配的数组生命周期结束后系统自动回收；\texttt{malloc}
+申请的在堆区，必须 \texttt{free}。
+
+\end{recallbox}
+
+\begin{summarybox}
+
+\textbf{顺序栈} = 静态数组 \texttt{data{[}MaxSize{]}} + 栈顶指针
+\texttt{top}（数组下标）。基本操作都是 \(O(1)\)。
+
+\textbf{两种设计，先审题}：
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{top} 指向栈顶元素：初始 \(-1\)；判空 \texttt{top==-1}；判满
+  \texttt{top==MaxSize-1}；进栈 \texttt{data{[}++top{]}=x}；出栈
+  \texttt{x=data{[}top-\/-{]}}；
+\item
+  \texttt{top} 指向栈顶元素的下一个位置：初始 0；判空
+  \texttt{top==0}；判满 \texttt{top==MaxSize}；进栈
+  \texttt{data{[}top++{]}=x}；出栈 \texttt{x=data{[}-\/-top{]}}。
+\end{itemize}
+
+记法：\texttt{top}
+指着\textbf{有元素}的格子，进栈要先挪到空格子再放（\texttt{++}
+在前）；\texttt{top} 指着\textbf{空}格子，进栈直接放再挪（\texttt{++}
+在后）。出栈反过来。
+
+\textbf{出栈只是逻辑删除}，数据还残留在内存中。\texttt{GetTop} 和
+\texttt{Pop} 的唯一区别是 \texttt{top} 不变。
+
+\textbf{缺点}：容量不可改变（静态数组）。\textbf{共享栈}：两栈栈底在数组两端、栈顶向中间延伸，\texttt{top0=-1}、\texttt{top1=MaxSize}，栈满
+\texttt{top0+1==top1}，提高空间利用率。
+
+\textbf{销毁}：\texttt{top}
+回到初始值（逻辑清空）；变量声明的空间由系统自动回收。
+
+\textbf{自测}：① 写出 \texttt{top} 初始为 \(-1\) 时的
+\texttt{Push}、\texttt{Pop}。② 设 \texttt{top} 初始为 0，进栈写成
+\texttt{data{[}++top{]}=x} 会出什么问题？③ 共享栈怎样判满？④
+出栈后，被删除的元素还在内存里吗？
+
+\end{summarybox}
+\end{document}
