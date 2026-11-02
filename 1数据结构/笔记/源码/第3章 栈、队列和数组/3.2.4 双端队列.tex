@@ -1,0 +1,510 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.2.4
+双端队列},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.2.4 双端队列 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.2.4
+双端队列 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.2.4
+双端队列}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.2.4 · 正课字幕 P26 · 王道书
+§3.2.4（第 80--82 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{双端队列这个考点，真题喜欢怎么考？}\textbf{双端队列}是真题考过的一个概念，也是一种操作受限的线性表。它还有两个变种：输入受限的双端队列、输出受限的双端队列。考试喜欢考的是\hlred{判断一个输出序列是否合法}。
+
+\hypertarget{ux4e00ux6808ux961fux5217ux53ccux7aefux961fux5217}{%
+\section{一、栈、队列、双端队列}\label{ux4e00ux6808ux961fux5217ux53ccux7aefux961fux5217}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{栈、队列、双端队列对插入和删除的限制各是什么？双端队列只用一端会变成什么？}本质上这几种数据结构都是\uln{插入和删除操作受限的线性表}，只是限制不一样：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{栈}：只允许从一端插入和删除的线性表；
+\item
+  \textbf{队列}：只允许从一端插入、另一端删除的线性表；
+\item
+  \textbf{双端队列}：允许从两端插入、两端删除的线性表。
+\end{itemize}
+
+如果只使用双端队列其中一端的插入、删除操作，它就\uln{退化成了栈}。所以栈能实现的功能，双端队列肯定都能实现。
+
+\slidefig{assets/3.2.4-p02.jpg}{0.6}{课件：栈、队列、双端队列}
+
+\hypertarget{ux4e8cux4e24ux79cdux53d7ux9650ux7684ux53ccux7aefux961fux5217}{%
+\section{二、两种受限的双端队列}\label{ux4e8cux4e24ux79cdux53d7ux9650ux7684ux53ccux7aefux961fux5217}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{“输入受限”和“输出受限”分别限制了什么？}}
+
+\begin{defbox}
+
+\textbf{输入受限的双端队列}：只允许从一端插入、两端删除的线性表。
+
+\end{defbox}
+
+\begin{defbox}
+
+\textbf{输出受限的双端队列}：只允许从两端插入、一端删除的线性表。
+
+\end{defbox}
+
+\slidefig{assets/3.2.4-p03.jpg}{0.6}{课件：双端队列及其两种变种}
+
+\begin{bookbox}
+
+王道书第 80--81
+页：双端队列是一种允许在两端进行插入和删除操作的线性表（图
+3.10）。双端队列两端的地位是平等的，为便于理解，可将左端视为\textbf{前端}，右端视为\textbf{后端}。
+
+\begin{itemize}
+\tightlist
+\item
+  在双端队列\textbf{入队}时：前端插入的元素排列在队列中后端插入的元素之前；后端插入的元素排列在队列中前端插入的元素之后；
+\item
+  在双端队列\textbf{出队}时：无论是从前端还是后端出队，先出的元素总是排列在后出的元素之前。
+\end{itemize}
+
+\textbf{输出受限}的双端队列：允许在一端进行插入和删除，但在另一端仅允许插入（图
+3.11）。\textbf{输入受限}的双端队列：允许在一端进行插入和删除，但在另一端仅允许删除（图
+3.12）。若限定双端队列从某个端点插入的元素只能从该端点删除，则该双端队列就\uln{蜕变为两个栈底相邻接的栈}。考点追踪：双端队列出入队操作的分析（2010、2021）。
+
+\end{bookbox}
+
+\slidefig{assets/3.2-book-fig3.10.png}{0.5}{王道书图 3.10：双端队列}
+
+\slidefig{assets/3.2-book-fig3.11.png}{0.5}{王道书图 3.11：输出受限的双端队列}
+
+\slidefig{assets/3.2-book-fig3.12.png}{0.5}{王道书图 3.12：输入受限的双端队列}
+
+\begin{addbox}
+
+\textbf{名词统一}：课件说“只允许从一端插入、两端删除”，书上说“一端可插可删、另一端只能删”，两种说法是同一个结构（输入受限）；输出受限同理。王道书第
+80 页留了一道思考：“如何由入队序列 a, b, c, d 得到出队序列 d, c, a,
+b？”我的答案：a、b、c、d 依次从后端入队，队中为 a b c d；d、c
+从后端出队，a、b
+从前端出队。只用到一端入队，所以输入受限的双端队列也能做到。
+
+\end{addbox}
+
+\hypertarget{ux4e09ux8003ux70b9ux5224ux65adux8f93ux51faux5e8fux5217ux5408ux6cd5ux6027}{%
+\section{三、考点：判断输出序列合法性}\label{ux4e09ux8003ux70b9ux5224ux65adux8f93ux51faux5e8fux5217ux5408ux6cd5ux6027}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{输入序列 1, 2, 3, 4，用栈能得到哪 14 个输出序列？为什么先讨论栈？}题目：若数据元素输入序列为
+1, 2, 3, 4，哪些输出序列合法、哪些非法？四个元素全排列共
+\(A_4^4 = 4! = 24\) 种。
+
+\hypertarget{ux5148ux770bux6808}{%
+\subsection{先看栈}\label{ux5148ux770bux6808}}
+
+先讨论栈，因为双端队列只用一端就退化成栈，\uln{栈里合法的输出序列，在双端队列里一定也合法}。老师举的四个例子：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{1234}：1 入栈、出栈，2 入栈、出栈，3、4 同理。合法；
+\item
+  \textbf{2413}：第一个输出 2，说明 1 已经在 2 之前入栈。2 出栈后要输出
+  4，必须先把 3 压入栈，3、4 都入栈后 4 出栈。接下来出栈的一定是
+  3，\hlred{不可能是 1}。非法；
+\item
+  \textbf{3241}：3 输出前 1、2 已入栈；3 出栈，2 出栈，4
+  入栈再出栈，最后 1 出栈。合法；
+\item
+  \textbf{4321}：4 最先出栈，说明 1、2、3 都已入栈，顺序不能改变，只能按
+  3、2、1 出栈。合法。由此，4 开头的其他序列都不可能。
+\end{itemize}
+
+再如 \textbf{3412}：3 最先出栈，栈里一定已经有
+1、2。之后无论怎么操作，\uln{一定是 2 先出、1 在 2 之后出}。所以 1 在 2
+之前的这些序列都非法。
+
+\slidefig{assets/3.2.4-p08.jpg}{0.6}{课件：栈的合法输出序列（绿色合法，红色非法；卡特兰数 14）}
+
+用栈得到的 14 个合法序列（课件绿色）：
+
+1234、1243、1324、1342、1432、2134、2143、2314、2341、2431、3214、3241、3421、4321。
+
+10
+个非法序列（课件红色）：1423、2413、3124、3142、3412、4123、4132、4213、4231、4312。
+
+卡特兰数：\(\dfrac{1}{n+1}C_{2n}^{n} = \dfrac{1}{4+1}C_8^4 = 14\)，和上面吻合。老师说：考试基本不可能让你列出所有合法出栈序列，验证的情况太多，而且难度不大，区分不出水平差距。但\uln{卡特兰数的计算公式可以记一下}，不需要证明，要会用。
+
+\begin{recallbox}
+
+正课 3.1.1“常考题型”讲过卡特兰数，\(n=5\) 时 42 种。3.1
+课后习题第六节定理 6.3 的 3-1-2
+判别：栈的输出序列非法，当且仅当其中有三个元素按“最大、最小、中间”的相对次序出现（不必相邻）。上面
+10 个非法序列每个都含这样的三元组，例如 2413 中的 4、1、3。
+
+\end{recallbox}
+
+\hypertarget{ux8f93ux5165ux53d7ux9650ux7684ux53ccux7aefux961fux5217}{%
+\subsection{输入受限的双端队列}\label{ux8f93ux5165ux53d7ux9650ux7684ux53ccux7aefux961fux5217}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{输入受限时，为什么输出 4 之后紧跟着 2 就不可能？}栈中合法的序列在这里一定合法（只用右端插入、删除就和栈一样），所以\uln{只需验证栈中不合法的那 10 个}。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{1423}：只能从一端插入。先插入 1，1
+  可以从右边或左边输出。接着要输出 4，就要先输入
+  2、3、4，因为只能从一端输入，队中排列是 2 3 4。4 从右边删除，2
+  从左边删除，最后 3。合法；
+\item
+  \textbf{3142}：3 先输出，说明 1、2、3 已输入。3 从右边输出，1
+  从左边输出；4 还没输入，从右边放进去再从右边输出；最后 2
+  从左边输出。合法；
+\item
+  \textbf{4 开头}：1、2、3、4 都已输入，队中为 1 2 3 4。4
+  从右边出去后，接下来可以先输出 1 或者 3，\hlred{不可能先输出 2}，因为
+  2 被夹在 1 和 3 中间，只能从两边删除。所以
+  \textbf{4213}、\textbf{4231} 非法。
+\end{itemize}
+
+输入受限的双端队列只有这两个序列不可能得到，其余都合法。
+
+\slidefig{assets/3.2.4-p12.jpg}{0.6}{课件：输入受限的双端队列（红色 4213、4231
+非法；下划线为栈中非法、这里合法）}
+
+\hypertarget{ux8f93ux51faux53d7ux9650ux7684ux53ccux7aefux961fux5217}{%
+\subsection{输出受限的双端队列}\label{ux8f93ux51faux53d7ux9650ux7684ux53ccux7aefux961fux5217}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{输出受限时，为什么 4132 不可能？}同样只需验证栈中不合法的序列。只能从右边输出，所以要按某个顺序输出，这些元素在队中\uln{从右到左}就必须按这个顺序排好。分析方法：看能不能从两边交替插入，拼出期望的排列。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{1423}：1 先输入、紧接着输出。要输出 4 2 3，队中必须从右到左是
+  4 2 3：先插入 2，3 从左边插入（3 在 2 左边），4 从右边插入。合法；
+\item
+  \textbf{3142}：3 出队前 1、2、3 都已入队，且相对位置已经确定。3 之后是
+  1 先输出、2 再输出，所以 2 要在 1 的左边：先插入 1，再从左边插入 2；3
+  从右边插入、右边删除；1 出队；4 从右边插入、删除；最后 2 出队。合法；
+\item
+  \textbf{4132}：4 先输出，1、2、3 已经入队，并且要求队中从右到左是 4 1
+  3 2。先插入 1，接下来插入
+  2，无论从左边还是右边插入，\hlred{2 一定和 1 相邻}，“2 和 1
+  之间还有一个 3”的排列插不出来。非法。\textbf{4231} 同理，非法。
+\end{itemize}
+
+输出受限的双端队列有这两个非法序列，其余都合法。
+
+\slidefig{assets/3.2.4-p16.jpg}{0.6}{课件：输出受限的双端队列（红色 4132、4231 非法）}
+
+\hypertarget{ux8001ux5e08ux603bux7ed3ux7684ux5206ux6790ux65b9ux6cd5}{%
+\subsection{老师总结的分析方法}\label{ux8001ux5e08ux603bux7ed3ux7684ux5206ux6790ux65b9ux6cd5}}
+
+验证序列时最重要的一点：输出序列里看到某个序号的元素，就意味着\uln{在它输出之前，比它序号小的元素一定都已经输入了}。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{输出受限}：序号较大的元素出队之前，较小元素在队中的相对次序已经确定。只能从右边出，所以序列里
+  1 在 2 之前，就要 1 在右、2 在左；2 在 1 之前，就要 2 在右、1
+  在左。接下来验证能不能用两边的插入拼出这个顺序；
+\item
+  \textbf{输入受限}：只能从一端输入，序号较大的元素出队之前，较小元素在队中的相对位置也已确定。接下来只需验证能不能用左右两边的删除拼出后续的输出序列。
+\end{itemize}
+
+老师说：栈的合法性判断一般不容易出错，双端队列要细心一些，需要自己练习找到感觉。可以自己试
+1, 2, 3, 4, 5
+依次输入，打乱顺序看能不能产生相应的输出序列，训练分析逻辑。
+
+\begin{addbox}
+
+上面 24
+个序列在栈、输入受限、输出受限、不受限的双端队列中是否合法，我用程序穷举所有入队/出队操作验证过：栈恰好
+14 个合法；输入受限只有 4213、4231 非法；输出受限只有 4132、4231
+非法；两端都不受限的双端队列 24 个全部合法。
+
+\end{addbox}
+
+\hypertarget{ux56dbux738bux9053ux4e66ux7684ux4f8bux9898}{%
+\section{四、王道书的例题}\label{ux56dbux738bux9053ux4e66ux7684ux4f8bux9898}}
+
+\tocback
+
+\begin{bookbox}
+
+王道书第 81 页 \textbf{例}：设有一个双端队列，输入序列为 1, 2, 3,
+4，试分别求出以下条件的输出序列。(1)
+能由输入受限的双端队列得到，但不能由输出受限的双端队列得到的输出序列。(2)
+能由输出受限的双端队列得到，但不能由输入受限的双端队列得到的输出序列。(3)
+既不能由输入受限的双端队列得到，又不能由输出受限的双端队列得到的输出序列。
+
+\textbf{解}：先看\textbf{输入受限}的双端队列（图 3.13）。假设 end1
+端输入 1, 2, 3, 4，则 end2 端的输出相当于普通队列的输出，即 1, 2, 3,
+4；而 end1 端的输出相当于栈的输出，\(n=4\) 时仅通过 end1 端有 14
+种输出序列（由 Catalan 公式得出），仅通过 end1 端不能得到的输出序列有
+\(4!-14=10\) 种。通过 end1 和 end2 端混合输出，可以输出这 10 种中的 8
+种（下表，\(S_L\)、\(X_L\) 分别代表 end1 端的入队和出队，\(X_R\) 代表
+end2 端的出队）。剩下的两种 4, 2, 3, 1 和 4, 2, 1, 3
+不能通过输入受限的双端队列输出。
+
+再看\textbf{输出受限}的双端队列（图 3.14）。假设 end1 和 end2
+端都能输入，仅 end2 端可以输出。若都从 end2
+端输入，就是一个栈，输出序列有 14 种。对于其余 10 种，通过交替从 end1 和
+end2 端输入，还可以输出其中 8 种（下表，\(S_L\) 代表 end1
+端的输入，\(S_R\)、\(X_R\) 分别代表 end2
+端的输入和输出）。不能得到的两种是 4, 1, 3, 2 和 4, 2, 3, 1。
+
+综上所述：(1) 4, 1, 3, 2；(2) 4, 2, 1, 3；(3) 4, 2, 3, 1。
+
+\end{bookbox}
+
+\slidefig{assets/3.2-book-ex-fig.png}{0.6}{王道书图 3.13、3.14：例题中输入受限、输出受限的双端队列}
+
+\slidefig{assets/3.2-book-ex-tab1.png}{0.6}{王道书例题：输入受限的双端队列得到的 8 种序列及入队出队顺序}
+
+\slidefig{assets/3.2-book-ex-tab2.png}{0.6}{王道书例题：输出受限的双端队列得到的 8 种序列及入队出队顺序}
+
+\begin{bookbox}
+
+王道书第 82
+页“提示”：实际双端队列的考题不会如此复杂，通常\uln{只需判断序列是否满足题设条件，代入验证即可}。
+
+\end{bookbox}
+
+\hypertarget{ux4e94ux77e5ux8bc6ux56deux987e}{%
+\section{五、知识回顾}\label{ux4e94ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/3.2.4-p17.jpg}{0.6}{课件：知识回顾与重要考点（回忆：栈的变种------共享栈）}
+
+老师最后提醒：双端队列是队列的一个变种。之前还学过一个栈的变种，\uln{共享栈}，也是比较容易遗忘的点，回忆一下。
+
+\begin{recallbox}
+
+正课 3.1.2“七、共享栈”：两个栈共享同一片存储空间，\texttt{top0} 初始为
+\(-1\)、\texttt{top1} 初始为 \texttt{MaxSize}，栈满条件
+\texttt{top0\ +\ 1\ ==\ top1}。
+
+\end{recallbox}
+
+\begin{summarybox}
+
+\textbf{三种受限线性表}：栈（一端插删）、队列（一端插、另一端删）、双端队列（两端插删）。双端队列只用一端就退化成栈。
+
+\textbf{两个变种}：\hlred{输入受限} =
+一端插入、两端删除；\hlred{输出受限} = 两端插入、一端删除。
+
+\textbf{考点}：判断输出序列合法性。栈中合法的序列在双端队列中一定合法，所以只需验证栈中非法的那些。
+
+\textbf{输入 1, 2, 3, 4 的结论}：栈合法 14 种（卡特兰数
+\(\frac{1}{n+1}C_{2n}^{n}\)）；输入受限非法
+\hlred{4213、4231}；输出受限非法 \hlred{4132、4231}。4231 两种都不行。
+
+\textbf{分析方法}：某元素输出前，比它小的元素都已输入；输出受限看能否用两边插入拼出队中排列；输入受限看能否用两边删除拼出后续序列。书上提示：实际考题代入验证即可。
+
+\textbf{自测}：① 输入受限、输出受限分别限制什么？②
+为什么只需验证栈中非法的序列？③ 输入受限时为什么 4213 不行？④
+输出受限时为什么 4132 不行？⑤ 哪个序列两种受限双端队列都得不到？
+
+\end{summarybox}
+\end{document}

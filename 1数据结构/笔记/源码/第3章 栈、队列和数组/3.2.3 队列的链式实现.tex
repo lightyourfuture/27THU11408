@@ -1,0 +1,643 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.2.3
+队列的链式实现},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.2.3 队列的链式实现 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.2.3
+队列的链式实现 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.2.3
+队列的链式实现}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.2.3 · 正课字幕 P25 · 王道书
+§3.2.3（第 79--80 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{链队列和单链表是什么关系？要实现哪两个版本？}用\textbf{链式存储}实现队列。学过单链表后这一节很轻松：单链表可以在任何位置插入、删除，队列只能在队尾插入、在队头删除，所以老师说\uln{队列其实是单链表的一个“阉割版”}。和单链表一样，可以实现\textbf{带头结点}和\textbf{不带头结点}两个版本。
+
+\hypertarget{ux4e00ux94feux961fux5217ux7684ux5b9aux4e49}{%
+\section{一、链队列的定义}\label{ux4e00ux94feux961fux5217ux7684ux5b9aux4e49}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{链队列为什么既要保存队头指针、又要保存队尾指针？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ LinkNode }\OperatorTok{\{}           \CommentTok{// 链式队列结点}
+\NormalTok{    ElemType data}\OperatorTok{;}
+    \KeywordTok{struct}\NormalTok{ LinkNode }\OperatorTok{*}\NormalTok{next}\OperatorTok{;}
+\OperatorTok{\}}\NormalTok{ LinkNode}\OperatorTok{;}
+
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}                    \CommentTok{// 链式队列}
+\NormalTok{    LinkNode }\OperatorTok{*}\NormalTok{front}\OperatorTok{,} \OperatorTok{*}\NormalTok{rear}\OperatorTok{;}         \CommentTok{// 队列的队头和队尾指针}
+\OperatorTok{\}}\NormalTok{ LinkQueue}\OperatorTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  上面的 \texttt{struct} 定义队列中一个一个的结点；下面的
+  \texttt{LinkQueue} 只包含两个指针：队头指针和队尾指针。
+\item
+  学单链表时，只需保存头指针
+  \texttt{L}，后续结点都能顺着找到。但如果只保存头指针，要在表尾插入，就得从头往后找到最后一个结点，时间复杂度
+  \(O(n)\)。队列每次都在表尾插入，所以\uln{专门用一个尾指针 \texttt{rear} 指向最后一个结点}，插入时不用从头找。
+\item
+  出队只需从队头找到第一个数据结点删除。所以声明队列时，\uln{既要保存队头指针，也要保存队尾指针}。
+\item
+  带头结点和不带头结点两种实现，队头指针的指向不一样：带头结点时
+  \texttt{front} 指向头结点；不带头结点时 \texttt{front}
+  指向第一个数据结点。
+\end{itemize}
+
+用链式存储实现的队列叫\textbf{链队列}。
+
+\slidefig{assets/3.2.3-p03.jpg}{0.6}{课件：队列的链式实现（带头结点 / 不带头结点）}
+
+\begin{bookbox}
+
+王道书第 79
+页：队列的链式表示称为\textbf{链式队列}，本质上是一个同时带有队首指针和队尾指针的单链表。队首指针指向队头结点，队尾指针指向队尾结点，即单链表的最后一个结点。类型定义和课件相同。考点追踪：链式队列的应用场景（2019）。
+
+\end{bookbox}
+
+\slidefig{assets/3.2-book-fig3.8.png}{0.5}{王道书图 3.8：不带队头结点的链式队列}
+
+\begin{addbox}
+
+\textbf{名词统一}：课件叫“链队列”，王道书叫“链式队列”，是同一个东西。书上图
+3.8、3.9
+的图题写的是“不带\textbf{队头结点}”“带\textbf{队头结点}”，就是课件说的“不带头结点”“带头结点”。
+
+\end{addbox}
+
+\hypertarget{ux4e8cux521dux59cbux5316ux4e0eux5224ux7a7a}{%
+\section{二、初始化与判空}\label{ux4e8cux521dux59cbux5316ux4e0eux5224ux7a7a}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{带头结点和不带头结点，初始化时 \texttt{front}、\texttt{rear}
+分别指向哪里？判空条件各是什么？}}
+
+\hypertarget{ux5e26ux5934ux7ed3ux70b9}{%
+\subsection{带头结点}\label{ux5e26ux5934ux7ed3ux70b9}}
+
+\texttt{malloc} 申请一个头结点，让 \texttt{front} 和 \texttt{rear}
+同时指向它，再让头结点的 \texttt{next} 指向 \texttt{NULL}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化队列（带头结点）}
+\DataTypeTok{void}\NormalTok{ InitQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{)} \OperatorTok{\{}
+    \CommentTok{// 初始时 front、rear 都指向头结点}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{=}\NormalTok{ Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=} \OperatorTok{(}\NormalTok{LinkNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LinkNode}\OperatorTok{));}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{front}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断队列是否为空}
+\DataTypeTok{bool}\NormalTok{ IsEmpty}\OperatorTok{(}\NormalTok{LinkQueue Q}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{==}\NormalTok{ Q}\OperatorTok{.}\NormalTok{rear}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+
+\DataTypeTok{void}\NormalTok{ testLinkQueue}\OperatorTok{()} \OperatorTok{\{}
+\NormalTok{    LinkQueue Q}\OperatorTok{;}                    \CommentTok{// 声明一个队列}
+\NormalTok{    InitQueue}\OperatorTok{(}\NormalTok{Q}\OperatorTok{);}                   \CommentTok{// 初始化队列}
+    \CommentTok{// ……后续操作}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+判空：看 \texttt{front} 和 \texttt{rear}
+是否指向同一个结点；也可以看\uln{头结点的 \texttt{next} 是否为 \texttt{NULL}}。
+
+\slidefig{assets/3.2.3-p04.jpg}{0.6}{课件：初始化（带头结点）}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9}{%
+\subsection{不带头结点}\label{ux4e0dux5e26ux5934ux7ed3ux70b9}}
+
+初始化时让 \texttt{front} 和 \texttt{rear} 都指向
+\texttt{NULL}。判空只需看 \texttt{front} 是否等于
+\texttt{NULL}（也可以看 \texttt{rear} 是否等于 \texttt{NULL}）。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 初始化队列（不带头结点）}
+\DataTypeTok{void}\NormalTok{ InitQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{)} \OperatorTok{\{}
+    \CommentTok{// 初始时 front、rear 都指向 NULL}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+\OperatorTok{\}}
+
+\CommentTok{// 判断队列是否为空（不带头结点）}
+\DataTypeTok{bool}\NormalTok{ IsEmpty}\OperatorTok{(}\NormalTok{LinkQueue Q}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+    \ControlFlowTok{else}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/3.2.3-p05.jpg}{0.6}{课件：初始化（不带头结点）}
+
+\begin{bookbox}
+
+王道书第 79 页：当不带头结点时，若
+\uln{\texttt{Q.front==NULL} 且 \texttt{Q.rear==NULL}}，则链式队列为空队列。考点追踪：链式队列判空的条件（2019）。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux5165ux961f}{%
+\section{三、入队}\label{ux4e09ux5165ux961f}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{不带头结点的队列，第一个元素入队时为什么要特殊处理？}}
+
+\hypertarget{ux5e26ux5934ux7ed3ux70b9-1}{%
+\subsection{带头结点}\label{ux5e26ux5934ux7ed3ux70b9-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{malloc} 申请新结点 \texttt{s}，把 \texttt{x} 放进去；
+\item
+  新结点一定是队列的最后一个结点，所以
+  \texttt{s-\textgreater{}next\ =\ NULL}；
+\item
+  把新结点连到当前表尾结点之后：\texttt{Q.rear-\textgreater{}next\ =\ s}；
+\item
+  让表尾指针指向这个新的表尾结点：\texttt{Q.rear\ =\ s}。
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 新元素入队（带头结点）}
+\DataTypeTok{void}\NormalTok{ EnQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LinkNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LinkNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LinkNode}\OperatorTok{));}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{rear}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}               \CommentTok{// 新结点插入到 rear 之后}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                     \CommentTok{// 修改表尾指针}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+带头结点时，插入\uln{第一个元素和后续元素用的代码逻辑都一样}。
+
+\slidefig{assets/3.2.3-p06.jpg}{0.6}{课件：入队（带头结点）}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9-1}{%
+\subsection{不带头结点}\label{ux4e0dux5e26ux5934ux7ed3ux70b9-1}}
+
+刚开始 \texttt{front}、\texttt{rear} 都指向
+\texttt{NULL}，插入第一个元素时\hlred{两个指针都要修改}：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 新元素入队（不带头结点）}
+\DataTypeTok{void}\NormalTok{ EnQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{,}\NormalTok{ ElemType x}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    LinkNode }\OperatorTok{*}\NormalTok{s }\OperatorTok{=} \OperatorTok{(}\NormalTok{LinkNode }\OperatorTok{*)}\NormalTok{malloc}\OperatorTok{(}\KeywordTok{sizeof}\OperatorTok{(}\NormalTok{LinkNode}\OperatorTok{));}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{data }\OperatorTok{=}\NormalTok{ x}\OperatorTok{;}
+\NormalTok{    s}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)} \OperatorTok{\{}          \CommentTok{// 在空队列中插入第一个元素}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                \CommentTok{// 修改队头队尾指针}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}
+    \OperatorTok{\}} \ControlFlowTok{else} \OperatorTok{\{}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{rear}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}           \CommentTok{// 新结点插入到 rear 结点之后}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ s}\OperatorTok{;}                 \CommentTok{// 修改 rear 指针}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+之后再入队，就是对 \texttt{rear}
+指向的结点做后插操作，并且每次都别忘了让 \texttt{rear}
+指向新的表尾结点。
+
+\slidefig{assets/3.2.3-p07.jpg}{0.6}{课件：入队（不带头结点）；“不带头结点的队列，第一个元素入队时需要特别处理”}
+
+\hypertarget{ux56dbux51faux961f}{%
+\section{四、出队}\label{ux56dbux51faux961f}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{最后一个结点出队时，带头结点和不带头结点各要额外改什么？}}
+
+\hypertarget{ux5e26ux5934ux7ed3ux70b9-2}{%
+\subsection{带头结点}\label{ux5e26ux5934ux7ed3ux70b9-2}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  判空，空则返回 \texttt{false}；
+\item
+  让 \texttt{p} 指向这次要删除的结点，即\uln{头结点后面的那个结点}；
+\item
+  用 \texttt{x} 把要删除的数据元素带回去（\texttt{x} 加了引用符号）；
+\item
+  修改头结点的 \texttt{next} 指针；
+\item
+  如果这次删除的 \texttt{p}
+  恰好是表尾结点（队列中最后一个结点），还要修改表尾指针，让
+  \texttt{rear} 指向头结点，\texttt{rear} 和 \texttt{front}
+  指向同一位置，队列又变回空队列；
+\item
+  释放 \texttt{p}。
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 队头元素出队（带头结点）}
+\DataTypeTok{bool}\NormalTok{ DeQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{==}\NormalTok{ Q}\OperatorTok{.}\NormalTok{rear}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}               \CommentTok{// 空队}
+\NormalTok{    LinkNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ Q}\OperatorTok{.}\NormalTok{front}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}                    \CommentTok{// 用变量 x 返回队头元素}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{front}\OperatorTok{{-}\textgreater{}}\NormalTok{next }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}        \CommentTok{// 修改头结点的 next 指针}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{==}\NormalTok{ p}\OperatorTok{)}                \CommentTok{// 此次是最后一个结点出队}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ Q}\OperatorTok{.}\NormalTok{front}\OperatorTok{;}           \CommentTok{// 修改 rear 指针}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{p}\OperatorTok{);}                        \CommentTok{// 释放结点空间}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\slidefig{assets/3.2.3-p08.jpg}{0.6}{课件：出队（带头结点）}
+
+\begin{fixbox}
+
+课件这一页标题是“出队（带头结点）”，但代码第一行注释写成了
+\texttt{//队头元素出队（不带头结点）}。看代码（\texttt{p=Q.front-\textgreater{}next}、最后
+\texttt{Q.rear=Q.front}）是带头结点的版本，注释写错了。
+
+\end{fixbox}
+
+\hypertarget{ux4e0dux5e26ux5934ux7ed3ux70b9-2}{%
+\subsection{不带头结点}\label{ux4e0dux5e26ux5934ux7ed3ux70b9-2}}
+
+每次出队的是 \texttt{front}
+指向的结点。没有头结点，所以\uln{每个队头元素出队后都要修改 \texttt{front}}；最后一个结点出队后，还要把
+\texttt{front} 和 \texttt{rear} 都置为
+\texttt{NULL}，恢复成空队列的状态。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{// 队头元素出队（不带头结点）}
+\DataTypeTok{bool}\NormalTok{ DeQueue}\OperatorTok{(}\NormalTok{LinkQueue }\OperatorTok{\&}\NormalTok{Q}\OperatorTok{,}\NormalTok{ ElemType }\OperatorTok{\&}\NormalTok{x}\OperatorTok{)} \OperatorTok{\{}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{==}\NormalTok{ NULL}\OperatorTok{)}
+        \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}               \CommentTok{// 空队}
+\NormalTok{    LinkNode }\OperatorTok{*}\NormalTok{p }\OperatorTok{=}\NormalTok{ Q}\OperatorTok{.}\NormalTok{front}\OperatorTok{;}          \CommentTok{// p 指向此次出队的结点}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{data}\OperatorTok{;}                    \CommentTok{// 用变量 x 返回队头元素}
+\NormalTok{    Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{=}\NormalTok{ p}\OperatorTok{{-}\textgreater{}}\NormalTok{next}\OperatorTok{;}              \CommentTok{// 修改 front 指针}
+    \ControlFlowTok{if} \OperatorTok{(}\NormalTok{Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{==}\NormalTok{ p}\OperatorTok{)} \OperatorTok{\{}              \CommentTok{// 此次是最后一个结点出队}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{front }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}             \CommentTok{// front 指向 NULL}
+\NormalTok{        Q}\OperatorTok{.}\NormalTok{rear }\OperatorTok{=}\NormalTok{ NULL}\OperatorTok{;}              \CommentTok{// rear 指向 NULL}
+    \OperatorTok{\}}
+\NormalTok{    free}\OperatorTok{(}\NormalTok{p}\OperatorTok{);}                        \CommentTok{// 释放结点空间}
+    \ControlFlowTok{return} \KeywordTok{true}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+老师说这些不难理解，只要细心一点，写代码肯定没问题。
+
+\slidefig{assets/3.2.3-p09.jpg}{0.6}{课件：出队（不带头结点）}
+
+\begin{bookbox}
+
+王道书第 79--80 页：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{入队操作}：创建一个新结点，将其插入链表尾部，并令
+  \texttt{Q.rear} 指向该结点；若原队列为空，则同时令 \texttt{Q.front}
+  也指向该结点；
+\item
+  \textbf{出队操作}：先判断队列是否为空；若非空，则取出队首元素，删除对应结点，并令
+  \texttt{Q.front} 指向下一个结点；若被删结点是最后一个元素，则将
+  \texttt{Q.front} 和 \texttt{Q.rear} 均置为 \texttt{NULL}。
+\end{itemize}
+
+不难发现，不带头结点的链式队列在边界处理上较为烦琐。因此，\uln{通常将链式队列设计为带头结点的单链表}，从而使插入与删除操作逻辑统一（图
+3.9）。
+
+书上“链式队列的基本操作”给的是带头结点版本，初始化、判队空、入队、出队代码和课件的带头结点版本相同（书上判空函数名是
+\texttt{QueueEmpty}）。考点追踪：链式队列出队/入队操作的基本过程（2019）。
+
+\end{bookbox}
+
+\slidefig{assets/3.2-book-fig3.9.png}{0.4}{王道书图 3.9：带队头结点的链式队列（上：空队列；下：一个元素）}
+
+\hypertarget{ux4e94ux961fux5217ux6ee1ux7684ux6761ux4ef6}{%
+\section{五、队列满的条件}\label{ux4e94ux961fux5217ux6ee1ux7684ux6761ux4ef6}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{为什么顺序队列要花大篇幅判满，链队列却一般不用？}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{顺序存储}：循环队列的空间是用静态数组提前预分配的，容量有限、不可拓展，\uln{预分配的空间耗尽时队满}，所以上一节花了很大篇幅判断队满；
+\item
+  \textbf{链式存储}：只要内存资源还足够，就可以继续扩容，\hlred{一般不会队满}，除非内存不足，所以可以不用关心这个问题。
+\end{itemize}
+
+\slidefig{assets/3.2.3-p10.jpg}{0.6}{课件：队列满的条件}
+
+\begin{bookbox}
+
+王道书第 79
+页：链式队列特别适用于\uln{元素数量频繁变化}的场景，且不存在队满或溢出问题。此外，若程序中需使用多个队列（如同多个栈的情形），优先选用链式队列可避免存储分配不合理或溢出等问题。
+
+\end{bookbox}
+
+\hypertarget{ux516dux77e5ux8bc6ux56deux987e}{%
+\section{六、知识回顾}\label{ux516dux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/3.2.3-p11.jpg}{0.6}{课件：知识回顾与重要考点（注意第一个元素入队、最后一个元素出队；判满？不存在的）}
+
+老师的总结：如果题目要求实现一个队列，先看它要求\uln{带头结点还是不带头结点}；第一个元素入队、最后一个元素出队时可能需要特殊处理，特别注意修改
+\texttt{rear}
+指针。其他方面和单链表没有太大区别，复习时可以和单链表对比学习。
+
+\textbf{思考：队列长度怎么算？}
+只能从队头结点开始依次往后遍历，统计结点个数，需要 \(O(n)\)
+的时间。如果队列长度需要频繁访问，可以在 \texttt{LinkQueue} 里加一个
+\texttt{int} 型变量 \texttt{length}，记录当前队列有多少个元素。
+
+老师强调：数据结构不是用来考试的东西，是解决问题的工具，不要教条化。问题需要什么，就可以因地制宜、灵活地往数据结构里添加需要的东西；课程里学的只是比较容易错、比较核心的基本操作。
+
+\begin{recallbox}
+
+正课 2.3.2
+单链表的插入删除：带头结点时，在第一个位置插入和在其他位置插入的代码一样；不带头结点时，插入、删除第
+1 个结点要单独处理，因为头指针 \texttt{L}
+要改。这里“不带头结点时第一个元素入队、最后一个元素出队要特殊处理”是同一个原因。
+
+\end{recallbox}
+
+\begin{summarybox}
+
+\textbf{链队列} = 同时带队头指针 \texttt{front} 和队尾指针 \texttt{rear}
+的单链表；只能在队尾插入、队头删除（单链表的“阉割版”）。有 \texttt{rear}
+指针，入队不用从头找表尾，\(O(1)\)。
+
+\textbf{带头结点}：初始化
+\texttt{front\ =\ rear\ =\ 头结点}，\texttt{头结点-\textgreater{}next\ =\ NULL}；判空
+\hlred{\texttt{front\ ==\ rear}}；入队
+\texttt{rear-\textgreater{}next\ =\ s;\ rear\ =\ s;}；出队删
+\texttt{front-\textgreater{}next}，\hlred{若删的是最后一个结点，\texttt{rear\ =\ front}}。
+
+\textbf{不带头结点}：初始化 \texttt{front\ =\ rear\ =\ NULL}；判空
+\hlred{\texttt{front\ ==\ NULL}}（书上写 \texttt{front==NULL} 且
+\texttt{rear==NULL}）；第一个元素入队时 \texttt{front}、\texttt{rear}
+都指向 \texttt{s}；出队后改 \texttt{front}，最后一个结点出队后
+\texttt{front}、\texttt{rear} 都置 \texttt{NULL}。
+
+\textbf{队满}：顺序存储预分配空间耗尽时队满；链式存储一般不会队满（除非内存不足）。书上：通常设计为带头结点，使插入与删除逻辑统一。
+
+\textbf{队列长度}：遍历 \(O(n)\)；常用时可加 \texttt{length} 变量。
+
+\textbf{自测}：① 带头结点链队列的判空条件有哪两种写法？②
+带头结点时，最后一个结点出队要额外做什么？③
+不带头结点时，第一个元素入队要改哪两个指针？④ 为什么链队列一般不用判满？
+
+\end{summarybox}
+\end{document}
