@@ -189,6 +189,12 @@ local function Div(el)
     table.insert(r, pandoc.RawBlock('latex', '\\end{questionbox}'))
     return r
   end
+  if el.classes:includes('thm') then
+    local r = { pandoc.RawBlock('latex', '\\begin{thmbox}{' .. (el.attributes.title or '') .. '}') }
+    for _, b in ipairs(el.content) do table.insert(r, b) end
+    table.insert(r, pandoc.RawBlock('latex', '\\end{thmbox}'))
+    return r
+  end
   if el.classes:includes('def') then
     local t = el.attributes.title and ('[：' .. el.attributes.title .. ']') or ''
     local r = { pandoc.RawBlock('latex', '\\begin{defbox}' .. t) }

@@ -126,6 +126,9 @@
 \newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
    left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
    title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
 \newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
 \newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
 \newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
@@ -1500,265 +1503,436 @@ D 正确。
 
 \Needspace{4\baselineskip}
 
-\cuenote{出栈序列题能不能不模拟？所有技巧从哪来？}第四、五节都是逐步模拟，也就是老师说的“有手就行”。考场上更快的办法是：记住\textbf{两条原子事实}，其余规律全是它们的直接推论；遇到题目按题型挑一条用，大多一眼出答案。
+\cuenote{出栈序列题能不能不模拟？所有技巧从哪来？}第四、五节都是逐步模拟。本节换一种做法：先立两条最基本的性质，再像数学教材一样一条条推出定理，每条定理都配证明和例题。读完后，出栈序列题大多可以直接判断，不必画栈。
 
 \begin{addbox}
 
 本节是我做完 3.1
 后整理的，不是王道书或习题讲解视频的原话。为保证没有漏洞，我写程序把
 \(n\le 7\)
-的全部排列都模拟了一遍，下面每条推论、每个公式都与模拟结果完全一致。
+的全部排列都模拟了一遍，本节每条定理、每个公式都与模拟结果一致。
 
 \end{addbox}
 
-\hypertarget{ux7b2c-0-ux6b65ux6362ux6210ux6807ux51c6ux5f62}{%
-\subsection{第 0
-步：换成标准形}\label{ux7b2c-0-ux6b65ux6362ux6210ux6807ux51c6ux5f62}}
+\hypertarget{ux7ea6ux5b9aux4e0eux8bb0ux53f7}{%
+\subsection{6.1 约定与记号}\label{ux7ea6ux5b9aux4e0eux8bb0ux53f7}}
 
-先把元素\textbf{按进栈次序编号成
-\(1,2,\cdots,n\)}，出栈序列跟着换，之后只看数的大小：
+\cueblock{\cuenote}{\relax{为什么先把元素换成 \(1,2,\cdots,n\)？\(m_i\) 是什么？}}
 
-\begin{itemize}
-\tightlist
-\item
-  字母题：a→1，b→2\ldots\ldots 例如 26 题 bdcfeag → 2 4 3 6 5 1 7；
-\item
-  23 题按“n1\_”进栈：n→1，1→2，\_→3；
-\item
-  入栈序列写成 \(P_1,\cdots,P_n\) 的题：按下标编号，见推论 6。
-\end{itemize}
+\begin{thmbox}{定义 6.1（标准形）}
 
-\hypertarget{ux4e24ux6761ux539fux5b50ux4e8bux5b9e}{%
-\subsection{两条原子事实}\label{ux4e24ux6761ux539fux5b50ux4e8bux5b9e}}
+把元素\textbf{按进栈的先后}依次记为 \(1,2,\cdots,n\)，即 \(1\)
+最先进栈、\(n\) 最后进栈。出栈序列记为 \[p_1,\ p_2,\ \cdots,\ p_n\] 其中
+\(p_i\) 表示第 \(i\) 个出栈的元素。
 
-\begin{defbox}[：原子 1：进过栈的永远是一个前缀]
+\end{thmbox}
 
-元素按 \(1,2,\cdots,n\) 依次进栈，所以任何时刻进过栈的恰好是
-\(1,2,\cdots,m\)。第 \(i\) 个数出栈的那一刻，
-\[m_i=\max(p_1,p_2,\cdots,p_i)\] 即“前 \(i\)
-个输出里的最大数”（比它大的还没进过栈，否则它们得先出）。
-
-\end{defbox}
-
-\begin{defbox}[：原子 2：栈内自底向上递增，弹出的是栈里最大的]
-
-先进的在下面，所以栈里的数自底向上从小到大；出栈只能弹栈顶，也就是\textbf{栈里最大的那个}。
-
-\end{defbox}
-
-两条合起来得到\textbf{状态公式}：第 \(i\) 个数出栈前一刻，
-
-\[\text{栈}=\{1,2,\cdots,m_i\}-\{p_1,\cdots,p_{i-1}\}\quad(\text{自底向上递增})，\qquad p_i=\text{其中最大者}\]
-
-下面 7 条推论都只是这个公式换个角度看。
-
-\hypertarget{ux63a8ux8bba-1ux4e00ux6b65ux89c4ux5219ux5224ux5b9a-ux6784ux9020}{%
-\subsection{推论 1：一步规则（判定 +
-构造）}\label{ux63a8ux8bba-1ux4e00ux6b65ux89c4ux5219ux5224ux5b9a-ux6784ux9020}}
-
-\Needspace{4\baselineskip}
-
-\cuenote{读到一个比之前最大值小的数，它必须是谁？}从左往右读出栈序列，记
-\(m\) = 已读到的最大数。下一个数 \(y\)：
+换成标准形之后，“谁先进栈”就等于“谁更小”，下面所有判断都只比较数的大小。
 
 \begin{itemize}
 \tightlist
 \item
-  \(y>m\)：一定可以（把 \(m+1,\cdots,y\) 依次进栈，\(y\) 出栈），\(m\)
-  更新为 \(y\)；
+  字母题：a→1，b→2，\ldots\ldots 例如 26 题的出栈序列 bdcfeag 记为 2 4 3
+  6 5 1 7；
 \item
-  \(y<m\)：\(y\) \textbf{必须是 \(1\sim m\)
-  中还没出现过的最大数}（就是栈顶），否则非法。
+  23 题按“n1\_”的顺序进栈：n→1，1→2，\_→3；
+\item
+  入栈序列写成 \(P_1,\cdots,P_n\) 的题放到 6.7 节单独讲。
 \end{itemize}
+
+\begin{thmbox}{定义 6.2（前缀最大值）}
+
+记 \(m_i=\max(p_1,p_2,\cdots,p_i)\)，即前 \(i\)
+个出栈元素中最大的那个；约定 \(m_0=0\)。
+
+\end{thmbox}
+
+\textbf{例 6.1} 26 题的出栈序列 2 4 3 6 5 1 7：
+
+\Needspace{5\baselineskip}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.171\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X>{\hsize=0.976\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries 1} & \textcolor{white}{\bfseries 2} & \textcolor{white}{\bfseries 3} & \textcolor{white}{\bfseries 4} & \textcolor{white}{\bfseries 5} & \textcolor{white}{\bfseries 6} & \textcolor{white}{\bfseries 7} \\
+\endfirsthead
+\(p_i\) & 2 & 4 & 3 & 6 & 5 & 1 & 7 \\ \hline
+\(m_i\) & 2 & 4 & 4 & 6 & 6 & 6 & 7 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hypertarget{ux4e24ux6761ux57faux672cux6027ux8d28ux4e0eux72b6ux6001ux516cux5f0f}{%
+\subsection{6.2
+两条基本性质与状态公式}\label{ux4e24ux6761ux57faux672cux6027ux8d28ux4e0eux72b6ux6001ux516cux5f0f}}
+
+\cueblock{\cuenote}{\relax{第 \(i\) 个元素出栈的那一刻，哪些元素进过栈？栈里有哪些元素？}}
+
+\begin{thmbox}{性质 6.1（前缀性）}
+
+第 \(i\) 个元素出栈的那一刻，进过栈的元素恰好是 \(1,2,\cdots,m_i\)。
+
+\end{thmbox}
+
+\textbf{证明} 元素按 \(1,2,3,\cdots\)
+的顺序进栈，所以此刻进过栈的一定是某个 \(1,2,\cdots,k\)。
+
+\begin{itemize}
+\tightlist
+\item
+  \(p_1,\cdots,p_i\) 都已出栈，当然都进过栈，所以 \(k\ge m_i\)；
+\item
+  若 \(k>m_i\)，则元素 \(k\) 进过栈，又不在 \(p_1,\cdots,p_i\)
+  中，说明它还在栈里；它比 \(p_i\) 后进栈，压在 \(p_i\) 上面，\(p_i\)
+  就不是栈顶，弹不出来，矛盾。
+\end{itemize}
+
+所以 \(k=m_i\)。\(\square\)
+
+\begin{thmbox}{性质 6.2（有序性）}
+
+任何时刻，栈中元素自底向上递增；栈顶是栈中最大的元素，出栈只能弹出它。
+
+\end{thmbox}
+
+\textbf{证明} 先进栈的在下面，而标准形里先进栈的更小。\(\square\)
+
+把两条性质合起来，就得到本节最核心的结论。
+
+\begin{thmbox}{定理 6.1（状态公式）}
+
+第 \(i\) 个元素出栈前一刻，栈中元素恰为
+\[S_i=\{1,2,\cdots,m_i\}-\{p_1,\cdots,p_{i-1}\}\] 并且
+\(p_i=\max S_i\)。
+
+\end{thmbox}
+
+\textbf{证明} 由性质 6.1，进过栈的是 \(1\sim m_i\)；去掉已经出栈的
+\(p_1,\cdots,p_{i-1}\)，剩下的就在栈里。由性质
+6.2，弹出的是其中最大的。\(\square\)
+
+\textbf{例 6.2} 继续用 2 4 3 6 5 1 7，逐步写出 \(S_i\)（栈底在左）：
+
+\Needspace{10\baselineskip}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.511\hsize\raggedright\arraybackslash}X>{\hsize=0.638\hsize\raggedright\arraybackslash}X>{\hsize=0.638\hsize\raggedright\arraybackslash}X>{\hsize=2.043\hsize\raggedright\arraybackslash}X>{\hsize=1.404\hsize\raggedright\arraybackslash}X>{\hsize=0.766\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(i\)} & \textcolor{white}{\bfseries \(p_i\)} & \textcolor{white}{\bfseries \(m_i\)} & \textcolor{white}{\bfseries \(S_i\)（出栈前的栈）} & \textcolor{white}{\bfseries \(p_i=\max S_i\)？} & \textcolor{white}{\bfseries \(\lvert S_i\rvert\)} \\
+\endfirsthead
+1 & 2 & 2 & 1 2 & ✓ & 2 \\ \hline
+2 & 4 & 4 & 1 3 4 & ✓ & 3 \\ \hline
+3 & 3 & 4 & 1 3 & ✓ & 2 \\ \hline
+4 & 6 & 6 & 1 5 6 & ✓ & 3 \\ \hline
+5 & 5 & 6 & 1 5 & ✓ & 2 \\ \hline
+6 & 1 & 6 & 1 & ✓ & 1 \\ \hline
+7 & 7 & 7 & 7 & ✓ & 1 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+每一行都满足 \(p_i=\max S_i\)，所以这个序列合法；\(\lvert S_i\rvert\)
+最大是 3，这就是 26 题的答案（见 6.5
+节）。后面的定理都是这张表的不同读法。
+
+\hypertarget{ux5408ux6cd5ux6027ux7684ux5224ux5b9a}{%
+\subsection{6.3
+合法性的判定}\label{ux5408ux6cd5ux6027ux7684ux5224ux5b9a}}
+
+\cueblock{\cuenote}{\relax{读到一个比之前最大值还小的数，它必须是谁？三个数按什么顺序出现就一定非法？}}
+
+\begin{thmbox}{定理 6.2（逐步判定法）}
+
+从左往右读出栈序列。对每个 \(p_i\)：
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  若 \(p_i>m_{i-1}\)（出现了新的最大值），这一步一定可以；
+\item
+  若 \(p_i<m_{i-1}\)，则 \(p_i\) 必须是 \(1\sim m_{i-1}\)
+  中\textbf{尚未出栈的最大数}，否则序列非法。
+\end{enumerate}
+
+每一步都满足时，序列合法。
+
+\end{thmbox}
+
+\textbf{证明} (a) 此时 \(m_i=p_i\)，把 \(m_{i-1}+1,\cdots,p_i\)
+依次进栈，\(p_i\) 就在栈顶，可以弹出。(b) 此时 \(m_i=m_{i-1}\)，由定理
+6.1，\(p_i\) 必须是 \(S_i\)（即 \(1\sim m_{i-1}\)
+中尚未出栈的数）里最大的。每一步都能照做，就构造出了一种进出栈方式。\(\square\)
 
 \hlred{口诀：往上随便跳，往下只能落到最近一个还没出现的数。}
 
-例：14 题 C dcefba = 4 3 5 6 2 1。4；3 是 \(1\sim4\) 中没出的最大
-✓；5、6 往上 ✓；2 是 \(1\sim6\) 中没出的最大 ✓；1 ✓，合法。D cabdef = 3
-1 2 4 5 6：3 之后往下到 1，但 \(1\sim3\) 中没出的最大是 2 ✗。
-
-\hypertarget{ux63a8ux8bba-2ux7981ux6b62ux5927ux5c0fux4e2d}{%
-\subsection{\texorpdfstring{推论
-2：禁止“大、小、中”}{推论 2：禁止大、小、中}}\label{ux63a8ux8bba-2ux7981ux6b62ux5927ux5c0fux4e2d}}
-
-\Needspace{4\baselineskip}
-
-\cuenote{三个数按什么相对顺序出栈就一定非法？}\hlred{出栈序列合法 ⇔ 不存在三个数按“最大、最小、中间”的相对顺序出现}（即
-3-1-2 型，三个数\textbf{不必相邻}）。等价说法：每个数 \(x\) 后面比 \(x\)
-小的数，必须递减。
-
-\textbf{为什么}：\(x\) 出栈时，比 \(x\) 小、还没出的数都在栈里（原子
-1），只能从大到小弹出（原子 2）。
-
-它的几个特例，题目里最常见：
+\textbf{例 6.3}（14 题）进栈 a～f，即 1～6。
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{第一个出的是 \(k\)}：\(1\sim k-1\)
-  在后面一定按逆序出现，中间可以夹别的数（14、19、28）；
+  C dcefba = 4 3 5 6 2 1：4 往上 ✓；3 往下，\(1\sim4\) 中没出的最大是 3
+  ✓；5、6 往上 ✓；2 往下，\(1\sim6\) 中没出的是 1、2，最大是 2 ✓；1
+  ✓。合法。
 \item
-  \textbf{第一个出的是 \(n\)}：整个序列是逆序，第 \(i\) 个就是
-  \(n-i+1\)（17）；
-\item
-  \textbf{\(n\) 之后的数全部递减}：\(n\)
-  进栈后再无元素可进，栈里剩下的只能依次弹出（22
-  的“另解”，书上说的盯住“最后一个入栈元素”）；
-\item
-  \textbf{3 个元素}：6 种排列里唯一非法的就是 312，所以合法的有 5
-  种（13）。
+  D cabdef = 3 1 2 4 5 6：3 往上 ✓；1 往下，但 \(1\sim3\) 中没出的最大是
+  2，不是 1 ✗。非法，选 D。
 \end{itemize}
 
-推论 1 适合从左往右扫一遍；推论 2
-适合看选项时“找茬”：只盯每个往下跳的位置，看它后面是否出现“先小后中”。
+逐步判定法要从头扫到尾。看选项“找茬”时，下面这个判别法更快。
 
-\hypertarget{ux63a8ux8bba-3ux76f8ux90bbux4e24ux4e2aux6570ux964d-ux8fdeux7eedux5f39ux5347-ux4e2dux95f4ux6709ux8fdbux6808}{%
-\subsection{推论 3：相邻两个数，降 = 连续弹，升 =
-中间有进栈}\label{ux63a8ux8bba-3ux76f8ux90bbux4e24ux4e2aux6570ux964d-ux8fdeux7eedux5f39ux5347-ux4e2dux95f4ux6709ux8fdbux6808}}
+\begin{thmbox}{定理 6.3（3-1-2 判别法）}
 
-\Needspace{4\baselineskip}
+出栈序列合法 ⇔ 不存在下标 \(i<j<k\)，使 \(p_j<p_k<p_i\)。
 
-\cuenote{相邻两个输出一降一升，各说明发生了什么操作？}相邻两个输出
-\(x\)、\(y\)：
+即：任取三个数，不能按“\textbf{最大、最小、中间}”的相对顺序出栈（三个数\textbf{不必相邻}）。
+
+\end{thmbox}
+
+\textbf{证明（⇒）} 设有 \(i<j<k\) 且 \(p_j<p_k<p_i\)。\(p_i\)
+出栈时，\(p_j\)、\(p_k\) 都比 \(p_i\) 小，由性质 6.1
+已进过栈，又都还没出栈，所以都在栈里；\(p_j<p_k\)，由性质 6.2，\(p_k\)
+在上面，必须先于 \(p_j\) 出栈，与 \(j<k\) 矛盾。（⇐）由定理 6.2
+可推出，考试只用“⇒”方向：找到 3-1-2 就判非法。\(\square\)
+
+由定理 6.3 立刻得到几个常用推论：
+
+\begin{thmbox}{推论 6.3.1 ～ 6.3.4}
+
+\textbf{6.3.1} 每个数 \(p_i\) 后面比它小的数，必须按递减顺序出现。
+
+\textbf{6.3.2} 第一个出栈的是 \(k\) ⇒ \(1,2,\cdots,k-1\)
+在后面按逆序出现（中间可夹别的数）。
+
+\textbf{6.3.3} 第一个出栈的是 \(n\) ⇒ 整个序列是 \(n,n-1,\cdots,1\)，第
+\(i\) 个是 \(n-i+1\)。
+
+\textbf{6.3.4} \(n\)（最后进栈的元素）之后的数全部递减。
+
+\end{thmbox}
+
+6.3.1 是定理 6.3 的另一种说法；6.3.2～6.3.4 都是 6.3.1 的特例（取
+\(p_i=k\) 或 \(p_i=n\)）。
+
+\textbf{例 6.4}
 
 \begin{itemize}
 \tightlist
 \item
-  \(y<x\) ⇔ 两次出栈之间\textbf{没有}进栈（\(y\) 是 \(x\) 下面那个）；
+  19 题 C dcab = 4 3 1 2：4 后面比它小的是 3 1 2，不递减（1 在 2
+  前），由 6.3.1 非法；
 \item
-  \(y>x\) ⇔ 中间进了栈，而且恰好进了 \(y-m\) 个（\(m\) 为 \(y\)
-  之前的最大数）。
+  17 题：第一个是 \(n\)，由 6.3.3 第 \(i\) 个是 \(n-i+1\)；
+\item
+  22 题 C：\(P_2=4\)，由 6.3.4，\(P_3>P_4\)；若 \(P_4=3\)，则
+  \(P_3=4\)，与 \(P_2=4\) 矛盾，不可能；
+\item
+  23 题：四个标识符换成标准形是
+  n1\_=123、n\_1=132、\_1n=321、\_n1=312，只有 312 非法，答案 3 个；
+\item
+  13 题：3 个元素的 6 种排列中只有 312 是“大、小、中”，合法的有
+  \(6-1=5\) 种。
 \end{itemize}
 
-\textbf{为什么}：中间若有进栈，弹出的 \(y\)
-一定是新进的，比进过栈的所有数都大。
+\hypertarget{ux76f8ux90bbux4e24ux6b21ux51faux6808ux4e4bux95f4ux53d1ux751fux4e86ux4ec0ux4e48}{%
+\subsection{6.4
+相邻两次出栈之间发生了什么}\label{ux76f8ux90bbux4e24ux6b21ux51faux6808ux4e4bux95f4ux53d1ux751fux4e86ux4ec0ux4e48}}
 
-用途：
+\cueblock{\cuenote}{\relax{相邻两个出栈元素一降一升，各说明中间发生了什么？}}
+
+\begin{thmbox}{定理 6.4}
+
+对相邻的 \(p_i\)、\(p_{i+1}\)：
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  \(p_{i+1}<p_i\) ⇔ 两次出栈之间\textbf{没有}进栈；
+\item
+  \(p_{i+1}>p_i\) ⇔ 两次出栈之间进栈了，而且恰好进栈 \(p_{i+1}-m_i\)
+  次。
+\end{enumerate}
+
+\end{thmbox}
+
+\textbf{证明} 若中间没有进栈，\(p_{i+1}\) 是 \(p_i\) 下面那个元素，比
+\(p_i\) 小。若中间进栈了，\(p_{i+1}\)
+就是新进栈的元素（新进的压在最上面，弹出的一定是新进的），它比之前进过栈的
+\(1\sim m_i\) 都大，进栈的是 \(m_i+1,\cdots,p_{i+1}\)，共
+\(p_{i+1}-m_i\) 个。两种情况恰好对应“降”和“升”。\(\square\)
+
+\begin{thmbox}{推论 6.4.1 ～ 6.4.2}
+
+\textbf{6.4.1} 连续出栈的次数 = 出栈序列中\textbf{连续下降段}的长度。
+
+\textbf{6.4.2}（出栈序列 → 操作序列）用 S 表示进栈、X 表示出栈。依次读
+\(p_i\)：若 \(p_i>m_{i-1}\)，先写 \(p_i-m_{i-1}\) 个 S，再写一个
+X；否则只写一个 X。
+
+\end{thmbox}
+
+\textbf{例 6.5}（16 题）1342：1 是新最大，\(1-0=1\)，写
+SX；3，\(3-1=2\)，写 SSX；4，\(4-3=1\)，写 SX；2 往下，写 X。合起来
+SXSSXSXX，选 D。
+
+\textbf{例 6.6}（27 题，不许连续 3 次出栈）按 6.4.1 找长度 \(\ge3\)
+的连续下降段。D afedcb = 1 6 5 4 3 2，其中 6 5 4 3 2 连降 5
+个，即连续出栈 5 次，不符合要求，选 D。A、B、C 的下降段都不超过 2。
+
+\hypertarget{ux6808ux4e2dux6709ux51e0ux4e2aux5143ux7d20}{%
+\subsection{6.5
+栈中有几个元素}\label{ux6808ux4e2dux6709ux51e0ux4e2aux5143ux7d20}}
+
+\cueblock{\cuenote}{\relax{第 \(i\) 个元素出栈前，栈里有几个元素？栈什么时候是空的？}}
+
+\begin{thmbox}{定理 6.5}
+
+第 \(i\) 个元素出栈前一刻，栈中元素个数为 \[\lvert S_i\rvert=m_i-(i-1)\]
+
+\end{thmbox}
+
+\textbf{证明} 由定理 6.1，进过栈 \(m_i\) 个，已出栈 \(i-1\)
+个。\(\square\)
+
+\begin{thmbox}{推论 6.5.1 ～ 6.5.2}
+
+\textbf{6.5.1}（最小容量）栈的容量至少为
+\(\max\limits_{1\le i\le n}\,(m_i-i+1)\)。
+
+\textbf{6.5.2}（栈空的时刻）第 \(i\) 个元素出栈后栈为空 ⇔ \(m_i=i\) ⇔ 前
+\(i\) 个出栈元素恰好是 \(1,2,\cdots,i\)（顺序不限）。
+
+\end{thmbox}
+
+\textbf{例 6.7}（26 题）例 6.2 表中最后一列 \(\lvert S_i\rvert\) 依次为
+2, 3, 2, 3, 2, 1, 1，最大为 3，选 C。不用画进出栈的过程表。
+
+\textbf{例 6.8}（28 题）d 先出栈，\(i=1\)，\(m_1=4\)，此时栈中有
+\(4-0=4\) 个元素（d 本身和下面的 a、b、c）；d 出栈后剩 a、b、c 三个。6.8
+节用到这个数。
+
+\hypertarget{ux4e0bux4e00ux4e2aux80fdux51faux6808ux7684ux662fux8c01}{%
+\subsection{6.6
+下一个能出栈的是谁}\label{ux4e0bux4e00ux4e2aux80fdux51faux6808ux7684ux662fux8c01}}
+
+\cueblock{\cuenote}{\relax{已知前几个出栈元素，下一个出栈的可能是哪些数？}}
+
+\begin{thmbox}{定理 6.6}
+
+已知 \(p_1,\cdots,p_i\)，下一个出栈的 \(p_{i+1}\) 只可能是：
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{连续出栈次数} = 连续下降段的长度（27）；
+  当前栈顶，即 \(1\sim m_i\) 中尚未出栈的最大数（栈非空时）；
 \item
-  \textbf{出栈序列 → 操作序列}：每读一个 \(y\)，若 \(y>m\) 先写 \(y-m\)
-  个 S，再写 X；否则只写 X。16 题 1342：1 → SX，3 → SSX，4 → SX，2 →
-  X，拼起来 SXSSXSXX；
-\item
-  反过来“操作序列 → 出栈序列”（30）直接照做即可。
+  或者任何大于 \(m_i\) 的数。
 \end{itemize}
 
-\hypertarget{ux63a8ux8bba-4ux6808ux91ccux6709ux51e0ux4e2aux5143ux7d20}{%
-\subsection{推论
-4：栈里有几个元素}\label{ux63a8ux8bba-4ux6808ux91ccux6709ux51e0ux4e2aux5143ux7d20}}
+\end{thmbox}
 
-\Needspace{4\baselineskip}
+\textbf{证明} 这就是定理 6.2 的 (a)、(b) 两种情况。\(\square\)
 
-\cuenote{第 \(i\) 个数出栈前，栈里有几个元素？}第 \(i\)
-个数出栈前一刻，栈里有
+\textbf{例 6.9}（18 题）第一个出栈的是 \(i\)。由定理
+6.6，下一个可以是栈顶 \(i-1\)，也可以是 \(i+1,\cdots,n\)
+中任意一个，所以第 \(j\) 个不确定，选 D。
 
-\[m_i-(i-1)\]
-
-个元素（进过 \(m_i\) 个，出了 \(i-1\) 个）。由此：
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{栈的最小容量} \(=\max\limits_i\,(m_i-i+1)\)。26 题 2 4 3 6 5 1
-  7：各位置依次为 2, 3, 2, 3, 2, 1, 1，答案 3，不用画表；
-\item
-  \textbf{第 \(i\) 个出栈的恰好是 \(i\)} ⇔ 它出栈时栈里只有它 ⇔ 前
-  \(i-1\) 个输出恰好是 \(\{1,\cdots,i-1\}\)（顺序不限）。这就是 21
-  题老师推出的“前两个输出的就是前两个输入的”；
-\item
-  指定开头时，栈里还剩几个可以直接算：28 题 d
-  先出，\(m=4\)、\(i=1\)，栈里 3 个（a、b、c）。
-\end{itemize}
-
-\hypertarget{ux63a8ux8bba-5ux4e0bux4e00ux4e2aux53efux80fdux662fux8c01}{%
-\subsection{推论
-5：下一个可能是谁}\label{ux63a8ux8bba-5ux4e0bux4e00ux4e2aux53efux80fdux662fux8c01}}
-
-\Needspace{4\baselineskip}
-
-\cuenote{已知前几个输出，下一个能是哪些数？}已知前 \(i\)
-个输出，下一个只能是：\hlred{栈顶（栈非空时），或任何大于 \(m\) 的数}。其余都不可能。
-
-\begin{itemize}
-\tightlist
-\item
-  18 题：第一个是 \(i\) 后，下一个可以是 \(i-1\)（栈顶），也可以是
-  \(i+1,\cdots,n\) 中任意一个，所以不确定；
-\item
-  29 题 \(P_2=3\)：先看 \(P_1\)。\(P_1<3\) 时 \(m=3\)；\(P_1>3\) 时 3
-  是往下跳，按推论 1 只能 \(P_1=4\)。三种情况：
-\end{itemize}
+\textbf{例 6.10}（29 题，\(P_2=3\)）先确定 \(P_1\)：\(P_1<3\) 时
+\(m_2=3\)；\(P_1>3\) 时，3 是往下落的一步，由定理 6.2(b)，3 必须是
+\(1\sim P_1\) 中没出的最大数，只能 \(P_1=4\)。对三种情况用定理 6.6：
 
 \Needspace{6\baselineskip}
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
-\begin{xltabular}{\linewidth}{>{\hsize=0.545\hsize\raggedright\arraybackslash}X>{\hsize=0.955\hsize\raggedright\arraybackslash}X>{\hsize=1.500\hsize\raggedright\arraybackslash}X}
-\rowcolor{wdblue}\textcolor{white}{\bfseries \(P_1\)} & \textcolor{white}{\bfseries 3 出栈后的栈} & \textcolor{white}{\bfseries \(P_3\) 可取} \\
+\begin{xltabular}{\linewidth}{>{\hsize=0.533\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.467\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries \(P_1\)} & \textcolor{white}{\bfseries 3 出栈后的栈（栈底在左）} & \textcolor{white}{\bfseries \(P_3\) 可取} \\
 \endfirsthead
 1 & 2 & 2，或 \(4\sim n\) \\ \hline
 2 & 1 & 1，或 \(4\sim n\) \\ \hline
-4 & 1、2（栈顶 2） & 2，或 \(5\sim n\) \\ \hline
+4 & 1 2 & 2，或 \(5\sim n\) \\ \hline
 \end{xltabular}\par\vspace{4pt}}
 
-合起来是除 3 以外的所有数，共 \(n-1\) 个。
+合起来是除 3 以外的所有数，共 \(n-1\) 个，选 C。
 
-\hypertarget{ux63a8ux8bba-6ux8f93ux5165ux662f-p_1cdotsp_n-ux65f6ux5148ux6362ux540d}{%
-\subsection{\texorpdfstring{推论 6：输入是 \(P_1,\cdots,P_n\)
-时，先换名}{推论 6：输入是 P\_1,\textbackslash cdots,P\_n 时，先换名}}\label{ux63a8ux8bba-6ux8f93ux5165ux662f-p_1cdotsp_n-ux65f6ux5148ux6362ux540d}}
+\hypertarget{ux5165ux6808ux5e8fux5217ux672aux77e5ux7684ux9898}{%
+\subsection{6.7
+入栈序列未知的题}\label{ux5165ux6808ux5e8fux5217ux672aux77e5ux7684ux9898}}
 
 \Needspace{4\baselineskip}
 
-\cuenote{“入栈序列 \(P_1\cdots P_n\)、出栈序列
-\(1,2,\cdots,n\)”怎么套用前面的规律？}按第 0 步，把 \(P_k\) 改叫
-\(k\)，数 \(v\) 的新名字就是它在 \(P\) 中的下标，然后照常用推论
-1～5。直接看原值时有一个等价的捷径：
+\cuenote{“入栈序列 \(P_1\cdots P_n\)、出栈序列 \(1,2,\cdots,n\)”这类题怎么判？}20、21
+题反过来：出栈序列固定为 \(1,2,\cdots,n\)，问入栈序列 \(P_1,\cdots,P_n\)
+的可能取值。这时有一个对称的判别法。
 
-\hlred{输入序列（原值）里不能出现“中、大、小”}（2-3-1
-型，同样不必相邻）。
+\begin{thmbox}{定理 6.7（2-3-1 判别法）}
 
-\begin{itemize}
-\tightlist
-\item
-  20 题：\(P_3=1\)。若 \(P_1=2\)，则 \(P_2\) 只能
-  \(\ge3\)，\(P_1,P_2,P_3\) 就是“2、大、1”，2-3-1 型 ✗，所以不可能是
-  2；\(P_1=3\) 时取 \(P_2=2\) 即可，D 错；
-\item
-  21 题：\(P_3=3\) 说明第 3 个输出就是第 3 个输入，由推论
-  4，前两个输出（1、2）就是前两个输入：\(\{P_1,P_2\}=\{1,2\}\)，所以
-  \(P_1\) 可能是 1 也可能是 2。
-\end{itemize}
+入栈序列为 \(P_1,\cdots,P_n\)、出栈序列为 \(1,2,\cdots,n\) 可以实现 ⇔
+入栈序列中不存在三个数按“\textbf{中间、最大、最小}”的相对顺序出现（不必相邻）。
 
-\hypertarget{ux63a8ux8bba-7ux8ba1ux6570ux4e86ux89e3}{%
-\subsection{推论
-7：计数（了解）}\label{ux63a8ux8bba-7ux8ba1ux6570ux4e86ux89e3}}
+\end{thmbox}
+
+\textbf{证明（⇒）}
+设入栈序列中依次出现中、大、小三个数。出栈序列是从小到大，所以“小”在三者中最先出栈；它出栈时，“中”和“大”都在它之前入栈、又都还没出栈，所以都在栈里，且“大”压在“中”上面，“大”必须先于“中”出栈。但出栈序列要求“中”先于“大”，矛盾。（⇐）同样可由换名后的定理
+6.2 推出，从略。\(\square\)
+
+\textbf{例 6.11}（20 题，\(P_3=1\)）若 \(P_1=2\)：1、2 已经是
+\(P_3\)、\(P_1\)，所以 \(P_2\ge3\)，于是 \(P_1,P_2,P_3\) 依次是
+2、大、1，正是“中、大、小”，不可能。\(P_1=3\) 时取 \(P_2=2\) 即可，D
+错。选 C。
+
+\textbf{例 6.12}（21 题，\(P_3=3\)）\(P_1=2\) 可以：取
+\(P=2,1,3,\cdots\)，2、1 进栈后弹出 1、2，3 进栈后弹出
+3，其余每个进栈后马上弹出。\(P_1=1\) 也可以（每个进栈后马上弹出），所以
+B、C、D 都错，选 A。
+
+\begin{fixbox}
+
+\textbf{更正：21 题习题讲解视频的推理有漏洞}。老师（习题讲解视频
+P22，本笔记 21 题“视频讲解”框）由“第 3 个输出的元素是第 3
+个输入的元素”推出“前两个输出的元素就是前两个输入的元素”，即
+\(\{P_1,P_2\}=\{1,2\}\)。这一步不成立：后面输入的元素可以先进栈、先出栈。反例：入栈序列
+4 1 3 2，操作为 4 进、1 进、1 出、3 进、2 进、2 出、3 出、4 出，出栈序列
+1 2 3 4，满足 \(P_3=3\)，而 \(P_1=4\)。程序穷举 \(n=5\) 时，\(P_1\) 可取
+1、2、4、5，只有 3 不行。本题答案 A 不受影响；王道书第 71 页解析只说明
+\(P_1\) “既可能是 1，又可能是 2”，没有说只能是 1 或 2，与此不矛盾。
+
+我上一版的第六节也照搬了这个结论，这一版已删去。
+
+\end{fixbox}
+
+\hypertarget{ux8ba1ux6570ux4e86ux89e3}{%
+\subsection{6.8 计数（了解）}\label{ux8ba1ux6570ux4e86ux89e3}}
 
 \cueblock{\cuenote}{\relax{指定开头的出栈序列有几种，怎么算？}}
 
+\begin{thmbox}{定理 6.8}
+
+若栈中还有 \(j\) 个元素，还有 \(r\) 个元素没有进栈，则之后的出栈方式共有
+\[N(j,r)=C_{2r+j}^{\,r}-C_{2r+j}^{\,r-1}\qquad(\text{约定 }r=0\text{ 时 }N=1)\]
+种。特别地，\(N(0,n)=\dfrac{1}{n+1}C_{2n}^{\,n}\)，即卡特兰数。
+
+\end{thmbox}
+
+\textbf{说明} 之后的每一步要么出栈（\(j\) 减 1），要么进栈（\(r\) 减
+1、\(j\) 加 1），而 \(j\)
+不能变成负数。数这种“不走到负数”的路径数，结果就是上式；卡特兰数也是这样数出来的。证明不要求，会代公式即可。
+
+卡特兰数前几项直接背：\(n=1,2,3,4,5,6\) 时依次为
+\uln{1, 2, 5, 14, 42, 132}。
+
+\textbf{例 6.13}
+
 \begin{itemize}
 \tightlist
 \item
-  \textbf{全部}：卡特兰数，\(n=1\sim6\) 依次为
-  \uln{1, 2, 5, 14, 42, 132}，直接背，不用现场算组合数；
+  13 题：\(N(0,3)=C_6^3-C_6^2=20-15=5\)；
 \item
-  \textbf{一般情况}：栈里还有 \(j\) 个、还有 \(r\)
-  个没进栈，之后的出栈方式数为
-  \[C_{2r+j}^{\,r}-C_{2r+j}^{\,r-1}\qquad(r=0\text{ 时为 }1)\] 先用推论
-  4 算 \(j\)。几个检验：\(j=0,r=n\)
-  就是卡特兰数（13：\(C_6^3-C_6^2=5\)）；\(r=1\) 时为
-  \(j+1\)，就是“插空”（28：\(j=3\)，得 4）；\(r=0\) 时只有 1 种（15）。
+  28 题：d 出栈后栈中有 a、b、c（例 6.8），\(j=3\)；还有 e
+  没进栈，\(r=1\)。\(N(3,1)=C_5^1-C_5^0=5-1=4\)，选 B。\(r=1\) 时一般有
+  \(N(j,1)=j+1\)，就是“e 插进 \(j+1\) 个空位”；
+\item
+  15 题：c、d 出栈后栈中有 a、b，\(j=2\)；没有元素待进栈，\(r=0\)，只有
+  1 种，选 A；
+\item
+  再如 a～e 依次进栈、以 c 开头：c 出栈后栈中有 a、b，\(j=2\)；还有
+  d、e，\(r=2\)。\(N(2,2)=C_6^2-C_6^1=15-6=9\) 种。
 \end{itemize}
 
-\textbf{为什么}：之后每一步要么弹（\(j\) 减 1），要么进（\(r\) 减
-1、\(j\) 加 1），而 \(j\)
-永远不能变成负数。卡特兰数也是这样数出来的，考试会代公式或会插空即可。
-
-\hypertarget{ux901fux67e5ux9898ux578b-ux7528ux54eaux6761}{%
-\subsection{速查：题型 →
-用哪条}\label{ux901fux67e5ux9898ux578b-ux7528ux54eaux6761}}
+\hypertarget{ux5c0fux7ed3ux4e0eux901fux67e5}{%
+\subsection{6.9 小结与速查}\label{ux5c0fux7ed3ux4e0eux901fux67e5}}
 
 \Needspace{12\baselineskip}
 
@@ -1766,41 +1940,13 @@ D 正确。
 \begin{xltabular}{\linewidth}{>{\hsize=1.320\hsize\raggedright\arraybackslash}X>{\hsize=0.960\hsize\raggedright\arraybackslash}X>{\hsize=0.720\hsize\raggedright\arraybackslash}X}
 \rowcolor{wdblue}\textcolor{white}{\bfseries 题型} & \textcolor{white}{\bfseries 用} & \textcolor{white}{\bfseries 本节例题} \\
 \endfirsthead
-判断出栈序列合法 / 不合法 & 推论 1 扫描，或推论 2 找“大小中” & 14、19、22、23 \\ \hline
-出栈序列 ↔ 操作序列 & 推论 3 & 16、30 \\ \hline
-限制连续出栈次数 & 推论 3（下降段长度） & 27 \\ \hline
-栈的最小容量 & 推论 4 公式 & 26 \\ \hline
-某位置可能取哪些值 & 推论 5 & 18、29 \\ \hline
-第 \(i\) 个输出恰为第 \(i\) 个输入 & 推论 4 & 21 \\ \hline
-入栈序列是 \(P_1\cdots P_n\) & 推论 6 换名 / 禁止“中大小” & 20、21 \\ \hline
-数出栈序列个数 & 推论 7 & 13、15、28 \\ \hline
-\end{xltabular}\par\vspace{4pt}}
-
-\Needspace{8\baselineskip}
-
-\hypertarget{ux7528ux539fux5b50ux89c4ux5f8bux628aux51faux6808ux5e8fux5217ux9898ux518dux505aux4e00ux904d}{%
-\subsection{用原子规律把出栈序列题再做一遍}\label{ux7528ux539fux5b50ux89c4ux5f8bux628aux51faux6808ux5e8fux5217ux9898ux518dux505aux4e00ux904d}}
-
-{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
-\begin{xltabular}{\linewidth}{>{\hsize=0.174\hsize\raggedright\arraybackslash}X>{\hsize=1.826\hsize\raggedright\arraybackslash}X}
-\rowcolor{wdblue}\textcolor{white}{\bfseries 题} & \textcolor{white}{\bfseries 一行解法} \\
-\endfirsthead
-13 & 3 个数只有 312 非法，\(6-1=5\) \\ \hline
-14 & D 3 1 2 4 5 6：3 之后落到 1，但没出的最大是 2 ✗ \\ \hline
-15 & c、d 出后 \(m=4\)，栈里 2、1，没有新元素，只能 cdba，1 种 \\ \hline
-16 & 1342：SX · SSX · SX · X \\ \hline
-17 & 第一个是 \(n\)，整体逆序，第 \(i\) 个是 \(n-i+1\) \\ \hline
-18 & 下一个可以是栈顶 \(i-1\)，也可以是任何 \(>i\) 的数，不确定 \\ \hline
-19 & C 4 3 1 2：4 后面比它小的 3 1 2 不递减 ✗ \\ \hline
-20 & \(P_1=2\) 会构成“2、大、1” ✗ \\ \hline
-21 & 推论 4：\(\{P_1,P_2\}=\{1,2\}\)，可能是 2 \\ \hline
-22 & 4 在 \(P_2\) 则 4 之后递减，\(P_3>P_4\)；\(P_4=3\) 要求 \(P_3=4\)，与 \(P_2=4\) 矛盾 ✗ \\ \hline
-23 & n1\_ 编号 123；n1\_=123 ✓，n\_1=132 ✓，\_1n=321 ✓，\_n1=312 ✗，共 3 个 \\ \hline
-26 & 2 4 3 6 5 1 7：\(m_i-i+1\) 最大为 3 \\ \hline
-27 & D a 后 f e d c b 连降 5 个，即连续出栈 5 次 ✗ \\ \hline
-28 & d 开头：\(j=3\)，\(r=1\)，\(j+1=4\) \\ \hline
-29 & 推论 5 分 \(P_1=1,2,4\) 三种，除 3 外都能取，\(n-1\) \\ \hline
-31 & 每进一个马上弹 → 相同；全进再全弹 → 互为倒序 \\ \hline
+判断出栈序列合法 / 不合法 & 定理 6.2 逐步判定，或定理 6.3 找“大、小、中” & 14、19、22、23 \\ \hline
+出栈序列 ↔ 操作序列 & 推论 6.4.2 & 16、30 \\ \hline
+限制连续出栈次数 & 推论 6.4.1（下降段长度） & 27 \\ \hline
+栈的最小容量 & 推论 6.5.1 & 26 \\ \hline
+某位置可能取哪些值 & 定理 6.6 & 18、29 \\ \hline
+入栈序列是 \(P_1\cdots P_n\) & 定理 6.7 找“中、大、小” & 20、21 \\ \hline
+数出栈序列个数 & 定理 6.8 & 13、15、28 \\ \hline
 \end{xltabular}\par\vspace{4pt}}
 
 \begin{pitfallbox}
@@ -1810,15 +1956,15 @@ D 正确。
 \item
   “大、小、中”看的是\textbf{相对顺序}，三个数可以隔得很远，不是“相邻三个”；
 \item
-  推论 1 的 \(m\) 是“目前出现过的最大数”，不是上一个数；
+  定理 6.2 里比较的是 \(m_{i-1}\)（目前出现过的最大数），不是上一个数；
 \item
   编号必须按\textbf{进栈次序}，不是按字母表或数值：23
-  题、\(P_1\cdots P_n\) 型题尤其要先换名；
+  题、\(P_1\cdots P_n\) 型题尤其要先想清楚谁先进栈；
 \item
   题目加了额外条件（23 的标识符、26 的队列、27
-  的连续出栈），先把条件翻译成推论里的量，再判；
+  的连续出栈），先把条件翻译成本节的量，再判；
 \item
-  这些规律只对\textbf{单个栈、按固定顺序进栈}成立。26
+  本节结论只对\textbf{单个栈、按固定顺序进栈}成立。26
   题的队列只是原样转存出栈顺序，所以能用；两个栈接力之类的题要另外分析。
 \end{itemize}
 
@@ -1826,17 +1972,36 @@ D 正确。
 
 \begin{summarybox}
 
-\textbf{两条原子}：进过栈的是前缀 \(1\sim m_i\)（\(m_i\) = 前 \(i\)
-个输出的最大数）；栈内自底向上递增，弹的是栈里最大的。合起来：栈
-\(=\{1\sim m_i\}-\) 已出。
+\textbf{记号}：元素按进栈顺序记为 \(1\sim n\)；\(m_i\) = 前 \(i\)
+个出栈元素的最大值。
 
-\textbf{七条推论}：① 往上随便跳，往下只能落到最近的没出现的数；②
-禁止“大、小、中”，即 \(x\) 之后比它小的必须递减；③ 相邻下降 =
-连续弹，上升 = 中间进了 \(y-m\) 个；④ 栈里有 \(m_i-i+1\)
-个，最小容量取最大值；⑤ 下一个只能是栈顶或任何 \(>m\) 的数；⑥ 输入是
-\(P\) 时先换名，原值中禁止“中、大、小”；⑦ 计数
-\(C_{2r+j}^{\,r}-C_{2r+j}^{\,r-1}\)，全部时为卡特兰数 1, 2, 5, 14, 42,
-132。
+\textbf{两条基本性质}：进过栈的恰是
+\(1\sim m_i\)（前缀性）；栈中自底向上递增，弹出最大的（有序性）。合起来得到\textbf{状态公式}：栈
+\(S_i=\{1\sim m_i\}-\{p_1,\cdots,p_{i-1}\}\)，\(p_i=\max S_i\)。
+
+\textbf{由它推出}：
+
+\begin{itemize}
+\tightlist
+\item
+  定理 6.2：往上随便跳，往下只能落到最近一个没出现的数；
+\item
+  定理 6.3：禁止“大、小、中”；\(p_i\) 之后比它小的必须递减；第一个是
+  \(k\)，则 \(1\sim k-1\) 逆序出现；\(n\) 之后全递减；
+\item
+  定理 6.4：相邻下降 = 中间没有进栈，上升 = 中间进栈 \(p_{i+1}-m_i\)
+  次；连续出栈次数 = 下降段长度；
+\item
+  定理 6.5：栈中有 \(m_i-i+1\) 个元素，最大值就是最小容量；
+\item
+  定理 6.6：下一个只能是栈顶，或任何大于 \(m_i\) 的数；
+\item
+  定理 6.7：入栈序列未知、出栈为 \(1\sim n\)
+  时，入栈序列禁止“中、大、小”；
+\item
+  定理 6.8：\(N(j,r)=C_{2r+j}^{\,r}-C_{2r+j}^{\,r-1}\)，卡特兰数 1, 2,
+  5, 14, 42, 132。
+\end{itemize}
 
 \end{summarybox}
 
@@ -1886,9 +2051,9 @@ D 正确。
   计数：\(n\) 个元素共 \(\frac{1}{n+1}C_{2n}^{n}\)
   种（13）；指定开头时，栈里剩下的元素相对顺序固定，后面的元素“插空”（15、28）；
 \item
-  \(P_i\) 推理：\(P_k=k\) 意味着
-  \(\{P_1,\cdots,P_{k-1}\}=\{1,\cdots,k-1\}\)（集合相等，21）；第一个出栈的是
-  \(P_3\) 时，\(P_1\) 至少要等 \(P_2\)
+  \(P_i\) 推理：\(P_3=3\) 时 \(P_1\) 可以是 1 或
+  2（21；但不止这两个值，见 6.7 节的更正）；第一个出栈的是 \(P_3\)
+  时，\(P_1\) 至少要等 \(P_2\)
   出栈（20）；求可能取值时先想简单情况，再逐个试剩下的（18、29）；
 \item
   选项只给部分位置时，先给其余位置取个值再模拟（22）；注意出栈序列中“最后一个入栈元素”的位置。

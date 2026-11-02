@@ -124,6 +124,9 @@ $if(toc)$\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\upa
 \newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
    left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
    title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
 \newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
 \newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
 \newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
