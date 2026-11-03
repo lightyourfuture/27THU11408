@@ -1,0 +1,792 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.1\_5
+计算机网络的性能指标},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 计算机网络体系结构}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.1\_5
+计算机网络的性能指标 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.1\_5
+计算机网络的性能指标 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 计算机网络 · 第1章
+计算机网络体系结构 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.1\_5
+计算机网络的性能指标}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.1\_5 · 正课字幕
+P7（1.1\_5\_1）、P8（1.1\_5\_2）· 王道书 §1.1.6（第 7--9 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{考研要掌握哪七个性能指标？哪些最常考？}考研主要掌握七个性能指标，老师把相关的放在一起讲：正课视频
+P7 讲\textbf{速率、带宽、吞吐量}；P8
+讲\textbf{时延、时延带宽积、往返时延、信道利用率}。这部分是\hlred{考研重点}，老师对书上的内容做了拓展。最常考的是\hlred{速率、带宽、时延}的计算。
+
+\slidefig{assets/1.1_5-p02.jpg}{0.5}{课件：知识总览}
+
+\hypertarget{ux4e00ux901fux7387}{%
+\section{一、速率}\label{ux4e00ux901fux7387}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{信道和通信线路是一回事吗？bps 里的 b 是什么？计网里的 M 和计组里的 M
+一样大吗？}\textbf{先引入“信道”}：在 Mac 的“活动监视器 → 网络”或 Windows
+的“任务管理器 →
+性能”里能看到实时网速。老师的台式机用网线连路由器，此刻发送 1.8
+MB/s、接收 93.3 MB/s，两个方向的速率不一样。
+
+\begin{defbox}
+
+\textbf{信道}（Channel）：表示向某一方向传送信息的通道。\hlred{信道 ≠ 通信线路}：一条通信线路在逻辑上往往对应\uln{一条发送信道和一条接收信道}。
+
+\end{defbox}
+
+一根网线、一条 WiFi 无线链路，都对应两条信道。
+
+\slidefig{assets/1.1_5-p03.jpg}{0.55}{课件：一根网线对应两条信道}
+
+\begin{defbox}
+
+\textbf{速率}（Speed）：连接到网络上的节点在信道上传输数据的速率。也称\textbf{数据率}、\textbf{比特率}、\hlred{\textbf{数据传输速率}}（真题最常用的说法）。
+
+\textbf{单位}：bit/s，或 b/s，或 \hlred{bps}（bit per
+second，真题最常用），三种写法完全等价。
+
+\end{defbox}
+
+\begin{pitfallbox}
+
+\textbf{大 B 和小
+b}：\hlred{B = Byte（字节），b = bit（比特），1 B = 8 b}。有时速率会用
+B/s 表示，1 MB/s 和 1 Mb/s 差 8 倍。
+
+例：活动监视器上的 1.8 MB/s \(= 1.8\times10^6\times8\) bps；Windows 上的
+120 kbps \(=120\times10^3\) bps，1.3 Mbps \(=1.3\times10^6\) bps。
+
+\end{pitfallbox}
+
+\textbf{数量前缀}：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.333\hsize\raggedright\arraybackslash}X>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=0.833\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 科目} & \textcolor{white}{\bfseries k / K} & \textcolor{white}{\bfseries M} & \textcolor{white}{\bfseries G} & \textcolor{white}{\bfseries T} & \textcolor{white}{\bfseries 说明} \\
+\endfirsthead
+\textbf{计算机网络} & \(10^3\) & \(10^6\) & \(10^9\) & \(10^{12}\) & 每级 ×\(10^3\)；计网题目默认如此（除非特别说明） \\ \hline
+\textbf{计组、操作系统} & \(2^{10}\) & \(2^{20}\) & \(2^{30}\) & \(2^{40}\) & 每级 ×\(2^{10}\)；计组、操作系统题目默认如此 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+例：计组题说某总线速率 8 MB/s，要算作 \(8\times2^{20}\) B/s；计网题看到
+8 Mbps，算作 \(8\times10^6\)
+bps。算题时\uln{先统一单位：看清是 B 还是 b，再看有没有数量前缀}。
+
+\slidefig{assets/1.1_5-p05.jpg}{0.6}{课件：速率的定义、单位与数量前缀}
+
+\begin{bookbox}
+
+王道书第 7
+页：速率是连接到网络上的节点在\textbf{数字信道}上传送数据的速率，也称数据传输速率、数据率或比特率，单位为
+b/s（比特/秒）或 bit/s（有时也写为 bps）。数据率较高时，常用
+kb/s（\(k=10^3\)）、Mb/s（\(M=10^6\)）或 Gb/s（\(G=10^9\)）表示。
+
+书上的“注意”：\uln{在描述\textbf{数据量}时，K、M、G 常用 2 的幂次表示，如
+\(1\,\text{KB}=2^{10}\,\text{B}\)；在描述\textbf{速率}时，k、M、G 常用
+10 的幂次表示，如 \(1\,\text{kb/s}=10^3\,\text{b/s}\)}。通常，前者使用大写
+K，后者使用小写 k，但其他前缀均为大写。
+
+\end{bookbox}
+
+\begin{addbox}
+
+\textbf{补充（课件和书的说法对照）}：课件按\textbf{科目}分（计网用
+\(10^3\)、计组和操作系统用
+\(2^{10}\)）；王道书按\textbf{描述对象}分（速率用 \(10\) 的幂、数据量用
+\(2\) 的幂）。两者对\textbf{速率}一致：计网里的速率一律按
+\(10^3\)。对计网题里的\textbf{数据量}（如文件“1
+MB”），题目常会注明，例如本节第五部分的 2023
+年真题就写了“注：\(M=10^6\)”；有注明就按注明算。
+
+\end{addbox}
+
+\hypertarget{ux4e8cux5e26ux5bbd}{%
+\section{二、带宽}\label{ux4e8cux5e26ux5bbd}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{带宽有哪两种含义、单位各是什么？两台主机之间实际能达到的最高速率由什么决定？}}
+
+\begin{defbox}
+
+\textbf{带宽}（bandwidth）：某信道所能传送的\hlred{最高数据率}。单位
+bps（或 b/s、bit/s），可加数量前缀 k、M、G、T。
+
+\end{defbox}
+
+\textbf{例子：宽带套餐}。中国电信 999 元一年的 1000 兆宽带：ISP
+路由器到你家的\textbf{下行信道}最高数据传输速率 = 1000 Mbps，即下行带宽
+1000 Mbps，下载速度最高 \(1000\div8=125\) MB/s（很多下载软件用大 B
+作单位）；\textbf{上行}带宽只有 30 Mbps，你家往外传数据最快不超过 30
+Mbps。
+
+\slidefig{assets/1.1_5-p06.jpg}{0.55}{课件：带宽------上行信道与下行信道}
+
+\textbf{例题 1}：主机 A 和 B 之间的链路带宽为 100 Mbps，A 的网卡速率为 1
+Gbps，B 的网卡速率为 10 Mbps，A 给 B
+发送数据的最高理论速率为？\hlred{答案 B：10 Mbps}。B
+的网卡收发都不可能超过 10 Mbps，A 和链路再快也没用；A 强行发得更快，B
+来不及接收，数据会丢失，传输失败。
+
+\begin{defbox}
+
+\textbf{结论}：\hlred{节点间通信实际能达到的最高速率，由\textbf{带宽}、\textbf{节点性能}共同限制}。
+
+\end{defbox}
+
+\slidefig{assets/1.1_5-p07.jpg}{0.55}{课件：例题 1}
+
+\textbf{学以致用}：开通了千兆宽带却达不到，先查瓶颈。运营商的光纤接到光猫（调制解调器，把光信号转成网线上传输的电信号），光猫再用网线连家用路由器。如果这根是\textbf{五类网线}（带宽
+100 Mbps），家里能用的带宽就不会超过 100 Mbps；\textbf{六类网线}可达
+1000 Mbps，千兆宽带够用；八类网线可达 40
+Gbps，但贵很多、没必要。老路由器的 \textbf{WAN
+口}也可能是瓶颈：老师舅舅家开通 300 兆宽带，路由器 WAN 口最高只有 100
+Mbps，家里总带宽就小于 100 Mbps。
+
+\slidefig{assets/1.1_5-p08.jpg}{0.55}{课件：学以致用，不当大冤种}
+
+\textbf{带宽的另一种含义}（通信原理）：
+
+\begin{defbox}
+
+在《通信原理》（通信领域的一门基础学科）中，\textbf{带宽}表示某信道\uln{允许通过的信号频带范围}，单位
+\hlred{Hz（赫兹）}，可加数量前缀 k、M、G、T。
+
+\end{defbox}
+
+信道传播的是\textbf{电磁波}信号（光纤里的光、无线通信用的电磁波都是），电磁波有\textbf{波长}和\textbf{频率}两个基本性质，频率是一秒钟振动多少次，单位
+Hz。
+
+\textbf{不严谨的类比：人眼的“带宽”}。人眼能看到频率在 400
+THz（深红光）到 750 THz（深紫光）之间的光，低于 400 THz 是红外线，高于
+750 THz 是紫外线。把人眼看作一条“视觉信道”，它允许通过的频带范围是
+\(750-400=350\)
+THz，就是人眼的带宽。假如你是奥特曼，能看到红外线、紫外线，眼睛的带宽更大，能捕捉的信息更丰富，传输数据的能力更强。
+
+再如：光纤的带宽约 500 MHz，电话线约 3
+kHz，所以光纤网络通常能达到更高的数据率。
+
+\begin{defbox}
+
+\textbf{两种含义本质一样}：\hlred{都反映信道传输数据的能力，带宽越大，传输数据的能力越强}。计算机网络中\uln{大多数情况下“带宽”指第一种含义（最高数据率，bps）}；只有\textbf{香农定理、奈氏准则}相关的考题中指第二种（Hz）。两者的内在联系就是这两个定理，第
+2 章学。
+
+\end{defbox}
+
+\slidefig{assets/1.1_5-p09.jpg}{0.6}{课件：带宽的另一种含义}
+
+\begin{bookbox}
+
+王道书第 7
+页：在通信领域，带宽是指通信线路允许通过的信号频率范围，单位是赫兹（Hz）；但在计算机网络中，带宽表示网络通信线路所能传送数据的能力，指\uln{数字信道所能支持的最高数据传输速率}，单位为
+b/s。注意，\hlred{节点间的实际可用带宽由双方网卡的性能、各段链路的带宽以及交换设备速率中的\textbf{最小值}决定}。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux541eux5410ux91cf}{%
+\section{三、吞吐量}\label{ux4e09ux541eux5410ux91cf}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{吞吐量和带宽有什么区别？一根网线的吞吐量怎么算？}}
+
+\begin{defbox}
+
+\textbf{吞吐量}（Throughput）：指\uln{单位时间内}通过某个网络（或信道、接口）的\hlred{实际数据量}。吞吐量受带宽限制，也受实际的网络负载情况影响。
+
+\end{defbox}
+
+还是老师那台台式机（发送信道 1.8 MB/s，接收信道 93.3 MB/s）：
+
+\begin{itemize}
+\tightlist
+\item
+  信道 1 的吞吐量 = 1.8 MB/s，信道 2 的吞吐量 = 93.3 MB/s；
+\item
+  \textbf{这根网线}的吞吐量 = 两个方向加起来 = \(1.8+93.3=95.1\) MB/s；
+\item
+  这台\textbf{电脑网卡}（网络接口卡）的吞吐量也是 \(1.8+93.3=95.1\)
+  MB/s；
+\item
+  再加上手机和路由器之间 10 MB/s、iPad 和路由器之间 8
+  MB/s，\textbf{整个家庭内网}的吞吐量 \(=93.3+1.8+10+8\) MB/s。
+\end{itemize}
+
+吞吐量反映某个信道、接口或网络此刻的数据传输总量，即\uln{实际的综合数据率}，可以理解为它的综合负载。网络工程师常用它判断负载；老师说考研中吞吐量很少涉及，有大致了解即可。
+
+\slidefig{assets/1.1_5-p11.jpg}{0.6}{课件：吞吐量}
+
+\begin{fixbox}
+
+课件这页右下角写“开机至今，电脑网卡的吞吐量 = 44.86 GB + 1.44
+GB”。按定义，吞吐量是\uln{单位时间内}的数据量（单位 bps 或
+B/s），“开机至今”累计收发的 44.86 GB、1.44 GB
+是\textbf{数据总量}，不是吞吐量。老师在视频里没有讲这一行。
+
+\end{fixbox}
+
+\begin{bookbox}
+
+王道书第 7
+页：吞吐量常用于对实际网络进行测量，以评估\uln{真实可达到的数据传输能力}。书上在这里标了考点追踪“\textbf{分组交换的吞吐量分析（2024）}”，所以吞吐量并非完全不考。
+
+\end{bookbox}
+
+\hypertarget{ux56dbux65f6ux5ef6}{%
+\section{四、时延}\label{ux56dbux65f6ux5ef6}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{总时延由哪四部分组成？发送时延和传播时延各由什么决定？考试一般考虑哪几项？}}
+
+\begin{defbox}
+
+\textbf{时延}（Delay）：指数据（一个报文或分组，甚至比特）从网络（或链路）的一端传送到另一端所需的时间。有时也称为\textbf{延迟}或\textbf{迟延}。
+
+\[\text{总时延} = \text{发送时延} + \text{传播时延} + \text{处理时延} + \text{排队时延}\]
+
+\end{defbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.550\hsize\raggedright\arraybackslash}X>{\hsize=1.300\hsize\raggedright\arraybackslash}X>{\hsize=1.150\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 时延} & \textcolor{white}{\bfseries 含义} & \textcolor{white}{\bfseries 计算 / 影响因素} \\
+\endfirsthead
+\textbf{发送时延} & 又名\textbf{传输时延}。节点将数据推向信道所花的时间 & \hlred{数据长度（bit）÷ 发送速率（bit/s）} \\ \hline
+\textbf{传播时延} & 电磁波在信道中传播一定的距离所花的时间 & \hlred{信道长度（m）÷ 电磁波在信道中的传播速率（m/s）} \\ \hline
+\textbf{处理时延} & 被路由器处理所花的时间（如：分析首部、查找存储转发表） & 受网络负载、路由器性能等多因素影响，\uln{考试中一般不用考虑} \\ \hline
+\textbf{排队时延} & 数据排队进入、排队发出路由器所花的时间 & 同上 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{pitfallbox}
+
+\textbf{发送时延又名“传输时延”，和“传播时延”极易混淆}，读题、做题时要分清：前者看\uln{数据长度和发送速率}，后者看\uln{信道长度和传播速率}。
+
+\end{pitfallbox}
+
+\slidefig{assets/1.1_5-p12.jpg}{0.6}{课件：时延的四个组成部分}
+
+\textbf{模型：主机 A → 信道 1 → 路由器 → 信道 2 → 主机 B}。A 给 B 发 80
+Mb 数据，发送速率 100 Mbps：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{发送时延}：把 80 Mb 推上信道 1 需要
+  \(80\text{ Mb}\div100\text{ Mbps}=0.8\) s；
+\item
+  \textbf{传播时延}：数据以电磁波的形式在信道上传播，不同材质速度不同（课件：铜线电缆
+  1000 km，电磁波速 \(2.3\times10^5\) km/s；光纤 2000
+  km，\(2.0\times10^5\) km/s），用长度除以速度；
+\item
+  \textbf{处理时延}：路由器每收到一个完整分组，要判断有没有错、该转发到哪里；
+\item
+  \textbf{排队时延}：路由器要处理的分组太多时，分组在输入队列（缓冲区）里排队等待处理，在输出队列里排队等待发出。路由器性能越好处理时延越低，负载越高排队时延越高。
+\end{itemize}
+
+\slidefig{assets/1.1_5-p13.jpg}{0.6}{课件：时延的模型（主机---路由器---主机）}
+
+\textbf{高速公路类比}：城市 A 和 B 之间有两段高速路，中间一个加油站。
+
+\begin{itemize}
+\tightlist
+\item
+  A 市收费站每分钟只放 10 辆车上高速，100 辆车要 10
+  分钟------这是\textbf{发送（传输）时延} \(=\) 车辆总数 ÷ 发车速率；
+\item
+  每辆车上了高速以限速飙车，路段 1 长 400 km、限速 100 km/h，跑完要 4
+  小时------这是\textbf{传播时延} \(=\) 路程 ÷ 车速；
+\item
+  加油站给每辆车加油的时间------\textbf{处理时延}；车多时排队进站、排队出站的时间------\textbf{排队时延}。
+\end{itemize}
+
+计算机网络中，\uln{一个比特就是一辆车}：节点按一定速率把比特逐一发到信道上，比特一上信道就以固定速率传播。
+
+\begin{defbox}
+
+\hlred{每经过一条信道，就产生一次发送时延和一次传播时延；每经过一个中间节点，就产生一次处理时延和排队时延}。考试中如果题目不特别说明，通常\hlred{只考虑发送时延和传播时延}。
+
+\end{defbox}
+
+\slidefig{assets/1.1_5-p14.jpg}{0.6}{课件：高速公路类比}
+
+\textbf{例题 2}：H1 给 H2 发送一个数据分组，分组大小 1000 B。H1 往链路 A
+发送数据的速率为 100 Mbps，路由器往链路 B 发送数据的速率为 80 Mbps。链路
+A 传播时延 0.01 ms，链路 B 传播时延 0.05
+ms。不考虑路由器的处理时延、排队时延，求传输整个分组的总时延。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  H1 → 链路 A 的发送时延
+  \(=\dfrac{1000\text{ B}}{100\text{ Mbps}}=\dfrac{8000\text{ b}}{10^8\text{ b/s}}=8\times10^{-5}\text{ s}=0.08\)
+  ms；
+\item
+  链路 A 传播 0.01 ms：第 0.01 ms
+  第一个比特到达路由器，\uln{第 0.09 ms 路由器收完整个分组}，之后才能处理、转发；
+\item
+  路由器 → 链路 B 的发送时延
+  \(=\dfrac{8000\text{ b}}{80\times10^6\text{ b/s}}=10^{-4}\text{ s}=0.1\)
+  ms；
+\item
+  链路 B 传播 0.05 ms。
+\end{enumerate}
+
+\hlred{总时延 \(=0.01+0.08+0.05+0.1=0.24\) ms}，其中 0.01、0.05
+是传播时延，0.08、0.1 是发送时延。
+
+\slidefig{assets/1.1_5-p15.jpg}{0.6}{课件：例题 2}
+
+\textbf{例题 3}：条件同上，但路由器对分组的处理时延、排队时延 = 0.04
+ms。路由器收完整个分组后要再花 0.04 ms
+排队和处理，\hlred{总时延 \(=0.01+0.08+0.04+0.05+0.1=0.28\) ms}。
+
+\slidefig{assets/1.1_5-p16.jpg}{0.6}{课件：例题 3}
+
+\begin{bookbox}
+
+王道书第 7--8 页用的是同一个例子（图 1.6：链路 1 100 Mb/s，链路 2 80
+Mb/s，1000 B 的分组），分三种场景：
+
+\begin{itemize}
+\tightlist
+\item
+  ① 忽略传播时延、处理时延和排队时延：总时延 \(=0.08+0.1=0.18\) ms；
+\item
+  ② 考虑传播时延（0.01 ms 和 0.05 ms）：\(0.24\) ms；
+\item
+  ③ 再考虑处理时延和排队时延（合计 0.04 ms）：\(0.28\) ms。
+\end{itemize}
+
+书上的定义：\textbf{发送时延}是节点将分组的所有比特推入链路所需的时间，即\uln{从发送分组的第一个比特开始，到最后一个比特发送完毕为止}的时间；\textbf{传播时延}是电磁波在信道中传播一定距离所需的时间，即一个比特从链路一端传播到另一端所需的时间。注意区分：\hlred{前者取决于分组长度和发送速率，后者取决于链路距离和传输介质}。处理时延：分组在交换节点为存储转发而进行必要处理所花费的时间，例如解析分组的首部、进行差错检验或查找路由等。排队时延：分组在路由器的输入队列或输出队列中等待处理或转发所花费的时间。书上标注的考点追踪：网络时延的分析（2010、2013、2023、2025）。
+
+\end{bookbox}
+
+\hypertarget{ux4e94ux65f6ux5ef6ux5e26ux5bbdux79ef}{%
+\section{五、时延带宽积}\label{ux4e94ux65f6ux5ef6ux5e26ux5bbdux79ef}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{时延带宽积的单位是什么？它的物理含义是什么？}}
+
+\begin{defbox}
+
+\[\text{时延带宽积} = \text{传播时延} \times \text{带宽}\]
+
+含义：\hlred{一条链路中，已从发送端发出但尚未到达接收端的最大比特数}。单位：bit。
+
+\end{defbox}
+
+第一个比特要经过一个传播时延才到达接收端；在这段时间里，发送方一直以最高数据率（带宽）往链路上打新的数据。例：带宽
+100 Mbps、传播时延 1 s，时延带宽积
+\(=100\text{ Mbps}\times1\text{ s}=100\) Mb。
+
+\textbf{水管类比}：带宽是水管的横截面，传播时延是水管的长度，时延带宽积就是水管里能装的水量。
+
+\slidefig{assets/1.1_5-p17.jpg}{0.6}{课件：时延带宽积}
+
+老师说时延带宽积考试中很少涉及，主要用于设计最短帧长（后续章节学），有初步印象、记住怎么算即可。
+
+\textbf{例题 4（2023 年 408 第 33 题）}：主机 H1、H2 通过路由器互连，2
+段链路的带宽均为 100 Mbps、时延带宽积（即单向传播时延 × 带宽）均为 1000
+bit。H1 向 H2 发送 1 个大小为 1 MB 的文件，分组长度为 1000 B，则从 H1
+开始发送时刻起到 H2
+收到文件全部数据时刻止，所需的时间至少是？（注：\(M=10^6\)）A. 80.02
+ms　B. 80.08 ms　C. 80.09 ms　D. 80.10 ms
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  分组个数 \(=1\text{ MB}\div1000\text{ B}=10^6\div10^3=1000\) 个；
+\item
+  每个分组的发送时延
+  \(=\dfrac{1000\text{ B}}{100\text{ Mbps}}=\dfrac{8000\text{ b}}{10^8\text{ b/s}}=0.08\)
+  ms（\uln{注意大 B 换成小 b}）；
+\item
+  题目没给链路长度和电磁波速度，但给了时延带宽积：单向传播时延
+  \(=1000\text{ b}\div(100\times10^6\text{ b/s})=10^{-5}\text{ s}=0.01\)
+  ms；
+\item
+  不考虑路由器的处理、排队时延，路由器每收完一个分组就立即转发。第 1
+  个分组：H1 发送 0.08 ms + 传播 0.01 ms，第 0.09 ms
+  路由器收完；路由器再发送 0.08 ms + 传播 0.01 ms，第 0.18 ms H2
+  收完。此后 H2 \uln{每隔 0.08 ms 收完下一个分组}（路由器转发第 \(k\)
+  个的同时，H1 在发第 \(k+1\) 个）；
+\item
+  总时间 \(=0.01+0.08+0.01+0.08\times1000=80.10\) ms，\hlred{选 D}。
+\end{enumerate}
+
+\slidefig{assets/1.1_5-p19.jpg}{0.6}{课件：例题 4 的分析}
+
+\begin{teacherbox}
+
+老师强调：这是 2009～2024
+年唯一一道涉及时延带宽积的题，时延带宽积只是用来求单向传播时延，\uln{本质上考的还是时延}。
+
+\end{teacherbox}
+
+\begin{addbox}
+
+\textbf{补充：把第 4
+步写成通式}（自己整理，便于以后套用；前提是不计处理、排队时延，各段链路发送速率相同）。设分组个数
+\(n\)，每个分组的发送时延 \(T_s\)，经过 \(k\) 段链路，每段传播时延
+\(T_p\)：
+
+\[T = k\,(T_s + T_p) + (n-1)\,T_s\]
+
+前一项是\textbf{第一个分组}走完全程的时间，后一项是\textbf{剩下 \(n-1\)
+个分组}陆续到达的时间。代入例题
+4：\(k=2\)，\(T_s=0.08\)，\(T_p=0.01\)，\(n=1000\)，\(T=2\times0.09+999\times0.08=0.18+79.92=80.10\)
+ms，与老师的算法一致。若各段链路速率不同（如例题 2），就要像例题 2
+那样逐段画图，不能直接套。
+
+\end{addbox}
+
+\begin{bookbox}
+
+王道书第 8
+页：时延带宽积指发送端发送的第一个比特即将到达接收端时，发送端已发出的比特总数，即已发出但尚未到达接收端的最大比特数，\uln{也称以比特为单位的链路长度}。可将链路想象为一条圆柱形管道：长度表示传播时延，横截面积表示链路带宽，时延带宽积表示\uln{该管道可容纳的比特数量}。
+
+\end{bookbox}
+
+\hypertarget{ux516dux5f80ux8fd4ux65f6ux5ef6-rtt}{%
+\section{六、往返时延 RTT}\label{ux516dux5f80ux8fd4ux65f6ux5ef6-rtt}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{RTT 从什么时候开始算？数据的发送时延算不算在 RTT 里？}}
+
+\begin{defbox}
+
+\textbf{往返时延 RTT}（Round-Trip
+Time）：表示从发送方\hlred{\textbf{发送完数据}}，到发送方\textbf{收到来自接收方的确认}总共经历的时间。
+
+\end{defbox}
+
+很多情况下，接收方收到数据后要回一个确认（像回复“好的，收到”“已读”），保证传输可靠。课件的图（为简化，发送方和接收方直连，不分析中间的其他节点）：
+
+\begin{itemize}
+\tightlist
+\item
+  \(t_1\)：发送方发送数据的发送时延（\hlred{不计入 RTT}）；
+\item
+  \(t_2\)：“数据”的单向传播时延；
+\item
+  \(t_3\)：接收方收到数据后的处理时延；
+\item
+  \(t_4\)：“确认”的发送时延；
+\item
+  \(t_5\)：“确认”的传播时延（通常 \(t_5\) 与 \(t_2\) 相等）。
+\end{itemize}
+
+\[\text{RTT} = t_2 + t_3 + t_4 + t_5\]
+
+中间如果还有路由器，无非是多了这些节点的存储转发，原理类似。
+
+\slidefig{assets/1.1_5-p20.jpg}{0.6}{课件：往返时延 RTT}
+
+\textbf{生活中的
+RTT}：游戏界面上显示的“延迟”，反映的就是手机到游戏服务器之间的
+RTT。你按下按键，动作被封装成数据发给服务器，服务器响应后返回结果，手机收到才渲染画面。延迟越高，按键后画面反应越卡。
+
+\begin{teacherbox}
+
+老师说明了为什么从“发送完数据”开始计时：谢希仁《计算机网络》第 8
+版的定义特别强调了这一点；有的教材把 RTT
+定义为从发送方\textbf{开始发送}数据到收到确认为止。大部分学校的计算机考研和
+408 统考主要参考谢希仁教材，所以\uln{以谢希仁的定义为准}。
+
+\end{teacherbox}
+
+\begin{bookbox}
+
+王道书第 8
+页：往返时延指从发送端\textbf{发出一个短分组}，到收到接收端返回的确认信号所经历的总时间。往返时延包括：发送端与接收端之间的往返传播时延、接收端的处理时延；在互联网环境中，还包括各中间节点的处理时延和排队时延。注意，\hlred{往返时延不包括数据分组本身的发送时延}。
+
+\end{bookbox}
+
+\begin{addbox}
+
+\textbf{课件和王道书的图有一处不同}：两者都不计数据本身的发送时延。课件的
+RTT 计入了确认的发送时延（\(t_4\)）；王道书图 1.9
+标注“\uln{忽略确认分组的发送时延}”，写成
+\(\text{RTT}=t_2+t_3+t_4\)，其中书上的 \(t_2\)、\(t_4\)
+是两个方向的单向传播时延，\(t_3\)
+是接收端处理时延。确认分组通常很短，它的发送时延计不计入，做题时以题目条件为准。
+
+\end{addbox}
+
+\hypertarget{ux4e03ux4fe1ux9053ux5229ux7528ux7387}{%
+\section{七、信道利用率}\label{ux4e03ux4fe1ux9053ux5229ux7528ux7387}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{信道利用率怎么算？为什么不能太低也不能太高？}}
+
+\begin{defbox}
+
+\textbf{信道利用率}：某个信道有百分之多少的时间是有数据通过的。
+
+\[\text{信道利用率} = \frac{\text{有数据通过的时间}}{\text{有数据通过的时间} + \text{没有数据通过的时间}}\]
+
+\end{defbox}
+
+\textbf{例题 5}：手机 H1 和 H2 通过蓝牙连接，连接时长 1 分钟。期间 H1 给
+H2 以 80 Mbps 的速率传输了 20 张大小为 10 MB
+的照片，求蓝牙连接期间的信道利用率。
+
+\[\text{信道利用率}=\frac{(20\times10\text{ MB})/80\text{ Mbps}}{1\text{ min}}=\frac{(20\times10\times8\text{ Mb})/80\text{ Mbps}}{60\text{ s}}=\frac{20\text{ s}}{60\text{ s}}\approx33.3\%\]
+
+（\uln{大 B 换成小 b 要乘 8}。）
+
+\slidefig{assets/1.1_5-p23.jpg}{0.55}{课件：例题 5}
+
+\begin{itemize}
+\tightlist
+\item
+  信道利用率\hlred{不能太低}：浪费信道的带宽资源（规划不合理的高速路，车很少，浪费资源）；
+\item
+  也\hlred{不能太高}：容易导致\textbf{网络拥塞}（节假日高速路车道利用率极高，反而堵车），网络整体性能大幅下降。
+\end{itemize}
+
+\textbf{网络利用率}：把网络中所有信道的利用率求加权平均。计算较复杂，考试很少涉及，网络工程中会用。
+
+\begin{bookbox}
+
+王道书第 9
+页：信道利用率并非越高越好：过低会浪费网络资源；\uln{过高则会导致排队时延显著增加}，引发网络拥塞。这就好比当公路上的车流量很大时，容易出现拥堵。
+
+\end{bookbox}
+
+\hypertarget{ux516bux77e5ux8bc6ux56deux987e}{%
+\section{八、知识回顾}\label{ux516bux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/1.1_5-p24.jpg}{0.6}{课件：知识回顾（速率、带宽、吞吐量）}
+
+\slidefig{assets/1.1_5-p25.jpg}{0.6}{课件：知识回顾（时延、时延带宽积、RTT、信道利用率）}
+
+\begin{summarybox}
+
+\textbf{速率}：又名数据率、比特率、\hlred{数据传输速率}；单位 bit/s =
+b/s = bps。计网中 k、M、G、T 依次 ×\(10^3\)（计组、操作系统
+×\(2^{10}\)）；\hlred{1 B = 8 b}。
+
+\textbf{带宽}：某信道允许通过的\hlred{最高数据率}（bps）；另一种含义：信道允许通过的信号频带范围（Hz），只在香农定理、奈氏准则题里用。节点间实际最高速率由带宽和节点性能（取最小）共同限制。
+
+\textbf{吞吐量}：单位时间内通过某个网络（信道、接口）的实际数据量，即实际的综合数据率。
+
+\textbf{时延} = 发送时延（数据长度 ÷ 发送速率，又名传输时延）+
+传播时延（信道长度 ÷ 传播速率）+ 处理时延 + 排队时延。每段信道一次发送 +
+一次传播；考试一般只算前两项。
+
+\textbf{时延带宽积} = 单向传播时延 ×
+带宽（bit），链路中已发出未到达的最大比特数。
+
+\textbf{往返时延
+RTT}：从发送方\hlred{发送完数据}到收到确认为止，不含数据本身的发送时延。
+
+\textbf{信道利用率} = 有数据通过的时间 ÷
+总时间；不能太低（浪费），也不能太高（拥塞）。
+
+\textbf{自测}：① 1.8 MB/s 是多少 bps？② A 网卡 1 Gbps、链路 100 Mbps、B
+网卡 10 Mbps，最高速率是多少？③ 发送时延和传播时延分别取决于什么？④ 2023
+年第 33 题的 80.10 ms 由哪几段组成？⑤ RTT 为什么不含 \(t_1\)？
+
+\end{summarybox}
+\end{document}

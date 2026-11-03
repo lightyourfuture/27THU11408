@@ -1,0 +1,426 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.1\_4
+计算机网络的分类},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 计算机网络体系结构}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.1\_4 计算机网络的分类 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.1\_4
+计算机网络的分类 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 计算机网络 · 第1章
+计算机网络体系结构 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.1\_4
+计算机网络的分类}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.1\_4 · 正课字幕 P6 · 王道书
+§1.1.5（第 5--6 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{计算机网络可以按哪五个维度分类？哪些是重点？}按\textbf{分布范围、传输技术、拓扑结构、使用者、传输介质}五个维度分类。\hlred{课件里标红的是重点}：广域网、局域网；广播式网络、点对点网络；总线形、环形、星形、网状。这些概念后续章节还会深入；其他类别简单了解即可。
+
+\slidefig{assets/1.1_4-p02.jpg}{0.55}{课件：知识总览（红字为重点）}
+
+\hypertarget{ux4e00ux6309ux5206ux5e03ux8303ux56f4ux5206ux7c7b}{%
+\section{一、按分布范围分类}\label{ux4e00ux6309ux5206ux5e03ux8303ux56f4ux5206ux7c7b}}
+
+\cueblock{\cuenote}{\relax{WAN、MAN、LAN、PAN
+各是什么？覆盖范围多大？为什么“以太网”几乎成了“局域网”的代名词？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.814\hsize\raggedright\arraybackslash}X>{\hsize=0.864\hsize\raggedright\arraybackslash}X>{\hsize=1.322\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 类别} & \textcolor{white}{\bfseries 范围} & \textcolor{white}{\bfseries 说明} \\
+\endfirsthead
+\hlred{\textbf{广域网 WAN}}（Wide Area Network） & 几十～几千公里；跨省、跨国、跨洲 & 节点距离远，通信技术和局域网有区别（后续章节讨论） \\ \hline
+\textbf{城域网 MAN}（Metropolitan Area Network） & 几千米～几十千米；一个或几个相邻城市 & 常采用“以太网技术”，因此常并入局域网范畴探讨 \\ \hline
+\hlred{\textbf{局域网 LAN}}（Local Area Network） & 几十米～几千米；学校、企业、工作单位、家庭 & 通信技术：以太网技术 \\ \hline
+\textbf{个域网 PAN}（Personal Area Network） & 几十米以内；家庭、个人 & 通常用无线技术把个人设备连起来，也称\textbf{无线个域网 WPAN} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+老师记四个缩写的口诀：用泰国口音念
+WAN、MAN、LAN、PAN------“完、美、pain”。
+
+\slidefig{assets/1.1_4-p03.jpg}{0.6}{课件：按分布范围分类}
+
+\begin{itemize}
+\tightlist
+\item
+  \uln{如今的局域网几乎都采用“以太网技术”实现}，所以“以太网”几乎成了“局域网”的代名词。局域网内连接各节点的交换机，全称是\textbf{以太网交换机}；
+\item
+  城域网现在通常也用以太网技术，原理和局域网类似，所以这门课不单独讨论城域网，\uln{重点讨论局域网和广域网}的通信技术和协议。
+\end{itemize}
+
+\textbf{例子：家用路由器背面的接口}。家用路由器 = 路由器 +
+交换机。家里的设备逻辑上连在这台（以太网）交换机上，组成家庭内部的局域网。路由器背面：蓝色的
+\textbf{WAN 口}接网络运营商拉到你家的那条网线，也就是连接广域网；黄色的
+\textbf{LAN1～LAN4}
+口接电视、电脑等局域网设备。\hlred{局域网通过路由器接入广域网}。
+
+\slidefig{assets/1.1_4-p04.jpg}{0.6}{课件：家用路由器的 WAN 口和 LAN 口}
+
+\textbf{例子：个域网}。小米、华为的智能家居要装一个\textbf{智能网关}（个域网的主设备），智能门锁、开关、温度计、烟雾探测器是从设备，它们用\textbf{蓝牙、ZigBee}
+和网关直接通信。这类无线技术比 WiFi
+更省电，设备可以长时间不换电池。网关再用网线连家用路由器，个域网就接入了互联网，可以用手机远程控制。个域网的通信技术考研不深入探讨，有印象即可。
+
+\begin{bookbox}
+
+王道书第 5--6 页：
+
+\begin{itemize}
+\tightlist
+\item
+  广域网用于长距离通信，覆盖范围通常为几十至数千千米，常用于构建互联网的骨干部分，其节点交换机间通过高速链路互联，通信容量大；
+\item
+  城域网的覆盖范围可跨越几个街区乃至整个城市，\uln{直径约为 5～50 km}；
+\item
+  局域网用户个人计算机或工作站通过高速线路互连，覆盖范围较小，一般为几十米到几千米。\hlred{传统上，局域网采用\textbf{广播技术}，而广域网则采用\textbf{交换技术}}；
+\item
+  个人区域网指在个人工作或活动区域内，利用无线技术将消费电子设备（如平板电脑、智能手机等）互联而成的网络。
+\end{itemize}
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux6309ux4f20ux8f93ux6280ux672fux5206ux7c7b}{%
+\section{二、按传输技术分类}\label{ux4e8cux6309ux4f20ux8f93ux6280ux672fux5206ux7c7b}}
+
+\cueblock{\cuenote}{\relax{广播式网络里，节点怎么判断一个分组是不是发给自己的？WiFi 属于哪一类？}}
+
+\begin{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \hlred{\textbf{广播式网络}}：当一台计算机发送数据分组时，广播范围内所有计算机都会收到该分组，并通过\uln{检查分组的目的地址}决定是否接收该分组（是发给自己的就接收，不是就丢弃）；
+\item
+  \hlred{\textbf{点对点网络}}：数据只会从发送方“点对点”发到接收方，\uln{精准送达}。
+\end{itemize}
+
+\end{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  广播式像在群里 @某人：群里所有人都能看到消息，但只有被 @
+  的人处理；点对点像一对一私信；
+\item
+  \uln{所有无线网络都是“广播式”}：你家 WiFi
+  发给你手机的信号，家人的手机也能收到，只有你的手机检查后发现是发给自己的才接收；
+\item
+  路由器转发数据分组是点对点：A 路由器和 B、C、D 都相连，发给 D
+  的分组只发给 D。
+\end{itemize}
+
+\slidefig{assets/1.1_4-p06.jpg}{0.55}{课件：按传输技术分类}
+
+\begin{bookbox}
+
+王道书第 6
+页：广播式网络中所有联网计算机\uln{共享一个公共通信信道}，局域网普遍采用广播式通信；此外，广域网中的无线和卫星通信网络也属于广播式网络。点对点网络中每条物理线路连接一对计算机；若两台主机之间无直接连接，则分组需通过中间节点进行存储转发，直至到达目的主机。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux6309ux62d3ux6251ux7ed3ux6784ux5206ux7c7b}{%
+\section{三、按拓扑结构分类}\label{ux4e09ux6309ux62d3ux6251ux7ed3ux6784ux5206ux7c7b}}
+
+\cueblock{\cuenote}{\relax{四种拓扑各是广播还是点对点？哪种有“总线争用”？集线器连成的网络物理上和逻辑上各是什么形状？}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.562\hsize\raggedright\arraybackslash}X>{\hsize=0.625\hsize\raggedright\arraybackslash}X>{\hsize=1.625\hsize\raggedright\arraybackslash}X>{\hsize=1.187\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 拓扑} & \textcolor{white}{\bfseries 传输方式} & \textcolor{white}{\bfseries 特点} & \textcolor{white}{\bfseries 典型代表} \\
+\endfirsthead
+\textbf{总线形} & 广播 & \hlred{存在“总线争用”问题} & 集线器连接的设备 \\ \hline
+\textbf{环形} & 广播 & 用“令牌”解决总线争用问题，令牌顺环依次传递，拿到令牌者可使用总线 & 令牌环网（流行于 2000 年以前的局域网技术） \\ \hline
+\textbf{星形} & 点对点 & 由中央设备实现数据的点对点传输；\uln{不存在总线争用} & 以太网交换机连接的设备 \\ \hline
+\textbf{网状} & 点对点 & 数据通过各中间节点逐一存储转发；灵活、可靠性高，但控制复杂、线路成本高 & 由众多路由器构建的广域网 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hlred{前三种常见于局域网，网状结构常见于广域网}。
+
+\slidefig{assets/1.1_4-p07.jpg}{0.55}{课件：总线形、环形}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{总线形}：A 给 C 发的分组打到总线上后，B、D 也会收到（广播）。A
+  正在发时，总线上充满 A 的数据，B 此时发数据就会和 A
+  的冲突、导致错误，这就是\textbf{总线争用}；
+\item
+  \textbf{环形}：数据同样会被所有设备收到。整个环只有一个\textbf{数字令牌}（token），只有持有令牌的设备能发数据，用完传给下一个，像击鼓传花。同一时间只有一台设备持有令牌，于是解决了总线争用。令牌环网后续章节还会讨论；
+\item
+  \textbf{星形}：中央设备检查数据的目的地址，只转发给对应的设备；每台计算机和中央设备之间都有一条独占的链路，所以不存在总线争用；
+\item
+  \textbf{网状}：数据通信采用分组交换技术。线路灵活，某些中间节点坏了其他节点也能完成传输，可靠性高；代价是控制复杂、线路成本高。
+\end{itemize}
+
+\slidefig{assets/1.1_4-p08.jpg}{0.55}{课件：星形、网状}
+
+\begin{pitfallbox}
+
+\hlred{讨论拓扑结构时要区分\textbf{物理拓扑}和\textbf{逻辑拓扑}}，本节讲的主要是逻辑上的拓扑结构。
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{集线器}连接多台设备：物理上看是星形；但 A 发给 C
+  的数据会被广播给所有节点，所以\uln{逻辑上是总线形}，有总线争用问题；
+\item
+  \textbf{以太网交换机}连接的设备：物理上、逻辑上都是星形。
+\end{itemize}
+
+\end{pitfallbox}
+
+\begin{bookbox}
+
+王道书第 6 页：
+
+\begin{itemize}
+\tightlist
+\item
+  网络拓扑结构是指网络中节点（如路由器、主机等）与通信线路之间的几何排列关系，\uln{主要描述\textbf{通信子网}的结构}；
+\item
+  总线形：使用单根传输线连接所有计算机。优点是建网容易、增减节点方便、节省线路；缺点是重负载下通信效率低，并且总线任意一处故障都会影响全网；
+\item
+  星形：各终端或计算机通过独立线路连接到中央设备（通常为交换机或路由器）。优点是便于集中控制与管理；缺点是成本较高，且中央设备对故障敏感；
+\item
+  环形：所有计算机接口设备连接成一个闭合环路，信号沿环单向传输，典型的例子是令牌环局域网。环可以是单环或双环，以提高可靠性；
+\item
+  网状：一般情况下每个节点至少有两条路径与其他节点相连，广泛应用于广域网。优点是可靠性高、容错能力强；缺点是控制复杂、线路成本高；
+\item
+  上述四种基本拓扑结构可相互组合，构成更复杂的混合网络。
+\end{itemize}
+
+\end{bookbox}
+
+\hypertarget{ux56dbux6309ux4f7fux7528ux8005ux6309ux4f20ux8f93ux4ecbux8d28ux5206ux7c7b}{%
+\section{四、按使用者、按传输介质分类}\label{ux56dbux6309ux4f7fux7528ux8005ux6309ux4f20ux8f93ux4ecbux8d28ux5206ux7c7b}}
+
+\cueblock{\cuenote}{\relax{公用网和专用网怎么区分？}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{公用网}：向公众开放的网络，如办宽带、交手机话费即可使用的互联网。\uln{给钱就能用}；
+\item
+  \textbf{专用网}：仅供某个组织内部使用的网络，如政府、军队、电力、银行的内部网络。\uln{给钱也不让用}；
+\item
+  \textbf{有线网络}（网线、光纤）、\textbf{无线网络}（5G、WiFi、卫星）。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书第 6
+页：公用网由电信运营商出资建设，面向公众开放，任何愿意遵守规定并缴纳费用的用户均可接入使用；专用网由特定单位为满足自身业务需求而建设，仅限内部使用，不对外提供服务，例如铁路、电力、军队等部门的专用网络。有线网络包括双绞线网络、同轴电缆网络、光纤网络等；无线网络包括蓝牙、Wi-Fi、微波、无线电等类型。
+
+\end{bookbox}
+
+\hypertarget{ux4e94ux5c0fux6545ux4e8bux5c40ux57dfux7f51ux6280ux672fux7684ux53d1ux5c55ux4e0eux8003ux8bd5ux65e0ux5173}{%
+\section{五、小故事：局域网技术的发展（与考试无关）}\label{ux4e94ux5c0fux6545ux4e8bux5c40ux57dfux7f51ux6280ux672fux7684ux53d1ux5c55ux4e0eux8003ux8bd5ux65e0ux5173}}
+
+20 世纪 80 年代，局域网有两种技术：IBM
+研发的\textbf{令牌环网}（如日中天）和\textbf{以太网}（主要使用集线器）。集线器逻辑上是总线形，所有设备争抢总线；令牌环网用令牌解决了争用，设备多时效率更高。90
+年代有人发明了\textbf{以太网交换机}，彻底解决了总线争用，而且各设备可以同时发送，由交换机决定每个数据转发到哪里，以太网开始比令牌环网更优秀。2000
+年以后令牌环网逐步退出舞台，现在的局域网几乎都用以太网技术。
+
+\slidefig{assets/1.1_4-p09.jpg}{0.5}{课件：局域网技术的发展}
+
+\hypertarget{ux516dux77e5ux8bc6ux56deux987e}{%
+\section{六、知识回顾}\label{ux516dux77e5ux8bc6ux56deux987e}}
+
+\slidefig{assets/1.1_4-p12.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{按分布范围}：\hlred{广域网 WAN}、城域网
+MAN、\hlred{局域网 LAN}、个域网 PAN，覆盖范围从大到小；MAN、LAN
+使用“以太网技术”实现；局域网通过路由器接入广域网。
+
+\textbf{按传输技术}：\hlred{广播式网络}（根据数据的目的地址判断是否接收）、\hlred{点对点网络}（精准送达）。所有无线网络都是广播式。
+
+\textbf{按拓扑结构}（逻辑上）：总线形（广播，有总线争用）、环形（广播，用令牌解决争用）、星形（点对点，无争用）------常见于局域网；网状（点对点，灵活、可靠性高、控制复杂、成本高）------常见于广域网。集线器：物理星形、逻辑总线形。
+
+\textbf{按使用者}：公用网（给钱就能用）、专用网（给钱也不让用）。\textbf{按传输介质}：有线网络、无线网络。
+
+\textbf{自测}：① 为什么以太网几乎成了局域网的代名词？② 家用路由器的 WAN
+口接什么？③ 哪两种拓扑是广播式的，各自怎么处理争用？④
+集线器组成的网络，逻辑拓扑是什么？
+
+\end{summarybox}
+\end{document}

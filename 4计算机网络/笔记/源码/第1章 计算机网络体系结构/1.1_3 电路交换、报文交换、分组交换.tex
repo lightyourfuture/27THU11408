@@ -1,0 +1,670 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.1\_3
+电路交换、报文交换、分组交换},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 计算机网络体系结构}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.1\_3
+电路交换、报文交换、分组交换 · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.1\_3
+电路交换、报文交换、分组交换 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{1}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 计算机网络 · 第1章
+计算机网络体系结构 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.1\_3
+电路交换、报文交换、分组交换}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 1.1\_3 · 正课字幕
+P4（1.1\_3\_1）、P5（1.1\_3\_2）· 王道书 §1.1.4（第 3--5 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{三种交换技术分别用于什么网络？计算机网络为什么不能直接“抄”电话网络？}本节课件对应两个正课视频：P4
+讲三种数据交换技术的原理和优缺点，P5 用时序图分析三者的传输性能。
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.750\hsize\raggedright\arraybackslash}X>{\hsize=1.250\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 交换技术} & \textcolor{white}{\bfseries 用于} \\
+\endfirsthead
+电路交换 & 电话网络 \\ \hline
+报文交换 & 电报网络 \\ \hline
+分组交换 & 现代计算机网络 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\textbf{故事线}：现代计算机网络诞生于 20 世纪 60
+年代，前身是阿帕网（ARPANET）。当时的科学家要解决“怎样让分散在各地的计算机互联互通”，自然想到：能不能“抄作业”？人类历史上已有的通信网络有邮政网络（公元前
+5
+世纪起）、电报网络（1830s--1960s）、电话网络（1870s--1960s）。邮政太原始，能抄的只剩电话网络和电报网络。下面依次看这两份作业能不能抄，再看最终的方案------分组交换。
+
+\slidefig{assets/1.1_3-p03.jpg}{0.55}{课件：人类历史上的通信网络}
+
+\hypertarget{ux4e00ux7535ux8defux4ea4ux6362ux7535ux8bddux7f51ux7edc}{%
+\section{一、电路交换（电话网络）}\label{ux4e00ux7535ux8defux4ea4ux6362ux7535ux8bddux7f51ux7edc}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{电路交换分哪三步？为什么打长途电话更贵？什么叫“占线”？}}
+
+\begin{defbox}
+
+\textbf{电路交换}（Circuit
+Switching）：通过物理线路的连接，\hlred{动态地分配传输线路资源}。
+
+\end{defbox}
+
+早期的电话交换机是一块有很多插线孔的面板，每个孔背后连着一部电话或另一台电话交换机；要让两部电话通话，接线员用一根线把两个孔连起来。后来实现了电气化、自动化，不再需要人工接线。
+
+\textbf{电路交换的过程}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{建立连接}（尝试占用通信资源）：小帅用 H1 拨小丑的
+  H2，中间的交换机收到请求后接通一条物理线路，H2
+  响铃，小丑接起回应，连接建立；
+\item
+  \textbf{通信}（\uln{一直占用通信资源}）：通话期间，两人一直占用中间这些线路资源；
+\item
+  \textbf{释放连接}（归还通信资源）：挂断电话。
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  小红打给小美要经过三台交换机，占用的线路资源比小帅打给小丑多。这就是早年长途电话比本地电话贵的原因；
+\item
+  小红和小美通话时，小扁也打给小美：第一台交换机能给小扁分配线路，但下一台交换机到
+  H5
+  的线路正被占用，资源不够，小扁听到“您呼叫的用户正在通话中”------俗称\uln{\textbf{电话占线}}。
+\end{itemize}
+
+\slidefig{assets/1.1_3-p08.jpg}{0.6}{课件：电路交换的过程}
+
+\textbf{如果计算机网络也用电路交换？} H1↔H2、H3↔H5
+通信时，各自独占一条专用物理线路，直到通信结束。此时 H6 想给 H5
+发数据，线路资源不够，无法建立通信。相当于小红和小美的微信聊天没结束，小扁发给小美的任何消息都传不过去。这显然不行。
+
+\slidefig{assets/1.1_3-p09.jpg}{0.55}{课件：计算机网络采用电路交换的问题}
+
+\hypertarget{ux7535ux8defux4ea4ux6362ux7684ux4f18ux7f3aux70b9}{%
+\subsection{电路交换的优缺点}\label{ux7535ux8defux4ea4ux6362ux7684ux4f18ux7f3aux70b9}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=1.600\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 内容} \\
+\endfirsthead
+\textbf{优点} & 通信前从主叫端到被叫端建立一条\uln{专用的物理通路}，通信全部时间内两个用户\uln{始终占用}端到端的线路资源。数据直送，\hlred{传输速率高} \\ \hline
+\textbf{缺点} & ① 建立/释放连接需要\hlred{额外的时间开销}；② 线路被通信双方独占，\hlred{利用率低}；③ 线路分配的\hlred{灵活性差}；④ 交换节点\hlred{不支持差错控制}（无法发现传输过程中发生的数据错误） \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+逐条理解缺点：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{建立/释放连接的开销}：等电话 2 分钟、只讲 5 秒，体验很差；等 2
+  分钟、讲 1
+  小时，就觉得值。所以电路交换\uln{适用于低频次、大量地传输数据}。但计算机之间的数据往往是\hlred{\textbf{突发式}传输：高频次、少量}（微信聊天打字很久，发出去只要一瞬间），所以电路交换不适合计算机网络；
+\item
+  \textbf{利用率低}：一条线路一段时间内只能被两个人用，不能共享，网络使用成本大幅提升；
+\item
+  \textbf{灵活性差}：线路上某个节点或某段线路出故障，不能动态重新分配，只能重新建立连接、重新通信；
+\item
+  \textbf{不支持差错控制}：数据 0100 在传输中受电磁干扰可能变成
+  0101，经过的线路越多越容易出错。“每经过一段链路就检查、有错就修正”叫\textbf{差错控制}；但电路交换的中间节点结构简单，数据只是从分配好的线路原模原样地通过，没有检查的过程，所以长距离传输容易出错。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书第 3 页补充：
+
+\begin{itemize}
+\tightlist
+\item
+  从通信资源分配的角度看，\uln{交换就是按照某种方式动态分配传输线路资源}；
+\item
+  电路交换的优点还包括：\textbf{有序传输}（数据按发送顺序传送，不存在失序问题）、\textbf{没有冲突}（不同通信对使用独立信道，不会争用物理信道）、\textbf{实时性强}（物理通路一旦建立，双方即可随时通信）；
+\item
+  由于计算机之间的通信通常是突发式（高频、少量）的，若采用电路交换，已被占用的通信线路在大部分时间内处于空闲状态，\uln{利用率往往不足 10\%，甚至低于 1\%}。
+\end{itemize}
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux62a5ux6587ux4ea4ux6362ux7535ux62a5ux7f51ux7edc}{%
+\section{二、报文交换（电报网络）}\label{ux4e8cux62a5ux6587ux4ea4ux6362ux7535ux62a5ux7f51ux7edc}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{报文由哪两部分组成？什么是“存储转发”？报文交换的缺点几乎都来自哪一点？}一封电报至少包含两部分：\textbf{控制信息}（从哪里发出、被谁接收）和\textbf{用户数据}（要说的话）。二者合起来是一个
+message，计算机网络里翻译为\hlred{\textbf{报文}}。
+
+\begin{defbox}
+
+\textbf{存储转发}：把传送的数据单元先\textbf{存储}进中间节点，再根据目的地址\textbf{转发}至下一节点。
+
+\end{defbox}
+
+报文交换机收到报文后，先存进自己的内存；再检查报文的控制信息，查内存里的\textbf{存储转发表}，决定转发到哪个节点。可选的路径往往有多条，按当时的网络负载选比较空闲的一条，逐跳存储转发，直到目的地。
+
+\slidefig{assets/1.1_3-p11.jpg}{0.55}{课件：电报网络采用报文交换}
+
+\textbf{如果计算机网络用报文交换？}
+小帅给小美发一段文字（报文可能只有几个字节），小丑给小扁分享一部电影（报文可能有好几
+GB）。两个报文都先到交换机 A 存储，分析后都转发给交换机
+B。可以看到，中间这条线路\uln{同时服务两对用户}，不被某一对独占，可以被整个网络的用户共享。
+
+\slidefig{assets/1.1_3-p13.jpg}{0.55}{课件：计算机网络采用报文交换}
+
+\hypertarget{ux62a5ux6587ux4ea4ux6362ux7684ux4f18ux7f3aux70b9}{%
+\subsection{报文交换的优缺点}\label{ux62a5ux6587ux4ea4ux6362ux7684ux4f18ux7f3aux70b9}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=1.600\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 内容} \\
+\endfirsthead
+\textbf{优点} & ① 通信前\uln{无需建立连接}；② 数据以“报文”为单位在交换节点间“存储转发”，\uln{线路可以灵活分配}（某条线路或节点坏了，可以另规划路径）；③ 通信期间两个用户无需独占一整条物理线路，\uln{线路利用率高}；④ 交换节点\uln{支持差错控制}（存下报文后可用奇偶校验等校验技术检查并尽可能修正错误） \\ \hline
+\textbf{缺点} & ① \hlred{报文不定长}，不方便存储转发管理；② 长报文的存储转发\hlred{时间开销大、缓存开销大}；③ 长报文\hlred{容易出错，重传代价高} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+缺点都源于“报文不定长、可能很长”：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{缓存开销}：一部 8 GB 的电影，交换机至少要有 8 GB
+  内存；报文越大内存越要跟着扩，没完没了。大小不一的报文也让内存管理变复杂（学过操作系统就知道：分区大小固定，管理简单得多）；
+\item
+  \textbf{时间开销}：每个报文都要做差错检验，报文越长检验越耗时；
+\item
+  \textbf{出错与重传}：数据越多，某个比特出错的概率越大，只要有一个比特错，整个报文就错了。校验技术能修正少数几个比特的错误；修不了就只能让发送方\uln{重传整个报文}，长报文的代价很高。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书第 3--4
+页的说法：报文交换“整个报文先传送到相邻节点，被完整接收并存储后，节点根据转发表将其转发至下一跳，如此\textbf{逐跳转发}，直至到达目的端。每个报文可\textbf{独立选择}通往目的端的路径”。书上的优点第
+1 条写作“\uln{无建立和释放连接的时延}“；缺点第 1
+条写作”\textbf{存储转发时延高}：节点必须完整接收整个报文后，才能开始转发”（课件的这一条写在“长报文存储转发时间开销大”里）。
+
+\end{bookbox}
+
+\hypertarget{ux4e09ux5206ux7ec4ux4ea4ux6362ux73b0ux4ee3ux8ba1ux7b97ux673aux7f51ux7edc}{%
+\section{三、分组交换（现代计算机网络）}\label{ux4e09ux5206ux7ec4ux4ea4ux6362ux73b0ux4ee3ux8ba1ux7b97ux673aux7f51ux7edc}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{分组的首部包含哪些信息？为什么需要分组号？分组交换相比报文交换改进了什么、又付出了什么代价？}电话网络不适合抄；电报网络有很好的参考价值，只要解决\uln{报文不定长}的问题。于是在报文交换的基础上提出了\textbf{分组交换}：把一个长报文切分成\hlred{定长}的若干部分，每部分前面加上控制信息。
+
+\begin{defbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{分组}（Packet）：一块定长数据 + 它的控制信息；
+\item
+  \textbf{首部}（Header，也译作“头信息”）：分组中的控制信息，用于控制这个分组在网络中如何传播。包含\hlred{源地址、目的地址、\textbf{分组号}}等；
+\item
+  报文------Message，分组------Packet，首部------Header。
+\end{itemize}
+
+\end{defbox}
+
+为什么需要\textbf{分组号}：把一张图片拆成多个分组发给你，你收到后要知道按什么顺序拼回原样。
+
+\slidefig{assets/1.1_3-p15.jpg}{0.6}{课件：分组交换------报文拆分成分组}
+
+\textbf{例子}：小帅的数据拆成分组 0、1、2 发往 H5。分组 0、1
+走上面的路线；转发分组 2
+时，中间节点发现上面已经很拥堵，就把它规划到下面更空闲的路线上。分组 2
+“遥遥领先”，H5 收到的顺序是 2、0、1。H5 按首部中的分组号重新排成
+0、1、2，拆掉首部，合并成用户数据。
+
+\slidefig{assets/1.1_3-p18.jpg}{0.55}{课件：分组 2 先到达，H5 按分组号重排}
+
+现代计算机网络中，\uln{路由器就是一种典型的分组交换机}：数据以固定长度的分组为单位在路由器之间交换，路由器通过
+\textbf{IP 地址}判断分组从哪里来、该发到哪里（第 4 章学）。
+
+\hypertarget{ux5206ux7ec4ux4ea4ux6362ux7684ux4f18ux7f3aux70b9}{%
+\subsection{分组交换的优缺点}\label{ux5206ux7ec4ux4ea4ux6362ux7684ux4f18ux7f3aux70b9}}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.491\hsize\raggedright\arraybackslash}X>{\hsize=1.509\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 内容} \\
+\endfirsthead
+\textbf{优点} & 几乎继承了报文交换的所有优点（只把存储转发单位从“报文”换成“分组”）：通信前无需建立连接；以“分组”为单位存储转发，线路可灵活分配；无需独占线路，利用率高；支持差错控制 \\ \hline
+\textbf{相比报文交换的改进} & ① \hlred{分组定长}，方便存储转发管理；② 分组的存储转发\hlred{时间开销小、缓存开销小}；③ 分组\hlred{不易出错，重传代价低} \\ \hline
+\textbf{缺点} & ① 相比报文交换，\hlred{控制信息占比增加}（每个分组都有首部，要消耗更多网络资源传送用户不关心的控制信息；不过增加得不多，换来的好处更多）；② 相比电路交换，\hlred{依然存在存储转发时延}（每个中间节点都要存储、分析再转发，所以比电路交换慢）；③ 报文被拆成多个分组，传输中可能出现\hlred{失序、丢失}等问题，增加处理的复杂度 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/1.1_3-p20.jpg}{0.6}{课件：分组交换的优缺点}
+
+\begin{bookbox}
+
+王道书第 4--5 页补充：
+
+\begin{itemize}
+\tightlist
+\item
+  分组交换的优势还有“\textbf{传输效率高}：分组可逐个发送，实现\uln{流水线}操作，即后一个分组的接收可与前一个分组的转发并行，从而减少整体传输时间”------这正是第五节性能分析里分组交换比报文交换快的原因；
+\item
+  需要传输额外的信息量：每个数据段都需附加控制信息以构成分组，\uln{使传送的信息量增大约 5\%～10\%}，增加了控制复杂度，降低了通信效率；
+\item
+  分组可能\textbf{失序、丢失或重复}。采用\textbf{数据报}服务时，分组可能经不同路径到达，需在目的主机按编号重排，处理较为复杂；若采用\textbf{虚电路}服务，虽可避免失序，但需经历建立连接、数据传输和释放连接三个阶段（数据报与虚电路的完整讨论见第
+  4 章）。
+\end{itemize}
+
+\end{bookbox}
+
+\hypertarget{ux56dbux865aux7535ux8defux4ea4ux6362ux4e86ux89e3}{%
+\section{四、虚电路交换（了解）}\label{ux56dbux865aux7535ux8defux4ea4ux6362ux4e86ux89e3}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{虚电路交换和电路交换有什么相同、有什么不同？现代计算机网络为什么没有采用它？}分组交换有失序、丢失的问题，于是有人提出\textbf{虚电路交换}。它\uln{本质上也是分组交换}，只是借鉴了电路交换的思想：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{建立连接}（虚拟电路）：小帅的 H1 先给小美的 H5
+  发建立连接的请求，建立一条\textbf{虚拟}的电路，例如上面那条路径；
+\item
+  \textbf{通信}：分组\uln{按序、按已建立好的既定线路发送}，H5
+  按序收到再合并；但\hlred{通信双方不独占线路}，其他用户也可以共享这些链路；
+\item
+  \textbf{释放连接}。
+\end{enumerate}
+
+\slidefig{assets/1.1_3-p22.jpg}{0.55}{课件：虚电路交换}
+
+\textbf{现代计算机网络最终采用分组交换，而没有采用虚电路交换}。原因：连在网络上的计算机处理能力都很强。用分组交换，相当于把分组失序、丢失这些问题交给\textbf{网络边缘的终端}处理；用虚电路交换，就要把“保证不乱序、不丢失”交给\textbf{网络核心部分}处理，反而降低核心部分的数据传输能力。发挥边缘终端的算力就能解决这些问题。
+
+\begin{teacherbox}
+
+虚电路交换在第 4
+章学习，\uln{不是本章重点}。本章重点是电路交换、报文交换、分组交换。
+
+\end{teacherbox}
+
+\hypertarget{ux4e94ux4e09ux79cdux4ea4ux6362ux65b9ux5f0fux7684ux6027ux80fdux5206ux6790}{%
+\section{五、三种交换方式的性能分析}\label{ux4e94ux4e09ux79cdux4ea4ux6362ux65b9ux5f0fux7684ux6027ux80fdux5206ux6790}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{时序图的纵轴、横轴、斜线各表示什么？三种方式各用了多少时间？}这种时序图在计算机网络课里很常见，\hlred{必须能看懂}，也能帮助解决真题。王道书上也有这三个图（图
+1.4），课件给它加了背景小格子：
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{纵轴}：时间 \(t\) 增加的方向，\uln{每个小格子 = 1 ms}；
+\item
+  \textbf{横轴}：A、B、C、D 四根竖线，对应四个节点（A、D 是主机，B、C
+  是中间交换节点）；
+\item
+  \textbf{斜线 /
+  斜边}：信号或数据从一个节点传到下一个节点需要时间，所以是斜着往下走的。斜的高度差就是传播一跳的时间。
+\end{itemize}
+
+三种方式共同的假设：每一跳传播时延 = 1 ms，数据传输速率 = 0.5
+kb/ms，报文大小 = 4
+kb。所以\uln{把 4 kb 的报文全部发到线路上需要 \(4 \div 0.5 = 8\) ms}。
+
+\begin{addbox}
+
+\textbf{单位}：课件的假设写的是 kb 和 kb/ms（小写 b），字幕里老师说的是
+KB 和“每毫秒 0.5 KB”。两者只差一个 8
+倍，\textbf{只要两处单位一致，算出的时间都一样}，不影响结论。大 B 和小 b
+的区别在 1.1\_5 速率里专门讲。
+
+\end{addbox}
+
+\hypertarget{ux7535ux8defux4ea4ux6362}{%
+\subsection{1. 电路交换}\label{ux7535ux8defux4ea4ux6362}}
+
+额外假设：电路交换机建立、释放下一跳连接耗时 1
+ms；接收方处理连接请求需要 2 ms。
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{连接建立}：A 向 B 发请求（传播 1 ms）→ B 在内部建立连接（1
+  ms）→ 向 C 发请求（1 ms）→ C 建立连接（1 ms）→ 向 D 发请求（1 ms）→ D
+  处理请求（2 ms）→ D 发应答。此时物理线路已连好，应答顺着电路经 C、B
+  回到 A（每跳 1 ms）；
+\item
+  \textbf{数据传送}：A 收到应答后开始发报文，用 8 ms
+  发完；第一个比特经三跳 3 ms 到达 D，最后一个比特在第 8 ms 发出，再经 3
+  ms 到达 D；
+\item
+  \textbf{连接释放}：A 发完最后一个比特后就可以通知 B、C、D
+  释放连接（图里为了不和报文重合，箭头画得离报文底部远了一点，其实可以无限靠近）。
+\end{enumerate}
+
+\hlred{从报文开始传输到被 D 全部接收：\(8 + 3 = 11\) ms}（不含建立、释放连接的时间）。数据从
+A 直送 D，中间不存储。
+
+\slidefig{assets/1.1_3-p28.jpg}{0.6}{课件：电路交换性能分析}
+
+\hypertarget{ux62a5ux6587ux4ea4ux6362}{%
+\subsection{2. 报文交换}\label{ux62a5ux6587ux4ea4ux6362}}
+
+额外假设：报文存储转发时延 = 2
+ms。\hlred{中间节点一定要接收完整个报文后，才能解析并转发}。
+
+逐步推进（时刻从 A 开始发送算起）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.667\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 时刻（ms）} & \textcolor{white}{\bfseries 发生了什么} \\
+\endfirsthead
+0 → 8 & A 把报文发到线路 A--B 上（发送 8 ms） \\ \hline
+9 & B 收完整个报文（最后一个比特在第 8 ms 发出，再传播 1 ms） \\ \hline
+9 → 11 & B 存储转发处理 2 ms \\ \hline
+11 → 19 & B 把报文发到线路 B--C 上 \\ \hline
+20 & C 收完整个报文 \\ \hline
+20 → 22 & C 存储转发处理 2 ms \\ \hline
+22 → 30 & C 把报文发到线路 C--D 上 \\ \hline
+\textbf{31} & D 收完整个报文 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+即 \(3\times(8+1) + 2\times 2 = 31\) ms。
+
+\slidefig{assets/1.1_3-p29.jpg}{0.6}{课件：报文交换性能分析}
+
+\begin{fixbox}
+
+\textbf{更正}：正课视频 P5 里老师说报文交换“总共经过了 29
+个小格子，也就是 29 ms”。按课件给的假设（发送 8 ms × 3 段、传播 1 ms × 3
+段、存储转发 2 ms × 2 个节点）算是 \textbf{31
+ms}；按课件图的格子量，报文从 A 开始发送到 D 收完也是 31 格。29
+应是口误。结论不变：报文交换耗时最多。
+
+\end{fixbox}
+
+\hypertarget{ux5206ux7ec4ux4ea4ux6362}{%
+\subsection{3. 分组交换}\label{ux5206ux7ec4ux4ea4ux6362}}
+
+把 4 kb 的报文拆成 4 个 1 kb 的分组：每个分组发送只需 \(1 \div 0.5 = 2\)
+ms。分组小，存储转发处理也更快，假设\textbf{分组存储转发时延 = 0.5
+ms}。同样，\hlred{中间节点一定要接收完整个分组后，才能解析并转发}。
+
+老师图里的画法：A 发完一个分组后，\uln{间隔 0.5 ms}（保证 B
+已处理完上一个分组）再发下一个；B、C
+转发时也遵循同样的规则。于是每个节点每 2.5 ms
+送出一个分组。逐个分组推进：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.583\hsize\raggedright\arraybackslash}X>{\hsize=1.000\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X>{\hsize=1.333\hsize\raggedright\arraybackslash}X>{\hsize=0.750\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 分组} & \textcolor{white}{\bfseries A 发送} & \textcolor{white}{\bfseries B 收完 → 转发} & \textcolor{white}{\bfseries C 收完 → 转发} & \textcolor{white}{\bfseries D 收完} \\
+\endfirsthead
+1 & 0 → 2 & 3 → 3.5～5.5 & 6.5 → 7～9 & 10 \\ \hline
+2 & 2.5 → 4.5 & 5.5 → 6～8 & 9 → 9.5～11.5 & 12.5 \\ \hline
+3 & 5 → 7 & 8 → 8.5～10.5 & 11.5 → 12～14 & 15 \\ \hline
+4 & 7.5 → 9.5 & 10.5 → 11～13 & 14 → 14.5～16.5 & \textbf{17.5} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+（“3 → 3.5～5.5”读作：第 3 ms 收完，处理 0.5 ms，第 3.5～5.5 ms
+发到下一段线路上。）
+
+第一个分组 10 ms 到达 D，之后每 2.5 ms
+到一个，\hlred{\(10 + 3\times 2.5 = 17.5\) ms}。
+
+\slidefig{assets/1.1_3-p30.jpg}{0.6}{课件：分组交换性能分析}
+
+为什么比报文交换快：B 在转发分组 1 的同时，A 已经在发分组
+2，几条线路同时在工作（王道书说的“流水线”）；而报文交换中，B 必须等 8 ms
+收完整个报文才能开始转发，同一时刻只有一条线路在用。
+
+\hypertarget{ux5bf9ux6bd4}{%
+\subsection{4. 对比}\label{ux5bf9ux6bd4}}
+
+\hlred{电路交换 11 ms（不含建立、释放连接）\textless{} 分组交换 17.5 ms
+\textless{} 报文交换 31 ms}。电路交换没有存储转发时延；报文信息量大，存储转发一个报文耗时高；分组的存储转发时延更低。
+
+课件最后一页把三种方式按各个维度做了对比（王道书表 1.1 内容相同）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.333\hsize\raggedright\arraybackslash}X>{\hsize=1.067\hsize\raggedright\arraybackslash}X>{\hsize=0.667\hsize\raggedright\arraybackslash}X>{\hsize=0.933\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 特性} & \textcolor{white}{\bfseries 电路交换} & \textcolor{white}{\bfseries 报文交换} & \textcolor{white}{\bfseries 分组交换} \\
+\endfirsthead
+完成传输所需时间 & \hlred{最少}（排除建立、释放连接耗时） & 最多 & 较少 \\ \hline
+存储转发时延 & 无 & 较高 & 较低 \\ \hline
+通信前是否需要建立连接？ & 是 & 否 & 否 \\ \hline
+缓存开销 & 无 & 高 & 低 \\ \hline
+是否支持差错控制？ & 不支持 & 支持 & 支持 \\ \hline
+报文数据是否有序到达？ & 是 & 是 & \hlred{否} \\ \hline
+是否需要额外的控制信息？ & 否 & 是 & 是（控制信息占比最大） \\ \hline
+线路分配的灵活性 & 不灵活 & 灵活 & 非常灵活 \\ \hline
+线路利用率 & 低 & 高 & 非常高 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+王道书第 5 页（表 1.1
+与课件这张表一致）：当需连续传输大量数据，并且\uln{传输时间远大于连接建立时间}时，采用电路交换更为合适。但从提升网络整体信道利用率角度看，报文交换和分组交换优于电路交换。其中，\hlred{分组交换时延更小、更灵活，尤其适合突发式数据通信}。
+
+书上标注了考点追踪：电路交换的时延分析（2025）、报文交换的时延分析（2013、2025）、分组交换的时延分析（2010、2013、2023、2025），并说明“分组交换网的性能分析是统考高频考点，强烈建议结合视频学习”。
+
+\end{bookbox}
+
+\hypertarget{ux516dux77e5ux8bc6ux56deux987e}{%
+\section{六、知识回顾}\label{ux516dux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\begin{summarybox}
+
+\textbf{电路交换}（电话网络）：建立连接 → 通信（一直占用） →
+释放连接；专用物理通路，数据直送，速率高。缺点：建立/释放连接有额外开销、独占利用率低、灵活性差、不支持差错控制。适用于\hlred{低频次、大量}的数据传输；计算机通信是\hlred{突发式（高频次、少量）}，不适合。
+
+\textbf{报文交换}（电报网络）：报文 = 控制信息 +
+用户数据；以报文为单位\textbf{存储转发}。无需建立连接、灵活、利用率高、支持差错控制。缺点都来自\hlred{报文不定长}：不便管理、时间和缓存开销大、长报文易出错且重传代价高。
+
+\textbf{分组交换}（现代计算机网络）：报文切成\hlred{定长}分组，首部含源地址、目的地址、分组号。继承报文交换的优点，并解决不定长的问题。代价：控制信息占比增加、仍有存储转发时延、可能失序和丢失。路由器是典型的分组交换机。
+
+\textbf{虚电路交换}：基于分组交换，先建立虚拟电路，按序沿既定线路发送，但不独占线路（第
+4 章）。
+
+\textbf{性能}：中间节点必须收完整个报文 / 分组才能转发。课件例子：电路
+11 ms \textless{} 分组 17.5 ms \textless{} 报文 31 ms。
+
+\textbf{自测}：① 为什么电路交换不支持差错控制？②
+报文交换的三个缺点分别是什么，根源是什么？③
+分组交换比报文交换快在哪里？④ 三种方式中哪种“数据可能无序到达”？
+
+\end{summarybox}
+\end{document}
