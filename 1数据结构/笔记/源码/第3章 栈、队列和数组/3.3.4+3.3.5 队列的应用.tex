@@ -1,0 +1,358 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.3.4+3.3.5
+队列的应用},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.3.4+3.3.5 队列的应用 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.3.4+3.3.5
+队列的应用 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.3.4+3.3.5
+队列的应用}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.3.4+3.3.5 · 正课字幕 P31 ·
+王道书 §3.3.4--3.3.5（第 93--94 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{这一节介绍了队列的哪几个应用？}这一节简单介绍几个队列的应用：\textbf{树的层次遍历}、\textbf{图的广度优先遍历}、\textbf{队列在操作系统中的应用}（CPU
+资源分配、打印数据缓冲区）。老师说树和图的部分\uln{听不懂没有关系}，在“树”和“图”的章节还会结合代码详细学习，这里有个大致印象就可以。
+
+\hypertarget{ux4e00ux6811ux7684ux5c42ux6b21ux904dux5386}{%
+\section{一、树的层次遍历}\label{ux4e00ux6811ux7684ux5c42ux6b21ux904dux5386}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{层次遍历时，每处理一个结点要做什么？}树这种数据结构是分层的，\textbf{层次遍历}就是一层一层地遍历树里的各个结点。要实现层次遍历，需要一个队列辅助：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  新建一个队列，从根结点出发，先把根结点放入队列；
+\item
+  每次处理\uln{队头}的结点：把它的左右两个孩子加入队尾，然后让它出队；没有孩子就直接出队；
+\item
+  直到队列为空。
+\end{enumerate}
+
+\slidefig{assets/3.3.4-p02.jpg}{0.55}{课件：队列应用：树的层次遍历}
+
+以课件这棵树为例（老师的讲解过程）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.960\hsize\raggedright\arraybackslash}X>{\hsize=0.900\hsize\raggedright\arraybackslash}X>{\hsize=1.140\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 队列（左边是队头）} & \textcolor{white}{\bfseries 已遍历} \\
+\endfirsthead
+1 入队 & 1 &  \\ \hline
+处理 1：2、3 入队，1 出队 & 2 3 & 1 \\ \hline
+处理 2：4、5 入队，2 出队 & 3 4 5 & 1 2 \\ \hline
+处理 3：6、7 入队，3 出队 & 4 5 6 7 & 1 2 3 \\ \hline
+处理 4：没有孩子，直接出队 & 5 6 7 & 1 2 3 4 \\ \hline
+处理 5：8、9 入队，5 出队 & 6 7 8 9 & 1 \ldots{} 5 \\ \hline
+处理 6：没有孩子，直接出队 & 7 8 9 & 1 \ldots{} 6 \\ \hline
+处理 7：10、11 入队，7 出队 & 8 9 10 11 & 1 \ldots{} 7 \\ \hline
+8、9、10、11 都没有孩子，依次出队 & 空 & 1 2 3 \ldots{} 11 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+遍历顺序正好是一层一层的：1；2 3；4 5 6 7；8 9 10 11。
+
+\begin{bookbox}
+
+王道书第 93--94 页
+§3.3.4“队列在层次遍历中的应用”：在信息处理中，有一类典型问题需要逐层或逐行处理。解决这类问题的常用策略是：在处理当前层的同时，将下一层的元素按序加入待处理队列。队列正适用于此类场景，因其\uln{先进先出}的特性，能够自然地保存后续待处理元素的顺序。
+
+书上以图 3.17 的二叉树为例，表 3.3
+给出层次遍历过程（“队内”是队列中的结点，“队外”是已出队的结点）：A 入；A
+出，BC 入；B 出，D 入；C 出，EF 入；D 出，G 入；E 出，HI 入；F 出；GHI
+出，最后队外是 ABCDEFGHI。
+
+该过程可简要描述如下：
+
+① 将根结点入队。
+
+② 若队列为空（表示所有结点均已处理），则遍历结束；否则执行 ③。
+
+③
+取出队首结点并访问；若其存在左孩子，则将左孩子入队；若其存在右孩子，则将右孩子入队；返回
+② 继续执行。
+
+\end{bookbox}
+
+\slidefig{assets/3.3-book-fig3.17.png}{0.32}{王道书图 3.17：二叉树}
+
+\Needspace{12\baselineskip}
+
+\hypertarget{ux4e8cux56feux7684ux5e7fux5ea6ux4f18ux5148ux904dux5386}{%
+\section{二、图的广度优先遍历}\label{ux4e8cux56feux7684ux5e7fux5ea6ux4f18ux5148ux904dux5386}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{图的广度优先遍历和树的层次遍历有什么不同？}图的广度优先遍历也需要队列的支持，思想和树的层次遍历很类似。不同的是：遍历一个结点时，要检查和它\uln{相邻的结点有没有被遍历过}，只把还没处理过的放到队尾。
+
+\slidefig{assets/3.3.4-p03.jpg}{0.55}{课件：队列应用：图的广度优先遍历}
+
+从 1 号结点出发（老师的讲解过程）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.380\hsize\raggedright\arraybackslash}X>{\hsize=0.720\hsize\raggedright\arraybackslash}X>{\hsize=0.900\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 操作} & \textcolor{white}{\bfseries 队列（左边是队头）} & \textcolor{white}{\bfseries 已遍历} \\
+\endfirsthead
+1 入队 & 1 &  \\ \hline
+处理 1：相邻的 2、3 都没处理过，入队；1 出队 & 2 3 & 1 \\ \hline
+处理 2：1 已处理过，4 没有，4 入队；2 出队 & 3 4 & 1 2 \\ \hline
+处理 3：1 已处理过，5、6 入队；3 出队 & 4 5 6 & 1 2 3 \\ \hline
+处理 4：相邻的都处理过，直接出队 & 5 6 & 1 \ldots{} 4 \\ \hline
+处理 5：7、8 入队；5 出队 & 6 7 8 & 1 \ldots{} 5 \\ \hline
+6、7、8：不再加入新结点，依次出队 & 空 & 1 2 \ldots{} 8 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+直到整个队列为空，就完成了对这个图的广度优先遍历。
+
+\hypertarget{ux4e09ux961fux5217ux5728ux64cdux4f5cux7cfbux7edfux4e2dux7684ux5e94ux7528}{%
+\section{三、队列在操作系统中的应用}\label{ux4e09ux961fux5217ux5728ux64cdux4f5cux7cfbux7edfux4e2dux7684ux5e94ux7528}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{FCFS 是什么？为什么可以用队列实现？打印数据缓冲区解决什么问题？}操作系统要管理
+CPU、I/O
+设备等硬件资源，这些资源往往有限，而系统中同时有多个进程并发运行、争抢使用。多个进程争抢着使用有限的系统资源时，\textbf{FCFS}（First
+Come First
+Service，\uln{先来先服务}）是一种常用策略：哪个进程先申请资源，就先分配给哪个进程。先来先服务的思想和队列的先进先出一样，所以\hlred{可用队列实现}。
+
+\textbf{例：CPU 资源的分配。}
+操作系统让多个进程排成一个\textbf{就绪进程队列}，每次选择队头的进程，让它上
+CPU 执行一个比较短的时间片，然后下 CPU，再让下一个进程上 CPU
+运行\ldots\ldots 循环往复，所有进程都能轮流得到 CPU
+的服务。这就是为什么电脑只有一个 CPU，却能让那么多程序同时运行。
+
+\slidefig{assets/3.3.4-p04.jpg}{0.55}{课件：队列在操作系统中的应用：CPU 资源的分配}
+
+\textbf{例：打印数据缓冲区。}
+学校打印店常常是多台电脑连同一台打印机。打印机还在工作时，你就已经可以按下打印按钮，因为系统开辟了一片\textbf{缓冲区}，存放打印机暂时还不能处理的数据，并按先来后到的原则把这些打印数据组织成一个队列，再按先进先出的原则依次取出，让打印机打印输出。打印机是慢速设备，主机是快速设备，短时间内能发出大量打印任务，所以缓冲区\uln{可缓解主机与打印机速度不匹配的问题}。
+
+\slidefig{assets/3.3.4-p05.jpg}{0.55}{课件：队列在操作系统中的应用：打印数据缓冲区}
+
+\begin{bookbox}
+
+王道书第 94 页
+§3.3.5“队列在计算机系统中的应用”：从两个方面阐述，第一个方面是解决\uln{主机与外部设备之间速度不匹配}的问题，第二个方面是解决由\uln{多用户引起的资源竞争}问题。
+
+考点追踪（缓冲区的逻辑结构，2009）：以主机和打印机之间的速度不匹配为例。主机输出数据的速度远快于打印机处理数据的速度，若直接将数据发送给打印机，会导致数据丢失或打印错误。为此，通常设置一个打印数据缓冲区。具体实现：主机将待打印的数据依次写入缓冲区，当缓冲区满时，主机暂停输出并转向其他任务；打印机则从缓冲区中按先进先出原则逐个取出数据进行打印；打印完成后，打印机向主机发出请求，主机再次向缓冲区写入新的打印数据。这种方法不仅保证了数据的正确性，还提高了主机的整体效率。因此，\uln{打印数据缓冲区实际上就是一个队列}。
+
+考点追踪（多队列出队/入队操作的应用，2016）：在多用户环境下，CPU
+资源的竞争是一个典型场景。在一个多终端系统中，用户通过各自的终端向操作系统提出对
+CPU 的请求。为公平分配 CPU
+时间，操作系统通常按照请求的时间顺序，将这些请求排成一个队列。具体步骤：每次将
+CPU
+分配给队首用户的程序运行；当该程序运行结束或用完规定的时间片后，操作系统使其出队；然后将
+CPU 分配给新的队首用户。这种方式既保证了请求的公平处理，又提升了 CPU
+利用率。此外，在某些复杂系统中，可能还会引入多队列机制，以便根据不同的优先级或调度策略动态调整资源分配。
+
+\end{bookbox}
+
+\begin{defbox}[：名词统一]
+
+课件“FCFS（先来先服务）“＝书上”按照请求的时间顺序排成一个队列”；课件“就绪进程队列”，书上说“用户的程序
+/
+请求排成一个队列”；课件“打印数据缓冲区”＝书上相同。课件把这两个例子都叫“队列在操作系统中的应用”，书上叫“队列在计算机系统中的应用”。课件“树的层次遍历”＝书上“层次遍历”。
+
+\end{defbox}
+
+\begin{summarybox}
+
+\textbf{树的层次遍历}：根结点入队；每次处理队头结点，把它的左右孩子加入队尾，然后出队；队列空时结束。
+
+\textbf{图的广度优先遍历}：思路类似，但只把\uln{相邻且还没被遍历过}的结点加入队尾。
+
+\textbf{操作系统中的应用}：多个进程争抢有限资源时，FCFS（先来先服务）是常用策略，可用队列实现。①
+CPU 资源分配：就绪进程队列，队头进程上 CPU 运行一个时间片；②
+打印数据缓冲区：用队列组织打印数据，缓解主机与打印机速度不匹配的问题。
+
+\textbf{王道书考点}：缓冲区的逻辑结构是队列（2009）；多队列出队/入队操作的应用（2016）。
+
+\textbf{自测}：① 用表格模拟书上图 3.17 的层次遍历。②
+打印数据缓冲区为什么是队列而不是栈？③ 树和图分别在第几章详细学习？
+
+\end{summarybox}
+\end{document}
