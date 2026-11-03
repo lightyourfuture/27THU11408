@@ -1,0 +1,572 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.3.2\_1
+栈在表达式求值中的应用（上）},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.3.2\_1
+栈在表达式求值中的应用（上） · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.3.2\_1
+栈在表达式求值中的应用（上） · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.3.2\_1
+栈在表达式求值中的应用（上）}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.3.2\_1 · 正课字幕 P28 ·
+王道书 §3.3.2（第 90--92 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{三种算术表达式各是什么样？这一节的重点是哪一种？}这一节讲三种算术表达式（中缀、后缀、前缀），以及两类考点：\textbf{后缀表达式}的转换与计算（重点，课件标了红色感叹号），\textbf{前缀表达式}的转换与计算。本节只讲\uln{手算}转换和用栈计算；“用栈把中缀转后缀”（机算）放在下一节
+3.3.2\_2。
+
+\slidefig{assets/3.3.2_1-p02.jpg}{0.55}{课件：知识总览}
+
+\hypertarget{ux4e00ux4e2dux7f00ux540eux7f00ux524dux7f00ux8868ux8fbeux5f0f}{%
+\section{一、中缀、后缀、前缀表达式}\label{ux4e00ux4e2dux7f00ux540eux7f00ux524dux7f00ux8868ux8fbeux5f0f}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{界限符起什么作用？后缀、前缀表达式为什么可以不要括号？}我们熟悉的算术表达式，比如
+\texttt{((15÷(7-(1+1)))×3)-(2+(1+1))}，由三个部分组成：\textbf{操作数、运算符、界限符}。界限符就是括号，它\uln{反映了计算的先后顺序}，在中缀表达式里必不可少：同样的数和运算符，去掉括号写成
+\texttt{15÷7-1+1×3-2+1+1}，运算顺序就完全变了。
+
+\slidefig{assets/3.3.2_1-p03.jpg}{0.55}{课件：算术表达式由操作数、运算符、界限符组成}
+
+1924
+年一位波兰数学家想到：\uln{可以不用界限符，也能无歧义地表达运算顺序}。由此得到两种表达式：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=1.800\hsize\raggedright\arraybackslash}X>{\hsize=0.950\hsize\raggedright\arraybackslash}X>{\hsize=0.650\hsize\raggedright\arraybackslash}X>{\hsize=0.750\hsize\raggedright\arraybackslash}X>{\hsize=0.850\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 名称} & \textcolor{white}{\bfseries 运算符的位置} & \textcolor{white}{\bfseries 例 1} & \textcolor{white}{\bfseries 例 2} & \textcolor{white}{\bfseries 例 3} \\
+\endfirsthead
+\textbf{中缀表达式} & 两个操作数中间 & \texttt{a+b} & \texttt{a+b-c} & \texttt{a+b-c*d} \\ \hline
+\textbf{后缀表达式}（逆波兰表达式，Reverse Polish notation） & 两个操作数后面 & \texttt{ab+} & \texttt{ab+c-} & \texttt{ab+cd*-} \\ \hline
+\textbf{前缀表达式}（波兰表达式，Polish notation） & 两个操作数前面 & \texttt{+ab} & \texttt{-+abc} & \texttt{-+ab*cd} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\slidefig{assets/3.3.2_1-p05.jpg}{0.55}{课件：中缀、后缀、前缀表达式}
+
+\begin{itemize}
+\tightlist
+\item
+  操作数的\uln{左右顺序不能交换}：\texttt{a/b} 的后缀是
+  \texttt{ab/}，写成 \texttt{ba/} 就成了 \texttt{b/a}；
+\item
+  考试中后缀表达式考得更多，所以课件把它标为重点。
+\end{itemize}
+
+\begin{bookbox}
+
+王道书第 90 页“1. 算术表达式”：中缀表达式（如
+\texttt{3+4}）运算符位于两个操作数之间；前缀表达式（如
+\texttt{+34}）、后缀表达式（如
+\texttt{34+}）。中缀表达式虽然符合人类阅读习惯，但\uln{不便于计算机直接求值}，因此许多编程语言在内部需要将其转换为后缀或前缀形式进行求值。中缀表达式必须依赖括号来明确运算次序；后缀表达式的运算符置于操作数之后，其结构已隐含了运算顺序，因此无须括号，仅由操作数和运算符构成。
+
+\end{bookbox}
+
+\hypertarget{ux4e8cux4e2dux7f00ux8f6cux540eux7f00ux624bux7b97}{%
+\section{二、中缀转后缀（手算）}\label{ux4e8cux4e2dux7f00ux8f6cux540eux7f00ux624bux7b97}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{手算中缀转后缀的三步是什么？什么是“左优先”原则，为什么要用它？}\textbf{手算方法}（课件原文）：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  确定中缀表达式中\uln{各个运算符的运算顺序}；
+\item
+  选择下一个运算符，按照 \textbf{「左操作数 右操作数 运算符」}
+  的方式组合成一个新的操作数；
+\item
+  如果还有运算符没被处理，就继续 ②。
+\end{enumerate}
+
+以 \texttt{((15÷(7-(1+1)))×3)-(2+(1+1))} 为例，运算顺序依次是
+\texttt{+\ -\ ÷\ ×\ +\ +\ -}（括号里的先算），得到后缀表达式
+\texttt{15\ 7\ 1\ 1\ +\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -}。可以看到：\uln{后缀表达式中运算符从左到右出现的顺序，就是运算的顺序}。
+
+\slidefig{assets/3.3.2_1-p06.jpg}{0.55}{课件：中缀转后缀（手算）}
+
+\textbf{运算顺序不唯一，后缀表达式也不唯一。} 例如
+\texttt{A+B*(C-D)-E/F}：
+
+\begin{itemize}
+\tightlist
+\item
+  按 \texttt{-\ *\ +\ /\ -} 的顺序算，得到 \texttt{ABCD-*+EF/-}；
+\item
+  也可以先算 \texttt{/}、最后才算 \texttt{+}（顺序
+  \texttt{-\ *\ /\ -\ +}），得到 \texttt{ABCD-*EF/-+}。
+\end{itemize}
+
+客观来看两种都正确，但\uln{只有前者是“机算”（下一节的栈算法）得到的结果}。为了让手算和机算的结果相同，老师定了一个\textbf{“左优先”原则}：\hlred{只要左边的运算符能先计算，就优先算左边的}。这样运算顺序就唯一了，后缀表达式也唯一（算法的“确定性”）。
+
+\slidefig{assets/3.3.2_1-p07.jpg}{0.55}{课件：两种后缀都正确，只有左优先的那种与机算结果相同}
+
+再练一个：\texttt{A+B-C*D/E+F}。按左优先，\texttt{+} 能先算就先算
+\texttt{+}；之后 \texttt{-} 要等右边的 \texttt{C*D/E}，所以先算
+\texttt{*}、再算 \texttt{/}、再算 \texttt{-}、最后 \texttt{+}，得到
+\texttt{AB+CD*E/-F+}。
+
+\slidefig{assets/3.3.2_1-p08.jpg}{0.55}{课件：左优先原则，A+B-C*D/E+F}
+
+\begin{fixbox}
+
+老师提醒：「左操作数/右操作数」「左优先/右优先」是他自己“杜撰”的说法（课件上写“私房菜”），方便理解；\uln{答简答题时不建议用这些说法}，要跟着业内的标准表达。另外，考试时要验证自己的算法执行是否正确，应该用左优先得到的那种后缀表达式去验证。
+
+\end{fixbox}
+
+\begin{bookbox}
+
+王道书第 91 页“2.
+中缀表达式转后缀表达式”（考点追踪：中缀表达式转后缀表达式的方法，2024）给的手算方法和课件不同，是\textbf{加括号法}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  按运算优先级对整个表达式逐层加括号；
+\item
+  把每个运算符移到其所在括号的右括号之后，形成“左操作数 右操作数
+  运算符”的结构；
+\item
+  删除所有括号，即得后缀表达式。
+\end{enumerate}
+
+以 \texttt{A+B*(C-D)-E/F} 为例（下标表示运算顺序）：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  加括号：\texttt{((A+₃(B*₂(C-₁D)))-₅(E/₄F))}；
+\item
+  运算符后移：\texttt{((A(B(CD)-₁)*₂)+₃(EF)/₄)-₅}；
+\item
+  去括号后得到后缀表达式：\texttt{ABCD-₁*₂+₃EF/₄-₅}。
+\end{enumerate}
+
+书上脚注：中缀转前缀的方法类似，但统考真题\uln{仅考查过中缀转后缀}，所以书上只介绍中缀转后缀。
+
+\end{bookbox}
+
+\begin{addbox}
+
+两种手算方法结果一样。书上“逐层加括号”时，同级运算符从左往右加括号，下标的顺序
+\texttt{-\ *\ +\ /\ -}
+正好就是老师的左优先顺序。我用程序核对过：\texttt{A+B*(C-D)-E/F}
+按左优先得 \texttt{ABCD-*+EF/-}，\texttt{A+B-C*D/E+F} 得
+\texttt{AB+CD*E/-F+}，15 那个式子得
+\texttt{15\ 7\ 1\ 1\ +\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -}，与课件一致。
+
+\end{addbox}
+
+\hypertarget{ux4e09ux540eux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97ux624bux7b97}{%
+\section{三、后缀表达式的计算（手算）}\label{ux4e09ux540eux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97ux624bux7b97}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{手算后缀表达式时，每遇到一个运算符做什么？}\textbf{手算方法}：\uln{从左往右扫描，每遇到一个运算符，就让运算符前面最近的两个操作数执行对应运算，合体为一个操作数}。注意两个操作数的左右顺序。
+
+例如 \texttt{AB+CD*E/-F+}：遇到 \texttt{+}，算 \texttt{A+B}；遇到
+\texttt{*}，算 \texttt{C*D}；遇到 \texttt{/}，前面最近的两个操作数是
+\texttt{C*D} 和 \texttt{E}，算 \texttt{(C*D)/E}；遇到 \texttt{-}，算
+\texttt{(A+B)-((C*D)/E)}；最后遇到 \texttt{+}，再加上 \texttt{F}。
+
+手算时会发现一个特点：\uln{最后出现的操作数先被运算}。这正是后进先出（LIFO），所以可以用栈来实现。
+
+\slidefig{assets/3.3.2_1-p11.jpg}{0.55}{课件：最后出现的操作数先被运算，可以用栈}
+
+\begin{addbox}
+
+\textbf{后缀转中缀}（课件留的思考题，知识回顾里给了方法）：从左往右扫描，每遇到一个运算符，就把「左操作数
+右操作数 运算符」变为「(左操作数 运算符 右操作数)」的形式。例如
+\texttt{AB+CD*E/-F+} →
+\texttt{((A+B)-((C*D)/E))+F}，和手算求值是同一个过程，只是不算出结果，而是加上括号。
+
+\end{addbox}
+
+\hypertarget{ux56dbux540eux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97ux673aux7b97}{%
+\section{四、后缀表达式的计算（机算）}\label{ux56dbux540eux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97ux673aux7b97}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{用栈计算后缀表达式时，先出栈的是左操作数还是右操作数？最后栈里剩什么？}\textbf{用栈实现后缀表达式的计算}（课件原文）：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  从左往右扫描下一个元素，直到处理完所有元素；
+\item
+  若扫描到操作数，则压入栈，并回到 ①；否则执行 ③；
+\item
+  若扫描到运算符，则弹出两个栈顶元素，执行相应运算，运算结果压回栈顶，回到
+  ①。
+\end{enumerate}
+
+注意：\hlred{先出栈的是“右操作数”}。若表达式合法，最后栈中只会留下一个元素，就是最终结果。
+
+以 \texttt{AB+CD*E/-F+} 为例：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.300\hsize\raggedright\arraybackslash}X>{\hsize=0.960\hsize\raggedright\arraybackslash}X>{\hsize=1.740\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 扫描} & \textcolor{white}{\bfseries 动作} & \textcolor{white}{\bfseries 栈（左边是栈底）} \\
+\endfirsthead
+A & 入栈 & A \\ \hline
+B & 入栈 & A B \\ \hline
++ & 弹出 B（右）、A（左），算 A+B，压回 & (A+B) \\ \hline
+C & 入栈 & (A+B) C \\ \hline
+D & 入栈 & (A+B) C D \\ \hline
+* & 弹出 D、C，算 C*D，压回 & (A+B) (C*D) \\ \hline
+E & 入栈 & (A+B) (C*D) E \\ \hline
+/ & 弹出 E、C*D，算 (C*D)/E，压回 & (A+B) ((C*D)/E) \\ \hline
+- & 弹出 (C*D)/E、A+B，算 (A+B)-((C*D)/E)，压回 & ((A+B)-((C*D)/E)) \\ \hline
+F & 入栈 & ((A+B)-((C*D)/E)) F \\ \hline
++ & 弹出 F 和左边那项，相加，压回 & (((A+B)-((C*D)/E))+F) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\Needspace{16\baselineskip}
+
+\slidefig{assets/3.3.2_1-p19.jpg}{0.55}{课件：最后栈中只剩一个元素，就是最终结果}
+
+\begin{itemize}
+\tightlist
+\item
+  老师强调：先出栈的是右操作数，\uln{这是比较容易错的地方}；遇到减法、除法时左右搞反，结果就错了；
+\item
+  老师建议把这个例子截个图，自己动手模拟怎么入栈、怎么出栈，因为\uln{这个过程选择题甚至大题都会考}；
+\item
+  后缀表达式适用于\uln{基于栈的编程语言}（stack-oriented programming
+  language），如 Forth、PostScript，它们做算术运算时都用后缀表达式；
+\item
+  课件还给了 15 那个式子作练习，用栈算出的结果应该和中缀式一样，是 5。
+\end{itemize}
+
+\slidefig{assets/3.3.2_1-p20.jpg}{0.55}{课件：练习，用栈计算 15 7 1 1 + - ÷ 3 × 2 1 1 + + -}
+
+\begin{addbox}
+
+为什么先出栈的是右操作数（我的理解）：右操作数在后缀表达式里比左操作数靠右，后入栈，所以先出栈。
+
+\textbf{练习参考答案}（先自己算再看）：\texttt{15\ 7\ 1\ 1\ +\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.360\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.440\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 扫描} & \textcolor{white}{\bfseries 动作} & \textcolor{white}{\bfseries 栈（左边是栈底）} \\
+\endfirsthead
+15, 7, 1, 1 & 依次入栈 & 15 7 1 1 \\ \hline
++ & 弹出 1、1，算 1+1=2 & 15 7 2 \\ \hline
+- & 弹出 2、7，算 7-2=5 & 15 5 \\ \hline
+÷ & 弹出 5、15，算 15÷5=3 & 3 \\ \hline
+3 & 入栈 & 3 3 \\ \hline
+× & 算 3×3=9 & 9 \\ \hline
+2, 1, 1 & 依次入栈 & 9 2 1 1 \\ \hline
++ & 算 1+1=2 & 9 2 2 \\ \hline
++ & 算 2+2=4 & 9 4 \\ \hline
+- & 弹出 4、9，算 9-4=5 & 5 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+最后栈中只剩
+5，就是结果，和中缀式直接算的结果相同。这个过程中栈里最多同时有 4
+个元素。
+
+\end{addbox}
+
+\begin{bookbox}
+
+王道书第 92 页“3.
+后缀表达式求值”（考点追踪：用栈实现表达式求值的分析，2018）：从左至右依次扫描表达式，若当前项为操作数，则将其压入栈中；若为操作符
+\texttt{\textless{}op\textgreater{}}，则从栈中弹出两个操作数，\uln{先弹出的是右操作数 Y，后弹出的是左操作数 X}，执行运算
+\texttt{X\textless{}op\textgreater{}Y}，并将结果压回栈中。所有项处理完毕后，栈顶元素即为最终计算结果。
+
+书上表 3.2 给出 \texttt{ABCD-*+EF/-} 的求值过程，共 12 步（第 1
+步是“置空栈”）：A、B、C、D 依次入栈；\texttt{-} 算 C-D 得 R₁；\texttt{*}
+算 B×R₁ 得 R₂；\texttt{+} 算 A+R₂ 得 R₃；E、F 入栈；\texttt{/} 算 E/F 得
+R₄；\texttt{-} 算 R₃-R₄ 得 R₅。
+
+\end{bookbox}
+
+\begin{bookbox}
+
+王道书第 90 页（考点追踪：表达式树的定义，2025）：中缀表达式
+\texttt{A+B*(C-D)-E/F} 对应的后缀表达式为
+\texttt{ABCD-*+EF/-}，与该表达式对应的\textbf{表达式树}（图
+3.15）的\uln{后序遍历序列}一致，体现了后缀表达式与树结构的内在联系。
+
+\end{bookbox}
+
+\slidefig{assets/3.3-book-fig3.15.png}{0.32}{王道书图 3.15：A+B*(C-D)-E/F 对应的表达式树}
+
+\begin{addbox}
+
+表达式树和后序遍历要到第 5
+章“树”才学，这里先记住结论：叶子是操作数，内部结点是运算符，\uln{后序遍历得到后缀表达式}。
+
+\end{addbox}
+
+\hypertarget{ux4e94ux4e2dux7f00ux8f6cux524dux7f00ux624bux7b97ux4e0eux524dux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97}{%
+\section{五、中缀转前缀（手算）与前缀表达式的计算}\label{ux4e94ux4e2dux7f00ux8f6cux524dux7f00ux624bux7b97ux4e0eux524dux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{中缀转前缀用什么原则？前缀表达式从哪边开始扫描？先出栈的是哪个操作数？}\textbf{中缀转前缀的手算方法}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  确定中缀表达式中各个运算符的运算顺序；
+\item
+  选择下一个运算符，按照 \textbf{「运算符 左操作数 右操作数」}
+  的方式组合成一个新的操作数；
+\item
+  如果还有运算符没被处理，就继续 ②。
+\end{enumerate}
+
+这里用\textbf{“右优先”原则}：\uln{只要右边的运算符能先计算，就优先计算右边的}。例如
+\texttt{A+B*(C-D)-E/F}，右优先的顺序是
+\texttt{/\ -\ *\ +\ -}（从右往左编号），得到
+\texttt{-+A*B-CD/EF}；如果不按右优先，也可能得到 \texttt{+A-*B-CD/EF}。
+
+\slidefig{assets/3.3.2_1-p21.jpg}{0.55}{课件：中缀转前缀（手算），右优先原则}
+
+对比 15 那个式子：转后缀用左优先，得
+\texttt{15\ 7\ 1\ 1\ +\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -}，运算符\uln{从左往右}出现的顺序就是运算顺序；转前缀用右优先，得
+\texttt{-\ ×\ ÷\ 15\ -\ 7\ +\ 1\ 1\ 3\ +\ 2\ +\ 1\ 1}，运算符\uln{从右往左}出现的顺序就是运算顺序。
+
+\slidefig{assets/3.3.2_1-p22.jpg}{0.55}{课件：中缀转后缀用左优先，中缀转前缀用右优先}
+
+\textbf{用栈实现前缀表达式的计算}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \uln{从右往左}扫描下一个元素，直到处理完所有元素；
+\item
+  若扫描到操作数，则压入栈，并回到 ①；否则执行 ③；
+\item
+  若扫描到运算符，则弹出两个栈顶元素，执行相应运算，运算结果压回栈顶，回到
+  ①。
+\end{enumerate}
+
+注意：\hlred{先出栈的是“左操作数”}（从右往左扫，左操作数后入栈，所以先出栈），和后缀正好相反。
+
+\slidefig{assets/3.3.2_1-p23.jpg}{0.55}{课件：前缀表达式的计算}
+
+\hypertarget{ux516dux77e5ux8bc6ux56deux987e}{%
+\section{六、知识回顾}\label{ux516dux77e5ux8bc6ux56deux987e}}
+
+\slidefig{assets/3.3.2_1-p24.jpg}{0.6}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{三种表达式}：中缀（运算符在两个操作数中间，需要界限符）；后缀 =
+逆波兰（运算符在两个操作数后面）；前缀 =
+波兰（运算符在两个操作数前面）。一个中缀表达式可以对应多个后缀、前缀表达式。
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.540\hsize\raggedright\arraybackslash}X>{\hsize=1.230\hsize\raggedright\arraybackslash}X>{\hsize=1.230\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries } & \textcolor{white}{\bfseries 后缀（重点）} & \textcolor{white}{\bfseries 前缀} \\
+\endfirsthead
+手算转换 & \textbf{左优先}确定顺序，按「左 右 运算符」合体 & \textbf{右优先}确定顺序，按「运算符 左 右」合体 \\ \hline
+用栈计算 & 从\textbf{左}往右扫；操作数入栈，运算符弹两个算完压回 & 从\textbf{右}往左扫；同样操作 \\ \hline
+先出栈的是 & \hlred{右操作数} & \hlred{左操作数} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\textbf{后缀转中缀}：从左往右扫，把「左 右 运算符」变成「(左 运算符
+右)」。
+
+\textbf{王道书}：手算转后缀用加括号法（加括号 → 运算符移到右括号后 →
+去括号），结果相同；后缀表达式 =
+表达式树的后序遍历（2025）；后缀求值（2018）。
+
+\textbf{自测}：① \texttt{A+B*(C-D)-E/F} 的后缀、前缀各是什么？②
+后缀表达式求值时，栈里弹出 Y 再弹出 X，算的是 X op Y 还是 Y op X？③
+为什么要用左优先原则？
+
+\end{summarybox}
+\end{document}

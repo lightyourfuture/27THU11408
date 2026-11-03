@@ -1,0 +1,478 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={3.3.1
+栈在括号匹配中的应用},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第3章 栈、队列和数组}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}3.3.1
+栈在括号匹配中的应用 · 听课笔记}
+
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}3.3.1
+栈在括号匹配中的应用 · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{3}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第3章
+栈、队列和数组 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 3.3.1
+栈在括号匹配中的应用}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 课件 3.3.1 · 正课字幕 P27 · 王道书
+§3.3.1（第 90 页）}
+\end{tcolorbox}
+\vspace{4pt}
+\hypertarget{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}{%
+\section{这一节在讲什么}\label{ux8fd9ux4e00ux8282ux5728ux8bb2ux4ec0ux4e48}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{括号匹配要检查哪两件事？为什么能用栈？}\textbf{括号匹配}是栈的经典应用。写代码时，小括号、中括号、大括号都要成双成对地出现：只写了左括号没写右括号，IDE（写代码用的可视化编程环境）会报错，编译器也会做这样的检查。匹配要满足两点：左右括号\uln{数量}要对上，\uln{形状}也要对上，比如左小括号配右中括号就是错的。
+
+\slidefig{assets/3.3.1-p02.jpg}{0.55}{课件：括号匹配问题}
+
+\hypertarget{ux4e00ux4e3aux4ec0ux4e48ux7528ux6808}{%
+\section{一、为什么用栈}\label{ux4e00ux4e3aux4ec0ux4e48ux7528ux6808}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{“越往后出现的左括号越先被匹配”，对应栈的哪个特性？}人一眼就能看出哪两个括号是一对，计算机只能\uln{从左往右依次扫描}。扫描时会发现：
+
+\begin{itemize}
+\tightlist
+\item
+  扫描到一个右括号，要找的是\uln{最近出现、还没被匹配}的那个左括号。也就是\textbf{最后出现的左括号最先被匹配}，这和栈的后进先出（LIFO）一样；
+\item
+  \textbf{每出现一个右括号，就“消耗”一个左括号}，“消耗”对应出栈。
+\end{itemize}
+
+所以：把左括号依次压入栈中，遇到右括号就弹出栈顶的左括号，检查两者是否匹配。
+
+\slidefig{assets/3.3.1-p03.jpg}{0.6}{课件：最后出现的左括号最先被匹配；每个右括号消耗一个左括号}
+
+\begin{fixbox}
+
+正课字幕 P27
+这里有一句“当我们遇到右括号的时候，就把它压入栈中，就把栈顶的那个左括号给弹出”，前半句是口误。按课件和后面的讲解：\uln{遇到左括号入栈}，遇到右括号弹出栈顶的左括号。
+
+\end{fixbox}
+
+\hypertarget{ux4e8cux7b97ux6cd5ux6f14ux793aux4e00ux79cdux6210ux529fux4e09ux79cdux5931ux8d25}{%
+\section{二、算法演示：一种成功、三种失败}\label{ux4e8cux7b97ux6cd5ux6f14ux793aux4e00ux79cdux6210ux529fux4e09ux79cdux5931ux8d25}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{匹配失败有哪三种情况？分别在什么时候发现？}规则只有两条：\textbf{遇到左括号就入栈；遇到右括号，就“消耗”一个左括号}（弹出栈顶，检查是否配对）。
+
+\textbf{①
+全部配对成功}：\texttt{\{(()){[}{]}\}}。每次弹出的左括号都和右括号同形状，扫描结束时栈空。
+
+\slidefig{assets/3.3.1-p04.jpg}{0.55}{课件：所有括号都能两两配对}
+
+\textbf{② 左右括号不匹配}：\texttt{\{((){]}{[}{]}\}}。扫描到
+\texttt{{]}} 时弹出的是
+\texttt{(}，形状不同，\uln{后面的括号不用再扫描}，直接判定失败。
+
+\slidefig{assets/3.3.1-p05.jpg}{0.55}{课件：当前扫描到的右括号与栈顶左括号不匹配}
+
+\textbf{③ 右括号单身}：\texttt{\{(())\}{]}()}。扫描到 \texttt{{]}}
+时要消耗一个左括号，但\uln{栈已经空了}，说明没有和它配对的左括号，失败。
+
+\slidefig{assets/3.3.1-p06.jpg}{0.55}{课件：扫描到右括号且栈空，右括号单身}
+
+\textbf{④
+左括号单身}：\texttt{\{\{(()){[}{]}\}}。每个右括号都配对成功了，但\uln{扫描完所有括号后，栈里还剩一个 \texttt{\{}}，说明它没有右括号和它配对，也是失败。所以写代码时，扫描完还要检查栈是否为空。
+
+\slidefig{assets/3.3.1-p07.jpg}{0.55}{课件：处理完所有括号后栈非空，左括号单身}
+
+\hypertarget{ux4e09ux7b97ux6cd5ux6d41ux7a0b}{%
+\section{三、算法流程}\label{ux4e09ux7b97ux6cd5ux6d41ux7a0b}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{流程图里有两次“栈空？”判断，分别在什么时候？}从左往右扫描，当前扫描到的括号记作
+\texttt{a}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  如果 \texttt{a} 是左括号：压入栈顶，接着扫描下一个；
+\item
+  如果 \texttt{a}
+  是右括号：先判断\uln{栈空吗}。栈空说明右括号单身，匹配失败，算法结束。栈不空就弹出栈顶元素记作
+  \texttt{b}，检查 \texttt{b} 和 \texttt{a}
+  是否匹配（小配小、中配中、大配大）：匹配就继续扫描下一个；不匹配，算法结束，匹配失败；
+\item
+  所有括号处理完后，再判断一次\uln{栈空吗}：栈非空说明左括号单身，匹配失败；栈空说明所有括号两两配对，匹配成功。
+\end{enumerate}
+
+\slidefig{assets/3.3.1-p08.jpg}{0.55}{课件：括号匹配算法流程图}
+
+\hypertarget{ux56dbux7b97ux6cd5ux5b9eux73b0}{%
+\section{四、算法实现}\label{ux56dbux7b97ux6cd5ux5b9eux73b0}}
+
+\cueblock{\cuenote}{\relax{考试时能直接调用 \texttt{Push}、\texttt{Pop} 吗？要注意什么？}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#define MaxSize }\DecValTok{10}\PreprocessorTok{                  }\CommentTok{// 定义栈中元素的最大个数}
+\KeywordTok{typedef} \KeywordTok{struct} \OperatorTok{\{}
+    \DataTypeTok{char}\NormalTok{ data}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}             \CommentTok{// 静态数组存放栈中元素}
+    \DataTypeTok{int}\NormalTok{ top}\OperatorTok{;}                        \CommentTok{// 栈顶指针}
+\OperatorTok{\}}\NormalTok{ SqStack}\OperatorTok{;}
+
+\CommentTok{// 初始化栈}
+\DataTypeTok{void}\NormalTok{ InitStack}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{)}
+\CommentTok{// 判断栈是否为空}
+\DataTypeTok{bool}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{SqStack S}\OperatorTok{)}
+\CommentTok{// 新元素入栈}
+\DataTypeTok{bool}\NormalTok{ Push}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,} \DataTypeTok{char}\NormalTok{ x}\OperatorTok{)}
+\CommentTok{// 栈顶元素出栈，用 x 返回}
+\DataTypeTok{bool}\NormalTok{ Pop}\OperatorTok{(}\NormalTok{SqStack }\OperatorTok{\&}\NormalTok{S}\OperatorTok{,} \DataTypeTok{char} \OperatorTok{\&}\NormalTok{x}\OperatorTok{)}
+
+\DataTypeTok{bool}\NormalTok{ bracketCheck}\OperatorTok{(}\DataTypeTok{char}\NormalTok{ str}\OperatorTok{[],} \DataTypeTok{int}\NormalTok{ length}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{    SqStack S}\OperatorTok{;}
+\NormalTok{    InitStack}\OperatorTok{(}\NormalTok{S}\OperatorTok{);}                   \CommentTok{// 初始化一个栈}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ i }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ length}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)} \OperatorTok{\{}
+        \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}(\textquotesingle{}} \OperatorTok{||}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}[\textquotesingle{}} \OperatorTok{||}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}\{\textquotesingle{}}\OperatorTok{)} \OperatorTok{\{}
+\NormalTok{            Push}\OperatorTok{(}\NormalTok{S}\OperatorTok{,}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]);}        \CommentTok{// 扫描到左括号，入栈}
+        \OperatorTok{\}} \ControlFlowTok{else} \OperatorTok{\{}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{StackEmpty}\OperatorTok{(}\NormalTok{S}\OperatorTok{))}      \CommentTok{// 扫描到右括号，且当前栈空}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}       \CommentTok{// 匹配失败}
+
+            \DataTypeTok{char}\NormalTok{ topElem}\OperatorTok{;}
+\NormalTok{            Pop}\OperatorTok{(}\NormalTok{S}\OperatorTok{,}\NormalTok{ topElem}\OperatorTok{);}        \CommentTok{// 栈顶元素出栈}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{})\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}(\textquotesingle{}}\OperatorTok{)}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}]\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}[\textquotesingle{}}\OperatorTok{)}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}\}\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}\{\textquotesingle{}}\OperatorTok{)}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+        \OperatorTok{\}}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ StackEmpty}\OperatorTok{(}\NormalTok{S}\OperatorTok{);}           \CommentTok{// 检索完全部括号后，栈空说明匹配成功}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  参数 \texttt{str} 是存放括号串的字符数组，\texttt{length}
+  是它的长度；栈里的数据元素是 \texttt{char} 类型；
+\item
+  考试时\uln{可以直接使用基本操作}，但老师建议用注释简要说明每个接口是干什么的。这样即使接口命名不太规范，只要中文注释讲明白了，改卷老师也不会算错；
+\item
+  顺序栈用静态数组，容量固定，括号串很长时可能栈溢出。实际开发可以用\uln{链栈}；考试中用顺序栈更简单，也没问题；
+\item
+  老师留的练习：如果题目里没有现成的栈，只有一个数组和 \texttt{top}
+  指针，就把基本操作换成对数组和 \texttt{top}
+  的直接操作，自己写出完整代码。基础不太好的同学尤其要练。
+\end{itemize}
+
+\slidefig{assets/3.3.1-p09.jpg}{0.6}{课件：算法实现}
+
+\begin{addbox}
+
+\textbf{练习参考答案}（先自己写再看）：不调用基本操作，直接用数组和
+\texttt{top}。\texttt{top=-1} 表示空栈，和正课 3.1.2
+的顺序栈相同。课件代码没有处理 \texttt{Push}
+失败（栈满），这里补上了：栈满时括号串已经无法检查，直接返回
+\texttt{false}。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DataTypeTok{bool}\NormalTok{ bracketCheck}\OperatorTok{(}\DataTypeTok{char}\NormalTok{ str}\OperatorTok{[],} \DataTypeTok{int}\NormalTok{ length}\OperatorTok{)} \OperatorTok{\{}
+    \DataTypeTok{char}\NormalTok{ data}\OperatorTok{[}\NormalTok{MaxSize}\OperatorTok{];}             \CommentTok{// 静态数组存放栈中元素}
+    \DataTypeTok{int}\NormalTok{ top }\OperatorTok{=} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{;}                   \CommentTok{// 栈顶指针，{-}1 表示空栈}
+    \ControlFlowTok{for} \OperatorTok{(}\DataTypeTok{int}\NormalTok{ i }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ length}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)} \OperatorTok{\{}
+        \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}(\textquotesingle{}} \OperatorTok{||}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}[\textquotesingle{}} \OperatorTok{||}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}\{\textquotesingle{}}\OperatorTok{)} \OperatorTok{\{}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{top }\OperatorTok{==}\NormalTok{ MaxSize }\OperatorTok{{-}} \DecValTok{1}\OperatorTok{)} \CommentTok{// 栈满，无法再入栈}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+\NormalTok{            data}\OperatorTok{[++}\NormalTok{top}\OperatorTok{]} \OperatorTok{=}\NormalTok{ str}\OperatorTok{[}\NormalTok{i}\OperatorTok{];}   \CommentTok{// 扫描到左括号，入栈}
+        \OperatorTok{\}} \ControlFlowTok{else} \OperatorTok{\{}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{top }\OperatorTok{==} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{)}          \CommentTok{// 扫描到右括号，且当前栈空}
+                \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}       \CommentTok{// 右括号单身}
+            \DataTypeTok{char}\NormalTok{ topElem }\OperatorTok{=}\NormalTok{ data}\OperatorTok{[}\NormalTok{top}\OperatorTok{{-}{-}];}     \CommentTok{// 栈顶元素出栈}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{})\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}(\textquotesingle{}}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}]\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}[\textquotesingle{}}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+            \ControlFlowTok{if} \OperatorTok{(}\NormalTok{str}\OperatorTok{[}\NormalTok{i}\OperatorTok{]} \OperatorTok{==} \CharTok{\textquotesingle{}\}\textquotesingle{}} \OperatorTok{\&\&}\NormalTok{ topElem }\OperatorTok{!=} \CharTok{\textquotesingle{}\{\textquotesingle{}}\OperatorTok{)} \ControlFlowTok{return} \KeywordTok{false}\OperatorTok{;}
+        \OperatorTok{\}}
+    \OperatorTok{\}}
+    \ControlFlowTok{return}\NormalTok{ top }\OperatorTok{==} \OperatorTok{{-}}\DecValTok{1}\OperatorTok{;}               \CommentTok{// 栈空说明匹配成功；非空说明左括号单身}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+我用 C 编译运行过：课件四个例子
+\texttt{\{(()){[}{]}\}}、\texttt{\{((){]}{[}{]}\}}、\texttt{\{(())\}{]}()}、\texttt{\{\{(()){[}{]}\}}
+依次返回成功、失败、失败、失败，和演示一致。
+
+\end{addbox}
+
+\begin{bookbox}
+
+王道书第 90 页的例子只有圆括号 \texttt{()} 和方括号 \texttt{{[}{]}}
+两种，嵌套顺序任意：\texttt{({[}{]}())}、\texttt{{[}({[}{]}{[}{]}){]}}
+合法，\texttt{{[}({]})}、\texttt{({[}())}、\texttt{((){]}} 非法。
+
+书上的分析是用“期待”来说的：读入第 1 个括号 \texttt{{[}}
+后，系统期待与之匹配的 \texttt{{]}} 出现；读入第 2 个括号 \texttt{(}
+后，第 1 个括号的期待暂时搁置，转而优先期待与 \texttt{(} 匹配的
+\texttt{)}\ldots\ldots 整个处理过程完全符合\uln{后进先出}的栈行为。
+
+算法思想：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  初始化一个空栈，顺序扫描输入的括号序列；
+\item
+  若遇到左括号，将其压入栈中，表示新增一个待匹配的期待，且其优先级最高；
+\item
+  若遇到右括号，则检查栈是否为空：若栈非空且栈顶左括号与当前右括号匹配，则弹出栈顶，完成一次匹配；否则，括号序列非法，算法终止；
+\item
+  扫描结束后，若栈为空，则括号序列合法；否则，存在未匹配的左括号，序列非法。
+\end{enumerate}
+
+\end{bookbox}
+
+\hypertarget{ux4e94ux77e5ux8bc6ux56deux987e}{%
+\section{五、知识回顾}\label{ux4e94ux77e5ux8bc6ux56deux987e}}
+
+\slidefig{assets/3.3.1-p10.jpg}{0.55}{课件：知识回顾与重要考点}
+
+\begin{summarybox}
+
+\textbf{思路}：从左到右依次扫描所有字符，\hlred{遇到左括号入栈，遇到右括号则弹出栈顶元素，检查是否匹配}。最后出现的左括号最先被匹配，所以用栈（LIFO）。
+
+\textbf{匹配失败的三种情况}：
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{左括号单身}：所有括号扫描完，栈非空；
+\item
+  \textbf{右括号单身}：扫描到右括号时栈已空；
+\item
+  \textbf{左右括号不匹配}：弹出的栈顶左括号和当前右括号形状不同。
+\end{enumerate}
+
+后两种一出现就可以结束算法，不用再往后扫描。
+
+\textbf{写代码}：考试可以直接用基本操作，用注释说明接口；顺序栈可能存满，实际开发可用链栈。
+
+\textbf{自测}：① 为什么扫描完还要判断栈空？② \texttt{({[}){]}}
+在哪一步失败、属于哪种情况？③ 不用基本操作，入栈、出栈、判空分别怎么写？
+
+\end{summarybox}
+\end{document}
