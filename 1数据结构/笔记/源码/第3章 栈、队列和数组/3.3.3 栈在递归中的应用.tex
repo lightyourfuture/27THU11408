@@ -430,6 +430,33 @@ n=3 层算 3×2=6，return 6，弹出 & main（x=6） \\ \hline
 
 \begin{addbox}
 
+\textbf{补全老师跳过的部分}：正课字幕 P30
+里，老师讲到“三再返回四”就停了，没讲 \texttt{Fib(4)} 接着还要调用
+\texttt{Fib(2)}。完整过程如下（栈从左往右是栈底到栈顶，只写每层的
+n，省略 \texttt{main} 和返回地址）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.280\hsize\raggedright\arraybackslash}X>{\hsize=1.800\hsize\raggedright\arraybackslash}X>{\hsize=0.800\hsize\raggedright\arraybackslash}X>{\hsize=1.120\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步} & \textcolor{white}{\bfseries 执行到} & \textcolor{white}{\bfseries 递归工作栈} & \textcolor{white}{\bfseries 返回值} \\
+\endfirsthead
+1 & main 调用 Fib(4) & 4 &  \\ \hline
+2 & Fib(4) 调用 Fib(3) & 4, 3 &  \\ \hline
+3 & Fib(3) 调用 Fib(2) & 4, 3, 2 &  \\ \hline
+4 & Fib(2) 调用 Fib(1)，到达边界，返回后弹出 & 4, 3, 2, 1 & Fib(1)=1 \\ \hline
+5 & Fib(2) 调用 Fib(0)，到达边界，返回后弹出 & 4, 3, 2, 0 & Fib(0)=0 \\ \hline
+6 & Fib(2) 算 1+0，返回后弹出 & 4, 3 & Fib(2)=1 \\ \hline
+7 & Fib(3) 调用 Fib(1)，返回后弹出 & 4, 3, 1 & Fib(1)=1 \\ \hline
+8 & Fib(3) 算 1+1，返回后弹出 & 4 & Fib(3)=2 \\ \hline
+9 & Fib(4) 调用 Fib(2)（\uln{老师从这里开始没讲}） & 4, 2 &  \\ \hline
+10 & Fib(2) 调用 Fib(1)，返回后弹出 & 4, 2, 1 & Fib(1)=1 \\ \hline
+11 & Fib(2) 调用 Fib(0)，返回后弹出 & 4, 2, 0 & Fib(0)=0 \\ \hline
+12 & Fib(2) 算 1+0，返回后弹出 & 4 & Fib(2)=1 \\ \hline
+13 & Fib(4) 算 2+1，返回 main，赋给 x & 空 & Fib(4)=3 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+第 9～12 步把第 3～6 步的 \texttt{Fib(2)}
+又完整算了一遍，这就是“重复计算”。
+
 数一下 \texttt{Fib(4)} 的递归调用树：\texttt{Fib(2)} 2
 次，\texttt{Fib(1)} 3 次，\texttt{Fib(0)} 2 次，一共调用 9
 次。栈里最多同时有 4 层（n=4、3、2、1 或 0），即递归深度。

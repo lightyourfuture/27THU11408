@@ -366,6 +366,34 @@
 \texttt{AB+CD*E/-F+} →
 \texttt{((A+B)-((C*D)/E))+F}，和手算求值是同一个过程，只是不算出结果，而是加上括号。
 
+\textbf{补全老师跳过的部分}：正课字幕 P28 里，老师讲完后缀求值后，用 15
+那个式子演示后缀转中缀，只做了前 3
+步（\texttt{1+1}、\texttt{7-(1+1)}、\texttt{15÷(7-(1+1))}），说“用这样的方式就可以把后缀表达式一步一步\ldots\ldots{}”就转去讲前缀了。完整过程如下（每一步把「左
+右 运算符」变成「(左 运算符 右)」，变完的整块看作一个操作数）：
+
+\texttt{15\ 7\ 1\ 1\ +\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.240\hsize\raggedright\arraybackslash}X>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=2.160\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步} & \textcolor{white}{\bfseries 扫描到} & \textcolor{white}{\bfseries 合体后的式子} \\
+\endfirsthead
+① & 第 1 个 \texttt{+} & \texttt{15\ 7\ (1+1)\ -\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -} \\ \hline
+② & \texttt{-} & \texttt{15\ (7-(1+1))\ ÷\ 3\ ×\ 2\ 1\ 1\ +\ +\ -} \\ \hline
+③ & \texttt{÷} & \texttt{(15÷(7-(1+1)))\ 3\ ×\ 2\ 1\ 1\ +\ +\ -} \\ \hline
+④ & \texttt{×} & \texttt{((15÷(7-(1+1)))×3)\ 2\ 1\ 1\ +\ +\ -} \\ \hline
+⑤ & 第 2 个 \texttt{+} & \texttt{((15÷(7-(1+1)))×3)\ 2\ (1+1)\ +\ -} \\ \hline
+⑥ & 第 3 个 \texttt{+} & \texttt{((15÷(7-(1+1)))×3)\ (2+(1+1))\ -} \\ \hline
+⑦ & \texttt{-} & \texttt{(((15÷(7-(1+1)))×3)-(2+(1+1)))} \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+去掉最外层括号，就是原来的中缀式 \texttt{((15÷(7-(1+1)))×3)-(2+(1+1))}。
+
+\textbf{用栈做}（课件没讲，和下面第四节“后缀表达式的计算（机算）“是同一套流程）：从左往右扫描，遇到操作数入栈；遇到运算符，弹出两个栈顶元素，\uln{先弹出的是右操作数}，拼成「(左
+运算符 右)」后压回栈顶。上面 ①～⑦
+每一步的栈内容就是表中”合体后的式子”里运算符前面的部分，例如 ⑤
+之后栈里是 \texttt{((15÷(7-(1+1)))×3)}、\texttt{2}、\texttt{(1+1)}
+三个元素。最后栈中只剩一个元素，就是中缀表达式。我用程序跑过，结果和原式一致。
+
 \end{addbox}
 
 \hypertarget{ux56dbux540eux7f00ux8868ux8fbeux5f0fux7684ux8ba1ux7b97ux673aux7b97}{%
@@ -519,6 +547,18 @@ R₄；\texttt{-} 算 R₃-R₄ 得 R₅。
 
 \slidefig{assets/3.3.2_1-p22.jpg}{0.55}{课件：中缀转后缀用左优先，中缀转前缀用右优先}
 
+\begin{addbox}
+
+\textbf{前缀表达式的计算（手算）}（课件没讲，和后缀对称）：\uln{从右往左}扫描，每遇到一个运算符，就让运算符\uln{后面最近的两个操作数}执行对应运算，合体为一个操作数。注意左右顺序：运算符后面紧挨着的是左操作数，再往后是右操作数。
+
+例如 \texttt{-+A*B-CD/EF}：从右往左，先遇到 \texttt{/}，算
+\texttt{E/F}；遇到 \texttt{-}，算 \texttt{C-D}；遇到 \texttt{*}，算
+\texttt{B*(C-D)}；遇到 \texttt{+}，算 \texttt{A+(B*(C-D))}；最后遇到
+\texttt{-}，算 \texttt{(A+(B*(C-D)))-(E/F)}。运算顺序正好是右优先的
+\texttt{/\ -\ *\ +\ -}。
+
+\end{addbox}
+
 \textbf{用栈实现前缀表达式的计算}：
 
 \begin{enumerate}
@@ -536,6 +576,69 @@ R₄；\texttt{-} 算 R₃-R₄ 得 R₅。
 注意：\hlred{先出栈的是“左操作数”}（从右往左扫，左操作数后入栈，所以先出栈），和后缀正好相反。
 
 \slidefig{assets/3.3.2_1-p23.jpg}{0.55}{课件：前缀表达式的计算}
+
+\begin{addbox}
+
+\textbf{补全老师跳过的部分}：正课字幕 P28 里，老师用栈计算
+\texttt{-\ ×\ ÷\ 15\ -\ 7\ +\ 1\ 1\ 3\ +\ 2\ +\ 1\ 1}，只演示了前几步（\texttt{1}、\texttt{1}
+入栈，\texttt{+} 得 \texttt{1+1}，\texttt{2} 入栈，\texttt{+} 时先弹出的
+\texttt{2}
+是左操作数），然后说“后续的过程我们就不再展开，留给同学们自己练手，结果同样应该是
+5”。完整过程（从右往左扫描）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.360\hsize\raggedright\arraybackslash}X>{\hsize=1.380\hsize\raggedright\arraybackslash}X>{\hsize=1.260\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 扫描} & \textcolor{white}{\bfseries 动作} & \textcolor{white}{\bfseries 栈（左边是栈底）} \\
+\endfirsthead
+1, 1 & 依次入栈 & 1 1 \\ \hline
++ & 弹出 1（左）、1（右），算 1+1=2 & 2 \\ \hline
+2 & 入栈 & 2 2 \\ \hline
++ & 弹出 2（左）、2（右），算 2+2=4 & 4 \\ \hline
+3, 1, 1 & 依次入栈 & 4 3 1 1 \\ \hline
++ & 算 1+1=2 & 4 3 2 \\ \hline
+7 & 入栈 & 4 3 2 7 \\ \hline
+- & 弹出 7（左）、2（右），算 7-2=5 & 4 3 5 \\ \hline
+15 & 入栈 & 4 3 5 15 \\ \hline
+÷ & 弹出 15（左）、5（右），算 15÷5=3 & 4 3 3 \\ \hline
+× & 弹出 3（左）、3（右），算 3×3=9 & 4 9 \\ \hline
+- & 弹出 9（左）、4（右），算 9-4=5 & 5 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+最后栈中只剩 5，和后缀的结果相同。注意 \texttt{-} 和 \texttt{÷}
+这两步：先弹出的是左操作数，写反了就会算成 2-7、5÷15。
+
+\end{addbox}
+
+\begin{addbox}
+
+\textbf{前缀转中缀}（课件没讲，和后缀转中缀对称）：从右往左扫描，每遇到一个运算符，就把「运算符
+左 右」变为「(左 运算符
+右)」，合体为一个操作数。用栈做时，先弹出的是左操作数。
+
+\texttt{-\ ×\ ÷\ 15\ -\ 7\ +\ 1\ 1\ 3\ +\ 2\ +\ 1\ 1}
+依次得到：\texttt{(1+1)} → \texttt{(2+(1+1))} → \texttt{(1+1)} →
+\texttt{(7-(1+1))} → \texttt{(15÷(7-(1+1)))} →
+\texttt{((15÷(7-(1+1)))×3)} →
+\texttt{(((15÷(7-(1+1)))×3)-(2+(1+1)))}，去掉最外层括号就是原式。我用程序核对过。
+
+\end{addbox}
+
+\begin{addbox}
+
+\textbf{两条链条对照}（3.3.2 讲到的和我补的）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.600\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 步骤} & \textcolor{white}{\bfseries 后缀} & \textcolor{white}{\bfseries 前缀} \\
+\endfirsthead
+中缀转换（手算） & 左优先，「左 右 运算符」（第二节，课件讲全） & 右优先，「运算符 左 右」（本节，课件讲全） \\ \hline
+求值（手算） & 从左往右，运算符前面最近的两个操作数（第三节，课件讲全） & 从右往左，运算符后面最近的两个操作数（本节，我补的） \\ \hline
+求值（用栈） & 从左往右，先出栈的是右操作数（第四节，课件讲全；15 的练习答案是我补的） & 从右往左，先出栈的是左操作数（本节，课件只演示了前几步，我补全了） \\ \hline
+转回中缀 & 「左 右 运算符」→「(左 运算符 右)」（第三节，老师只做了 3 步，我补全了） & 「运算符 左 右」→「(左 运算符 右)」（本节，我补的） \\ \hline
+中缀转换（用栈） & 3.3.2\_2 讲 & 课件和书都没讲，见 3.3.2\_2 的“我的补充” \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\end{addbox}
 
 \hypertarget{ux516dux77e5ux8bc6ux56deux987e}{%
 \section{六、知识回顾}\label{ux516dux77e5ux8bc6ux56deux987e}}
