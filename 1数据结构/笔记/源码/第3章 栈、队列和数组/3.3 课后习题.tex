@@ -661,6 +661,19 @@ A. \texttt{xyzu-*v/+}　　　B. \texttt{xyzu-v/*+}　　　C.
 
 \end{videobox}
 
+\Needspace{12\baselineskip}
+
+\slidefig{assets/3.3ex-19-sim.png}{1.0}{习题讲解视频 P33（19 题，一休老师）方法一模拟的 12
+步：橙色字是这一步要做的动作，符栈和后缀表达式是做这一步之前的样子}
+
+\slidefig{assets/3.3ex-19-blocks.png}{0.8}{习题讲解视频 P33（19 题）方法二搭积木的三层：先拆成
+x、+、y\emph{(z-u)/v；再在合法拆法里取最长的 F1＝y}(z-u)，拆出
+/；最后拆到 z-u，对整棵树后序遍历得 xyzu-*v/+}
+
+\slidefig{assets/3.3ex-19-sum.png}{0.55}{习题讲解视频 P33（19 题）一休老师的总结和技巧}
+
+\slidefig{assets/3.3ex-19-freq.png}{0.5}{习题讲解视频 P33 引的一休老师《表达式问题》专题：历年考频}
+
 \begin{jiexibox}
 
 王道书第 99
@@ -774,6 +787,11 @@ C 为例，当“(“、”A”、“-”入栈时，“(”和“-“还未参�
 2，以此类推。
 
 \end{jiexibox}
+
+\slidefig{assets/3.3ex-04-board.png}{0.55}{习题讲解视频 P30（04 题）板书：选项 A 扫描到 C 时，符栈（左）从底到顶是
+− * (，数栈（右）已有 A、B 两个，C 放不进去，溢出}
+
+\Needspace{16\baselineskip}
 
 \begin{addbox}
 
@@ -1357,6 +1375,10 @@ P31：以斐波那契数列为例，\(F_0=0\)，\(F_1=1\)，\(F_n=F_{n-1}+F_{n-2
 
 \end{videobox}
 
+\slidefig{assets/3.3ex-08-board.png}{0.55}{习题讲解视频 P31（08 题）板书：非递归时间 O(n)、空间 O(1)，递归时间
+O(2\^{}n)、空间 O(n)。右上角是 F(3)
+的函数栈，红字强调看的是栈的最大深度，不是一共压过多少次}
+
 \begin{jiexibox}
 
 王道书第 97
@@ -1650,6 +1672,9 @@ D：\texttt{{[}} 入栈，\texttt{(} 入栈，\texttt{{[}} 入栈，\texttt{(}
 老师顺便说：中缀表达式的考法主要有两种，中缀转后缀（模拟，更重要）和用有向图描述表达式。
 
 \end{videobox}
+
+\slidefig{assets/3.3ex-20-board.png}{0.55}{习题讲解视频 P33（20 题）板书：每个选项只留括号，左括号记 +1、右括号记
+−1，D 的累计值到 4，超过容量 3}
 
 \begin{jiexibox}
 
