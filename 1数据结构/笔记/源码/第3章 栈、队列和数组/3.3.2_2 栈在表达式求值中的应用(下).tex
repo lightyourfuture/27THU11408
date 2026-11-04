@@ -248,8 +248,17 @@ F，\uln{操作数的相对顺序不变}，变的只是运算符的先后顺序�
 \section{二、例
 1：A+B-C*D/E+F（不带括号）}\label{ux4e8cux4f8b-1ab-cdefux4e0dux5e26ux62ecux53f7}}
 
-\cueblock{\cuenote}{\relax{扫描到 \texttt{-} 时为什么可以弹出 \texttt{+}？扫描到 \texttt{*}
-时为什么 \texttt{-} 和 \texttt{*} 都不能先弹？}}
+\Needspace{4\baselineskip}
+
+\cuenote{扫描到 \texttt{-} 时为什么可以弹出 \texttt{+}？扫描到 \texttt{*}
+时为什么 \texttt{-} 和 \texttt{*} 都不能先弹？}下面是这个过程的分解图（我画的）。每一小格是一步：上面一行是表达式，\hlred{红框是当前扫描的字符}，灰色是已扫描过的；左边是栈，\uln{绿色是这一步新入栈的}；右边是输出的表达式，橙色是这一步新加入的；有弹出时单独标出弹出了什么；最下面一行是这一步用的规则。图中
+\texttt{*}、\texttt{/}、\texttt{-} 写成 ×、÷、−。
+
+\slidefig{assets/3.3.2_2-ex1-a.png}{1.0}{例 1 转换过程（第 1--8 步）}
+
+\slidefig{assets/3.3.2_2-ex1-b.png}{1.0}{例 1 转换过程（第 9--12 步）：得到 AB+CD×E÷−F+}
+
+\textbf{速查}：上面的过程合成一张表。
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=0.560\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.840\hsize\raggedright\arraybackslash}X}
@@ -411,6 +420,19 @@ F & -/ & ABCD-*+EF &  \\ \hline
 
 以 \texttt{A+B*(C-D)-E/F} 为例（从右往左）：
 
+\end{addbox}
+
+下面是这个过程的分解图（我画的）。每一小格是一步：上面一行是表达式，\hlred{红框是当前扫描的字符}，灰色是已扫描过的；左边是栈，\uln{绿色是这一步新入栈的}；右边是输出的表达式，橙色是这一步新加入的；有弹出时单独标出弹出了什么；最下面一行是这一步用的规则。图中
+\texttt{*}、\texttt{/}、\texttt{-} 写成 ×、÷、−。
+
+\slidefig{assets/3.3.2_2-pre-a.png}{1.0}{中缀转前缀（机算）（第 1--8 步）：从右往左扫描，操作数加到最前面}
+
+\slidefig{assets/3.3.2_2-pre-b.png}{1.0}{中缀转前缀（机算）（第 9--14 步）：得到 −+A×B−CD÷EF}
+
+\begin{addbox}
+
+\textbf{速查}（接上）：上面的过程合成一张表。
+
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=0.560\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.840\hsize\raggedright\arraybackslash}X}
 \rowcolor{wdblue}\textcolor{white}{\bfseries 扫描} & \textcolor{white}{\bfseries 栈（左边是栈底）} & \textcolor{white}{\bfseries 前缀表达式} & \textcolor{white}{\bfseries 动作} \\
@@ -454,6 +476,24 @@ A & -+ & A*B-CD/EF &  \\ \hline
 \begin{addbox}
 
 \textbf{练习参考答案}（先自己做再看）：\texttt{((15÷(7-(1+1)))×3)-(2+(1+1))}
+
+\end{addbox}
+
+下面是这个过程的分解图（我画的）。每一小格是一步：上面一行是表达式，\hlred{红框是当前扫描的字符}，灰色是已扫描过的；左边是栈，\uln{绿色是这一步新入栈的}；右边是输出的表达式，橙色是这一步新加入的；有弹出时单独标出弹出了什么；最下面一行是这一步用的规则。图中
+\texttt{*}、\texttt{/}、\texttt{-} 写成 ×、÷、−。
+
+\slidefig{assets/3.3.2_2-p15-a.png}{1.0}{练习转换过程（第 1--8 步）}
+
+\slidefig{assets/3.3.2_2-p15-b.png}{1.0}{练习转换过程（第 9--16 步）：第 9、10 步栈中有 7 个元素，容量为 5
+的栈会溢出}
+
+\slidefig{assets/3.3.2_2-p15-c.png}{1.0}{练习转换过程（第 17--24 步）}
+
+\slidefig{assets/3.3.2_2-p15-d.png}{1.0}{练习转换过程（第 25--27 步）}
+
+\begin{addbox}
+
+\textbf{速查}（接上）：上面的过程合成一张表。
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.480\hsize\raggedright\arraybackslash}X>{\hsize=0.800\hsize\raggedright\arraybackslash}X>{\hsize=1.600\hsize\raggedright\arraybackslash}X>{\hsize=1.120\hsize\raggedright\arraybackslash}X}
@@ -528,6 +568,14 @@ A & -+ & A*B-CD/EF &  \\ \hline
 弹出一个运算符，就意味着这个运算符可以生效了。和后缀求值一样，\uln{先弹出的是右操作数}。
 
 以 \texttt{A+B-C*D/E+F} 为例：
+
+下面是这个过程的分解图（我画的）。每一小格是一步：左边是运算符栈，中间是运算数栈，绿色是新入栈的；右边是这一步弹出的运算符，以及它弹出的两个操作数（\hlred{红色是右操作数}，紫色是左操作数），绿色是压回的结果。
+
+\slidefig{assets/3.3.2_2-dual-a.png}{1.0}{用栈计算中缀表达式（第 1--8 步）}
+
+\slidefig{assets/3.3.2_2-dual-b.png}{1.0}{用栈计算中缀表达式（第 9--12 步）：运算数栈最后只剩一个结果}
+
+\textbf{速查}：上面的过程合成一张表。
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=0.560\hsize\raggedright\arraybackslash}X>{\hsize=1.360\hsize\raggedright\arraybackslash}X>{\hsize=1.680\hsize\raggedright\arraybackslash}X}

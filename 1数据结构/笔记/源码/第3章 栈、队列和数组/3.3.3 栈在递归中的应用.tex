@@ -374,6 +374,16 @@
 的栈变化}（我自己写的简化版，栈从左往右是栈底到栈顶，省略 \texttt{main}
 下面的信息）：
 
+\end{addbox}
+
+下面是这个过程的分解图（我画的）。每一小格是一步：左边是递归调用树，\hlred{红色是这一步正在执行的调用}，蓝色是还在栈里、没返回的调用，灰色是已经返回的（下面写着返回值），浅色是还没调用的；右边是递归工作栈，\uln{绿色是新压入的}。
+
+\slidefig{assets/3.3.3-fact-a.png}{1.0}{factorial(3) 的递归调用和递归工作栈（6 步）}
+
+\begin{addbox}
+
+\textbf{速查}（接上）：上面的过程合成一张表。
+
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.720\hsize\raggedright\arraybackslash}X>{\hsize=1.280\hsize\raggedright\arraybackslash}X}
 \rowcolor{wdblue}\textcolor{white}{\bfseries 执行到} & \textcolor{white}{\bfseries 递归工作栈} \\
@@ -434,6 +444,18 @@ n=3 层算 3×2=6，return 6，弹出 & main（x=6） \\ \hline
 里，老师讲到“三再返回四”就停了，没讲 \texttt{Fib(4)} 接着还要调用
 \texttt{Fib(2)}。完整过程如下（栈从左往右是栈底到栈顶，只写每层的
 n，省略 \texttt{main} 和返回地址）：
+
+\end{addbox}
+
+下面是这个过程的分解图（我画的）。每一小格是一步：左边是递归调用树，\hlred{红色是这一步正在执行的调用}，蓝色是还在栈里、没返回的调用，灰色是已经返回的（下面写着返回值），浅色是还没调用的；右边是递归工作栈，\uln{绿色是新压入的}。
+
+\slidefig{assets/3.3.3-fib-a.png}{1.0}{Fib(4) 的递归调用树和递归工作栈（第 1--8 步）}
+
+\slidefig{assets/3.3.3-fib-b.png}{1.0}{Fib(4)（第 9--13 步）：第 9--12 步把 Fib(2) 又算了一遍}
+
+\begin{addbox}
+
+\textbf{速查}（接上）：上面的过程合成一张表。
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.280\hsize\raggedright\arraybackslash}X>{\hsize=1.800\hsize\raggedright\arraybackslash}X>{\hsize=0.800\hsize\raggedright\arraybackslash}X>{\hsize=1.120\hsize\raggedright\arraybackslash}X}
