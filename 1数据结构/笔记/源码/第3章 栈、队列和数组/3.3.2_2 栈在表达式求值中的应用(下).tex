@@ -306,8 +306,20 @@ F & + & AB+CD*E/-F &  \\ \hline
 \section{三、例
 2：A+B*(C-D)-E/F（带括号）}\label{ux4e09ux4f8b-2abc-d-efux5e26ux62ecux53f7}}
 
-\cueblock{\cuenote}{\relax{栈顶是 \texttt{(} 时遇到运算符怎么办？遇到 \texttt{)}
-为什么可以把括号里的运算符全部弹出？}}
+\Needspace{4\baselineskip}
+
+\cuenote{栈顶是 \texttt{(} 时遇到运算符怎么办？遇到 \texttt{)}
+为什么可以把括号里的运算符全部弹出？}下面两张图是转换过程的 14
+步分解（我画的）。每一小格是一步：上面一行是中缀表达式，\hlred{红框是当前扫描的字符}，灰色是已扫描过的；左边是栈，\uln{绿色是这一步新入栈的}；右边是后缀表达式，橙色是这一步新加入的；有弹出时单独标出弹出了什么；最下面一行是这一步用的规则。图中
+\texttt{*}、\texttt{/}、\texttt{-} 写成 ×、÷、−。
+
+\slidefig{assets/3.3.2_2-ex2-a.png}{1.0}{例 2 转换过程（第 1--8 步）：A、B、C、D 直接输出；+、×、(、−
+依次入栈。第 7 步栈顶是 (，− 直接入栈}
+
+\slidefig{assets/3.3.2_2-ex2-b.png}{1.0}{例 2 转换过程（第 9--14 步）：遇到 ) 弹出 − 并丢弃 (；遇到 − 弹出
+×、+；最后弹出 ÷、−，得到 ABCD−×+EF÷−}
+
+\textbf{速查}：上面 14 步合成一张表。
 
 {\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
 \begin{xltabular}{\linewidth}{>{\hsize=0.400\hsize\raggedright\arraybackslash}X>{\hsize=0.560\hsize\raggedright\arraybackslash}X>{\hsize=1.200\hsize\raggedright\arraybackslash}X>{\hsize=1.840\hsize\raggedright\arraybackslash}X}
