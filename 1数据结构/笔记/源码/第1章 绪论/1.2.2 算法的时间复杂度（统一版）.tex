@@ -1,0 +1,944 @@
+% 康奈尔听课笔记模板（配色取自王道课件）
+\documentclass[10.5pt,a4paper,oneside]{article}
+\usepackage[a4paper,top=2.3cm,bottom=2.2cm,left=5.7cm,right=1.5cm,
+  marginparwidth=4.25cm,marginparsep=0.55cm,headheight=14pt,footskip=1.1cm]{geometry}
+\usepackage{xeCJK}
+\usepackage{xeCJKfntef}
+\xeCJKDeclareCharClass{FullLeft}{"201C,"2018}
+\xeCJKDeclareCharClass{FullRight}{"201D,"2019}
+\xeCJKDeclareCharClass{CJK}{"2460->"24FF,"2605,"2606}
+\setmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+\setCJKmainfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold},ItalicFont={Noto Sans CJK SC},ItalicFeatures={FakeSlant=0.18}]
+\setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]
+\setCJKmonofont{Noto Sans Mono CJK SC}[Scale=0.9]
+\linespread{1.32}
+\usepackage{amsmath,amssymb}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[most]{tcolorbox}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{needspace}
+\usepackage{enumitem}
+\usepackage{xltabular,booktabs,array,colortbl}
+\usepackage{marginnote}
+\reversemarginpar
+\renewcommand*{\raggedleftmarginnote}{}
+\renewcommand*{\raggedrightmarginnote}{}
+\usepackage{caption}
+\usepackage{titletoc}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage[section]{placeins}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=wdblue,urlcolor=wdblue,pdftitle={1.2.2
+算法的时间复杂度（统一版）},pdfauthor={听课笔记}}
+
+% ---------- 课件配色 ----------
+\definecolor{wdblue}{HTML}{4472C4}
+\definecolor{wdlightblue}{HTML}{5B9BD5}
+\definecolor{wdtitle}{HTML}{4A86C8}
+\definecolor{wddark}{HTML}{1F3864}
+\definecolor{wdorange}{HTML}{ED7D31}
+\definecolor{wdgray}{HTML}{A5A5A5}
+\definecolor{wdgold}{HTML}{FFC000}
+\definecolor{wdgreen}{HTML}{70AD47}
+\definecolor{wddeepgreen}{HTML}{3F7F2A}
+\definecolor{wdred}{HTML}{C00000}
+\definecolor{wdpurple}{HTML}{7030A0}
+\definecolor{cuebg}{HTML}{F2F6FC}
+\definecolor{codebg}{HTML}{F7F9FC}
+\color[HTML]{262626}
+
+% ---------- 行内样式 ----------
+\newcommand{\hlred}[1]{\textcolor{wdred}{\bfseries #1}}
+\newcommand{\hlblue}[1]{\textcolor{wdblue}{\bfseries #1}}
+\newcommand{\hlgreen}[1]{\textcolor{wddeepgreen}{\bfseries #1}}
+\newcommand{\hlorange}[1]{\textcolor{wdorange}{\bfseries #1}}
+\newcommand{\hlpurple}[1]{\textcolor{wdpurple}{\bfseries #1}}
+\newcommand{\uln}[1]{\CJKunderline[format=\color{wdred},thickness=0.9pt,depth=0.28em]{#1}}
+\newcommand{\wavy}[1]{\CJKunderwave[format=\color{wdorange}]{#1}}
+\newcommand{\hlmark}[1]{\CJKunderline[format=\color{wdgold!55},thickness=0.55em,depth=-0.05em]{#1}}
+\newcommand{\tagbox}[2]{\tcbox[on line,colback=#1,colframe=#1,coltext=white,boxsep=0.5pt,left=3pt,right=3pt,top=0.5pt,bottom=0.5pt,arc=2pt,fontupper=\small\bfseries]{#2}}
+
+% ---------- 康奈尔版式背景：左侧线索栏 ----------
+\newlength{\cuestripw}\setlength{\cuestripw}{5.15cm}
+\AddToShipoutPictureBG{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cuebg] (current page.north west) rectangle ($(current page.south west)+(\cuestripw,0)$);
+    \draw[wdblue,line width=1.2pt] ($(current page.north west)+(\cuestripw,-1.55cm)$) -- ($(current page.south west)+(\cuestripw,1.55cm)$);
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(0.75cm,-1.25cm)$) {线索 · 问题};
+    \node[anchor=west,text=wdblue,font=\small\bfseries] at ($(current page.north west)+(\cuestripw+0.55cm,-1.25cm)$) {笔记 · 老师主线 + 补充讲解};
+  \end{tikzpicture}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[R]{\small\color{wdgray}第1章 绪论}
+\fancyfoot[C]{\small\color{wdgray}\thepage}
+\fancyfoot[R]{\small\color{wdorange}1.2.2
+算法的时间复杂度（统一版） · 听课笔记}
+\fancyfoot[L]{\small\hyperlink{toc}{\textcolor{wdblue}{\ensuremath{\uparrow}\,回到目录}}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\color{wdgray}\thepage}\fancyfoot[R]{\small\color{wdorange}1.2.2
+算法的时间复杂度（统一版） · 听课笔记}}
+
+% ---------- 标题：仿课件的蓝色标题 + 六色条 ----------
+\newcommand{\sixbar}{\par\nointerlineskip\vspace{3pt}\centering
+  \begin{tikzpicture}\foreach \c [count=\i] in {wdlightblue,wdorange,wdgray,wdgold,wdblue,wdgreen}
+     {\fill[\c] ({(\i-1)*1.05},0) rectangle ({(\i-1)*1.05+0.92},0.11);}\end{tikzpicture}\par}
+\titleformat{\section}[block]{\centering\Large\bfseries\color{wdtitle}}{}{0pt}{}[\sixbar]
+\titlespacing*{\section}{0pt}{16pt}{10pt}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\titleformat{\subsection}{\Needspace{7\baselineskip}\large\bfseries\color{wddark}}{\textcolor{wdblue}{\rule[-0.15em]{4pt}{1.05em}}\hspace{6pt}}{0pt}{}
+\titlespacing*{\subsection}{0pt}{12pt}{5pt}
+\titleformat{\subsubsection}{\Needspace{5\baselineskip}\normalsize\bfseries\color{wdblue}}{\textcolor{wdorange}{\large\ensuremath{\blacktriangleright}}\hspace{4pt}}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.5em,itemsep=2pt}
+\setlist[itemize,1]{label=\textcolor{wdblue}{\small\ensuremath{\bullet}}}
+\setlist[itemize,2]{label=\textcolor{wdorange}{\scriptsize\ensuremath{\blacktriangleright}}}
+\setlist[enumerate,1]{label=\textcolor{wdblue}{\bfseries\arabic*.}}
+\providecommand{\tightlist}{\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}}
+
+% ---------- 目录 ----------
+\setcounter{tocdepth}{2}
+\titlecontents{section}[0pt]{\addvspace{5pt}\bfseries\color{wddark}}{}{}{\titlerule*[0.7pc]{\color{wdgray!60}.}\contentspage}
+\titlecontents{subsection}[1.6em]{\addvspace{1pt}\small\color{black!75}}{}{}{\titlerule*[0.7pc]{\color{wdgray!40}.}\contentspage}
+\newcommand{\tocback}{\par\vspace{-3pt}{\hfill\footnotesize\hyperlink{toc}{\textcolor{wdgray}{\ensuremath{\uparrow}\,回到目录}}}\par\vspace{-4pt}}
+
+% ---------- 线索栏 ----------
+\newcommand{\cueblock}[2]{\Needspace{4\baselineskip}\leavevmode#1{#2}\par\vspace{-\baselineskip}\vspace{-\parskip}}
+% 线索直接贴在段首行的左侧（不用 marginnote，避免分页时偶尔落进正文栏）
+\newcommand{\cuebox}[1]{\leavevmode\llap{\smash{\begin{minipage}[t]{\marginparwidth}\raggedright\small\linespread{1.18}\selectfont #1\end{minipage}}\hspace{\marginparsep}}}
+\newcommand{\cuenote}[1]{\cuebox{{\color{wdblue}\bfseries Q\,}\color{wddark}#1}}
+\newcommand{\cuekey}[1]{\cuebox{\color{wdred}\bfseries #1}}
+
+% ---------- 讲解框 ----------
+\tcbset{wdbox/.style={enhanced,breakable,arc=2pt,boxrule=0pt,leftrule=3pt,left=7pt,right=7pt,top=5pt,bottom=5pt,
+   before skip=7pt,after skip=7pt,fonttitle=\bfseries\small,attach title to upper={\quad},coltitle=#1,
+   colframe=#1,colback=#1!6}}
+\newtcolorbox{defbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={定义#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{thmbox}[1]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!4,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdblue,
+   title={#1},before skip=8pt,after skip=8pt}
+\newtcolorbox{bridgebox}{wdbox=wdblue,title={承上启下}}
+\newtcolorbox{plainbox}{wdbox=wddeepgreen,colframe=wdgreen,colback=wdgreen!8,title={大白话}}
+\newtcolorbox{deepbox}{wdbox=wdpurple,title={背后的思想}}
+\newtcolorbox{exambox}{wdbox=wdred,title={考点}}
+\newtcolorbox{pitfallbox}{wdbox=wdorange,title={易错提醒}}
+\newtcolorbox{bookbox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={王道书补充}}
+\newtcolorbox{teacherbox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={老师原话}}
+\newtcolorbox{fixbox}{wdbox=wdred,colback=wdred!4,title={勘误 / 说明}}
+% 习题笔记用
+\newtcolorbox{questionbox}[1][]{enhanced,breakable,arc=3pt,boxrule=0.8pt,colframe=wddark,colback=white,
+   left=8pt,right=8pt,top=6pt,bottom=6pt,fonttitle=\bfseries\small,coltitle=white,colbacktitle=wddark,
+   title={#1},before skip=10pt,after skip=6pt}
+\newtcolorbox{videobox}{wdbox=wdorange,colback=wdgold!8,colframe=wdgold,coltitle=wdorange,title={视频讲解}}
+\newtcolorbox{jiexibox}{wdbox=wddark,colback=wdgray!10,colframe=wdgray,title={书上解析}}
+\newtcolorbox{addbox}{wdbox=wdpurple,title={我的补充}}
+\newtcolorbox{recallbox}{wdbox=wdblue,title={回顾正课}}
+\newtcolorbox{watchbox}{enhanced,breakable,arc=3pt,boxrule=1pt,colframe=wdorange,colback=wdgold!12,
+   fonttitle=\bfseries\small,coltitle=white,colbacktitle=wdorange,title={建议去看视频},left=8pt,right=8pt,before skip=8pt,after skip=8pt}
+\newtcolorbox{summarybox}{enhanced,arc=3pt,
+   boxrule=1pt,colframe=wdblue,colback=white,colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries,
+   title={总结区 · 用自己的话复述这一节},left=10pt,right=10pt,top=8pt,bottom=8pt,before skip=14pt}
+
+% ---------- 代码 ----------
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.18,0.55,0.23}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.77,0.35,0.07}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.12,0.31,0.71}{#1}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.20,0.20,0.20}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.44,0.19,0.63}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.63,0.19,0.43}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{#1}}
+\makeatletter
+\@ifundefined{Shaded}{}{\renewenvironment{Shaded}{\def\FrameCommand{\fboxsep=5pt\fboxrule=0.5pt\fcolorbox{wdblue!35}{codebg}}%
+   \MakeFramed{\advance\hsize-\width\FrameRestore}\small}{\endMakeFramed}}
+\makeatother
+\fvset{fontsize=\small}
+
+% ---------- 表格 ----------
+\renewcommand{\arraystretch}{1.42}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- 图片 ----------
+% 课件截图做成浮动体：LaTeX 会自动用正文填满页面，避免大块空白
+\setcounter{topnumber}{3}\setcounter{bottomnumber}{2}\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}\renewcommand{\bottomfraction}{0.6}\renewcommand{\textfraction}{0.12}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{10pt plus 3pt minus 2pt}\setlength{\floatsep}{8pt plus 2pt}
+\newcommand{\slidefig}[3]{\begin{figure}[!ht]\centering\begin{tcolorbox}[enhanced,width=#2\linewidth,arc=2pt,boxrule=0.6pt,colframe=wdgray!70,
+   colback=white,left=2pt,right=2pt,top=2pt,bottom=2pt,drop fuzzy shadow=black!25]\includegraphics[width=\linewidth]{#1}\end{tcolorbox}
+   \vspace{-3pt}{\small\color{wdgray}#3}\end{figure}}
+\newcommand{\plainfig}[3]{\par\noindent\begin{minipage}{\linewidth}\centering\includegraphics[width=#2\linewidth]{#1}\par\vspace{2pt}{\small\color{wdgray}#3}\end{minipage}\par\vspace{4pt}}
+
+\begin{document}
+% ---------- 封面条（仿课件封面） ----------
+\thispagestyle{plain}
+\begin{tcolorbox}[enhanced,enlarge left by=-4.8cm,width=\linewidth+4.8cm,arc=0pt,boxrule=0pt,
+   colback=wddark,interior style={left color=wddark,right color=wdblue},left=18pt,right=18pt,top=14pt,bottom=12pt,
+   overlay={\draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(0,-0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=10pt,yshift=-10pt]frame.north west) -- ++(1.6cm,0);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(0,0.9cm);
+            \draw[white,line width=2.5pt] ([xshift=-10pt,yshift=10pt]frame.south east) -- ++(-1.6cm,0);}]
+  {\color{white!85!wdlightblue}\small 数据结构 · 第1章
+绪论 · 康奈尔听课笔记}\par\vspace{6pt}
+  {\color{white}\fontsize{22}{28}\selectfont\bfseries 1.2.2
+算法的时间复杂度（统一版）}\par\vspace{6pt}
+  {\color{white!80!wdlightblue}\small 按教科书体系重建 · 素材：课件
+1.2\_2 · 正课视频字幕 P6 · 王道书 §1.2.2}
+\end{tcolorbox}
+\vspace{4pt}
+\begin{tcolorbox}[enhanced,arc=3pt,boxrule=0.8pt,colframe=wdblue,colback=wdblue!3,left=10pt,right=10pt,top=6pt,bottom=6pt,
+   colbacktitle=wdblue,coltitle=white,fonttitle=\bfseries\small,title={目录 · 点击标题跳转}]
+\hypertarget{toc}{}\makeatletter\@starttoc{toc}\makeatother
+\end{tcolorbox}
+\hypertarget{ux8fd9ux4efdux7b14ux8bb0ux600eux4e48ux8bfb}{%
+\section{这份笔记怎么读}\label{ux8fd9ux4efdux7b14ux8bb0ux600eux4e48ux8bfb}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{全节分几层？每层回答什么问题？}这是和旧版 1.2.2
+并行的\textbf{统一版}，旧版一字未动，供你对比。
+
+五份资料（课件、正课视频、王道书知识点、书上解析、习题讲解视频）讲时间复杂度时，定义写法、叫法、方法各不相同。这份笔记不按“哪位老师讲了什么”排，而是按知识本身的依赖关系排成一套体系，后一层只用前一层已经建立的东西：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.509\hsize\raggedright\arraybackslash}X>{\hsize=1.245\hsize\raggedright\arraybackslash}X>{\hsize=1.245\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 层} & \textcolor{white}{\bfseries 回答的问题} & \textcolor{white}{\bfseries 内容} \\
+\endfirsthead
+第一层 & 时间复杂度到底是什么 & 5 个原子概念：问题规模、执行次数、\(T(n)\)、同阶、时间复杂度 \\ \hline
+第二层 & 有了定义，能推出哪些可以直接用的结论 & 4 条定理：去低阶去系数（加法规则）、乘法规则、常对幂指阶、只数基本操作 \\ \hline
+第三层 & 拿到一段代码，怎么求 & \textbf{唯一的通用方法}：定基本操作 → 把次数写成求和 → 取数量级 \\ \hline
+第四层 & 输入不同时次数也不同怎么办 & 最好、最坏、平均 \\ \hline
+第五层 & 考试怎么写 & 408 的书写约定 \\ \hline
+第六层 & 各家说法放哪 & 课件、王道书、习题讲解的每种说法都是上面某一步的特例 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+这套体系和国际通用教材一致，例如《算法导论》（Cormen 等，MIT 出版社）第
+2--3 章：先定计数模型、数出执行次数，再用渐近记号取增长率。该书用
+\(\Theta\) 表示“同阶”、用 \(O\) 表示“上界”；408 和王道书只用 \(O\)
+一个符号，第五层会说清楚它在考试里指哪个。
+
+\end{bookbox}
+
+\hypertarget{ux7b2cux4e00ux5c42ux539fux5b50ux6982ux5ff5}{%
+\section{第一层：原子概念}\label{ux7b2cux4e00ux5c42ux539fux5b50ux6982ux5ff5}}
+
+\tocback
+
+\hypertarget{ux4e3aux4ec0ux4e48ux4e0dux76f4ux63a5ux8ba1ux65f6}{%
+\subsection{0.
+为什么不直接计时}\label{ux4e3aux4ec0ux4e48ux4e0dux76f4ux63a5ux8ba1ux65f6}}
+
+\cueblock{\cuenote}{\relax{为什么不跑一遍计时？}}
+
+\slidefig{assets/1.2.2-p03.jpg}{0.65}{课件：如何评估算法时间开销？}
+
+正课视频给了四个原因：跑出来的时间和\textbf{机器性能}、\textbf{编程语言}、\textbf{编译器生成的指令质量}有关，而且有的算法（如导弹控制）\textbf{不能等跑完再评价}。前三条说明要排除和算法无关的因素，第四条说明要在运行前估计。于是需要一个只由算法本身决定、能事先算出来的量。下面
+5 个概念就是这个量的构造过程。
+
+\hypertarget{ux95eeux9898ux89c4ux6a21-n}{%
+\subsection{\texorpdfstring{1. 问题规模
+\(n\)}{1. 问题规模 n}}\label{ux95eeux9898ux89c4ux6a21-n}}
+
+\begin{defbox}[：问题规模]
+
+问题规模 \(n\)
+是描述输入大小的那个参数，例如数组的元素个数、要处理的数的大小。
+
+\end{defbox}
+
+\hypertarget{ux6267ux884cux6b21ux6570ux9891ux5ea6}{%
+\subsection{2.
+执行次数（频度）}\label{ux6267ux884cux6b21ux6570ux9891ux5ea6}}
+
+\cueblock{\cuenote}{\relax{计数模型是什么？为什么时间可以换成次数？}}
+
+\begin{defbox}[：计数模型与执行次数]
+
+\textbf{计数模型}：假设任意一条语句执行一次所用的时间都是常数。
+
+\textbf{执行次数}：某条语句在一次运行中被执行的次数。
+
+\end{defbox}
+
+在计数模型下，运行时间
+\(=\sum(\text{每条语句的执行次数}\times\text{它的单次耗时})\)，单次耗时都是常数，所以研究时间就变成研究执行次数。这一步正是正课视频里“假设每行代码执行时间都相同”的简化。
+
+\begin{fixbox}
+
+\textbf{名词统一}：课件写“语句频度”，王道书写“频度”，正课视频和习题讲解视频说“执行次数”，三者同义。本笔记统一说\textbf{执行次数}。
+
+\end{fixbox}
+
+\hypertarget{ux603bux6267ux884cux6b21ux6570-tn}{%
+\subsection{\texorpdfstring{3. 总执行次数
+\(T(n)\)}{3. 总执行次数 T(n)}}\label{ux603bux6267ux884cux6b21ux6570-tn}}
+
+\begin{defbox}[：T(n)]
+
+\(T(n)\) = 算法中\textbf{所有语句的执行次数之和}，它是 \(n\) 的函数。
+
+\end{defbox}
+
+正课视频的例子“爱你 n 遍”：
+
+\slidefig{assets/1.2.2-p05.jpg}{0.8}{课件：算法 1 与语句频度}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{//算法1— 逐步递增型爱你}
+\DataTypeTok{void}\NormalTok{ loveYou}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ n}\OperatorTok{)} \OperatorTok{\{}         \CommentTok{//n 为问题规模}
+    \DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{1}\OperatorTok{;}                  \CommentTok{// ① 爱你的程度}
+    \ControlFlowTok{while}\OperatorTok{(}\NormalTok{i}\OperatorTok{\textless{}=}\NormalTok{n}\OperatorTok{)\{}              \CommentTok{// ②}
+\NormalTok{        i}\OperatorTok{++;}                  \CommentTok{// ③ 每次+1}
+\NormalTok{        printf}\OperatorTok{(}\StringTok{"I Love You }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ i}\OperatorTok{);}    \CommentTok{// ④}
+    \OperatorTok{\}}
+\NormalTok{    printf}\OperatorTok{(}\StringTok{"I Love You More Than }\SpecialCharTok{\%d\textbackslash{}n}\StringTok{"}\OperatorTok{,}\NormalTok{ n}\OperatorTok{);}  \CommentTok{// ⑤}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.375\hsize\raggedright\arraybackslash}X>{\hsize=0.625\hsize\raggedright\arraybackslash}X>{\hsize=2.000\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 语句} & \textcolor{white}{\bfseries 执行次数} & \textcolor{white}{\bfseries 为什么} \\
+\endfirsthead
+① & 1 & 开头执行一次 \\ \hline
+② & \(n+1\) & 每次进入循环前判断一次，共 \(n\) 次；第 \(n\) 次循环后 \texttt{i} 变成 \(n+1\)，还要再判断一次才发现不成立 \\ \hline
+③④ & 各 \(n\) & 循环体执行 \(n\) 次 \\ \hline
+⑤ & 1 & 循环结束后执行一次 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\[T(n)=1+(n+1)+2n+1=3n+3\]
+
+\begin{pitfallbox}
+
+循环条件比循环体多判断一次。\texttt{for(i=1;i\textless{}=n;i++)}
+同理：\texttt{i\textless{}=n} 判断 \(n+1\) 次，循环体 \(n\)
+次。题目问“某条语句执行几次”时要用到这一点。
+
+\end{pitfallbox}
+
+\hypertarget{ux540cux9636ux4e0eux4e0aux754c}{%
+\subsection{4. 同阶与上界}\label{ux540cux9636ux4e0eux4e0aux754c}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{“同阶”的定义？“上界”的定义？两者什么关系？}\(T(n)\)
+的精确式子往往很长，而 \(n\)
+很大时真正起作用的只是它“长多快”。下面的定义把“长得一样快”说精确。
+
+\begin{defbox}[：同阶（数量级相同）]
+
+若存在正常数 \(c_1,c_2\) 和 \(n_0\)，使得对所有 \(n\ge n_0\) 都有
+\[c_1 f(n)\le T(n)\le c_2 f(n),\] 就说 \(T(n)\) 与 \(f(n)\)
+\textbf{同阶}。
+
+\end{defbox}
+
+\begin{defbox}[：上界]
+
+若存在正常数 \(C\) 和 \(n_0\)，使得对所有 \(n\ge n_0\) 都有
+\(0\le T(n)\le C f(n)\)，就说 \(f(n)\) 是 \(T(n)\)
+的（渐近）\textbf{上界}。王道书就是用这个式子定义 \(T(n)=O(f(n))\) 的。
+
+\end{defbox}
+
+两者的关系：\textbf{同阶 = 上界 +
+下界}。同阶一定是上界；反过来不一定，比如
+\(3n+3\le 6n^2\)（\(n\ge1\)），\(n^2\) 是 \(3n+3\)
+的上界，但两者不同阶。
+
+\begin{thmbox}{判定法：比值的极限}
+
+若 \(\displaystyle\lim_{n\to\infty}\frac{T(n)}{f(n)}=k\)，且
+\(0<k<\infty\)，则 \(T(n)\) 与 \(f(n)\) 同阶。
+
+\textbf{证明}：按极限定义，对 \(\varepsilon=k/2\)，存在 \(n_0\)，使
+\(n\ge n_0\) 时 \(\frac{k}{2}<\frac{T(n)}{f(n)}<\frac{3k}{2}\)。取
+\(c_1=\frac k2\)、\(c_2=\frac{3k}2\) 即满足同阶的定义。\(\square\)
+
+\end{thmbox}
+
+这就是正课视频里大 O 的“数学含义”：老师说 \(T(n)=O(f(n))\)
+意味着比值的极限“等于某个常数 \(k\)“。按老师”保留最高阶项”的用法，这个
+\(k\)
+是非零常数，所以老师讲的是\textbf{同阶}，而这条判定法说明了它为什么成立。
+
+\hypertarget{ux65f6ux95f4ux590dux6742ux5ea6}{%
+\subsection{5. 时间复杂度}\label{ux65f6ux95f4ux590dux6742ux5ea6}}
+
+\begin{defbox}[：时间复杂度]
+
+算法的\textbf{时间复杂度}是 \(T(n)\) 的数量级：取一个与 \(T(n)\)
+\textbf{同阶}的最简函数 \(f(n)\)，记作 \(T(n)=O(f(n))\)。
+
+\end{defbox}
+
+例：\(T(n)=3n+3\) 与 \(n\) 同阶（比值极限为 3），所以爱你 n
+遍的时间复杂度是 \(O(n)\)。
+
+\begin{fixbox}
+
+\textbf{符号统一}：\(O\)
+的本义是上界（王道书定义），但“时间复杂度”要的是最紧的那个上界，也就是同阶的
+\(f\)。408 题目和王道书写 \(O(f(n))\)
+时都是这个意思。本笔记从这里起，凡写时间复杂度 \(O(f(n))\)，都指 \(f\)
+与 \(T(n)\) 同阶。
+
+\end{fixbox}
+
+\hypertarget{ux7b2cux4e8cux5c42ux7531ux5b9aux4e49ux63a8ux51faux7684ux5b9aux7406}{%
+\section{第二层：由定义推出的定理}\label{ux7b2cux4e8cux5c42ux7531ux5b9aux4e49ux63a8ux51faux7684ux5b9aux7406}}
+
+\tocback
+
+这一层的 4 条结论都只用第一层的定义证明，后面求复杂度时直接拿来用。
+
+\hypertarget{ux5b9aux7406-1ux53eaux7559ux6700ux9ad8ux9636ux9879ux53bbux6389ux7cfbux6570ux52a0ux6cd5ux89c4ux5219}{%
+\subsection{定理
+1：只留最高阶项，去掉系数（加法规则）}\label{ux5b9aux7406-1ux53eaux7559ux6700ux9ad8ux9636ux9879ux53bbux6389ux7cfbux6570ux52a0ux6cd5ux89c4ux5219}}
+
+\cueblock{\cuenote}{\relax{为什么低阶项和系数都可以扔？加法规则怎么证？}}
+
+\slidefig{assets/1.2.2-p06.jpg}{0.8}{课件：当问题规模 n 足够大时}
+
+\begin{thmbox}{定理 1（加法规则）}
+
+设 \(f(n),g(n)\ge0\)。则 \(f(n)+g(n)\) 与 \(\max(f(n),g(n))\) 同阶，即
+\[O(f(n))+O(g(n))=O(\max(f(n),g(n))).\]
+推论：有限项相加，只留增长最快的一项；它前面的正系数也可以去掉。
+
+\textbf{证明}：\(\max(f,g)\le f+g\le 2\max(f,g)\)，取
+\(c_1=1\)、\(c_2=2\)。系数 \(a>0\) 时，\(a\cdot h(n)\) 与 \(h(n)\)
+同阶（\(c_1=c_2=a\)）。\(\square\)
+
+\end{thmbox}
+
+例：\(T_2(n)=n^2+3n+1000\)，\(n^2\) 增长最快，所以
+\(T_2(n)=O(n^2)\)；\(T_3(n)=n^3+n^2+9999999=O(n^3)\)。
+
+\begin{teacherbox}
+
+你有 3000 块，舍友有 9000 块，谁也不比谁富多少，是同一个数量级；有人有
+900 万，那才不是一个数量级。哪怕系数是 9999，只要 \(n\) 够大，\(9999n\)
+终究远小于 \(n^2\)。
+
+\end{teacherbox}
+
+\begin{addbox}
+
+带负号的低阶项也一样：\(T(n)=n^2-8000n\)，\(\frac{T(n)}{n^2}=1-\frac{8000}{n}\to1\)，由判定法与
+\(n^2\) 同阶。只要最高阶项的系数是正的，低阶项无论正负都可以扔。
+
+\end{addbox}
+
+\hypertarget{ux5b9aux7406-2ux4e58ux6cd5ux89c4ux5219}{%
+\subsection{定理
+2：乘法规则}\label{ux5b9aux7406-2ux4e58ux6cd5ux89c4ux5219}}
+
+\begin{thmbox}{定理 2（乘法规则）}
+
+若 \(T_1\) 与 \(f\) 同阶、\(T_2\) 与 \(g\) 同阶，则 \(T_1\cdot T_2\) 与
+\(f\cdot g\) 同阶，即 \(O(f(n))\times O(g(n))=O(f(n)g(n))\)。
+
+\textbf{证明}：把 \(c_1f\le T_1\le c_2f\) 与 \(d_1g\le T_2\le d_2g\)
+两式相乘（各项非负），得 \(c_1d_1fg\le T_1T_2\le c_2d_2fg\)。\(\square\)
+
+\end{thmbox}
+
+\slidefig{assets/1.2.2-p07.jpg}{0.8}{课件：加法规则与乘法规则}
+
+\begin{bookbox}
+
+王道书把两条规则对应到代码结构：两段代码\textbf{顺序执行}用加法规则；一段代码\textbf{嵌套}在另一段里，用乘法规则。例：语句块
+\texttt{a\{\}}、\texttt{b\{\}}、\texttt{c\{\}} 分别是
+\(O(1)\)、\(O(n)\)、\(O(n^2)\)，则 \texttt{a\{\ b\{\}\ c\{\}\ \}} 为
+\(O(n^2)\)，\texttt{a\{\ b\{\ c\{\}\ \}\ \}} 为 \(O(n^3)\)。
+
+\end{bookbox}
+
+\begin{pitfallbox}
+
+乘法规则要求\textbf{内层的次数不随外层变量变化}（每一轮内层都是同一个
+\(T_2\)）。内层次数随外层变化时（如
+\texttt{j\textless{}i}），每一轮的次数不同，不能直接相乘，要用第三层的求和。
+
+\end{pitfallbox}
+
+\hypertarget{ux5b9aux7406-3ux5e38ux5bf9ux5e42ux6307ux9636}{%
+\subsection{定理
+3：常对幂指阶}\label{ux5b9aux7406-3ux5e38ux5bf9ux5e42ux6307ux9636}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{常见数量级的顺序？对数的底重要吗？}用加法规则必须会比较“谁增长得快”。说
+\(g\) 比 \(f\) 增长得快，指
+\(\lim\limits_{n\to\infty}\frac{f(n)}{g(n)}=0\)。
+
+\begin{thmbox}{定理 3（常见数量级的顺序）}
+
+\[O(1)<O(\log_2 n)<O(n)<O(n\log_2 n)<O(n^2)<O(n^3)<O(2^n)<O(n!)<O(n^n)\]
+口诀：\textbf{常对幂指阶}（常数 \textless{} 对数 \textless{} 幂函数
+\textless{} 指数 \textless{} 阶乘）。
+
+\end{thmbox}
+
+\slidefig{assets/1.2.2-p08.jpg}{0.8}{课件：常对幂指阶}
+
+课件用洛必达法则证明了其中两个：
+\[\lim_{n\to\infty}\frac{\log_2 n}{n}=\lim_{n\to\infty}\frac{1}{n\ln 2}=0,\qquad \lim_{n\to\infty}\frac{n^2}{2^n}=\lim_{n\to\infty}\frac{2n}{2^n\ln2}=\lim_{n\to\infty}\frac{2}{2^n\ln^2 2}=0.\]
+所以 \(n^3+n^2\log_2 n\) 中 \(n^3=n^2\cdot n\) 增长更快，结果是
+\(O(n^3)\)。正课视频说只要求记住顺序，不要求自己证明。
+
+\slidefig{assets/1.2.2-p09.jpg}{0.62}{课件：各数量级的增长曲线}
+
+\begin{addbox}
+
+\textbf{对数的底不影响数量级}：\(\log_a n=\dfrac{\log_2 n}{\log_2 a}\)，两者只差常数倍
+\(\frac{1}{\log_2 a}\)，按定理 1 同阶。所以写 \(O(\log n)\) 和
+\(O(\log_2 n)\) 是一回事。
+
+\end{addbox}
+
+\begin{teacherbox}
+
+为什么只关心 \(n\)
+很大的情况：老师工作时写过一个玩家匹配算法，两层嵌套循环，\(O(n^2)\)。自测只用两三百个玩家，没问题；上线后同时在线几十万人，算法一跑全服受影响。后来优化成
+\(O(n)\)。\(n=10^5\) 时，\(n^2=10^{10}\)，\(n=10^5\)，差了十万倍。
+
+\end{teacherbox}
+
+\hypertarget{ux5b9aux7406-4ux53eaux6570ux4e00ux6761ux57faux672cux64cdux4f5cux5c31ux591f}{%
+\subsection{定理
+4：只数一条基本操作就够}\label{ux5b9aux7406-4ux53eaux6570ux4e00ux6761ux57faux672cux64cdux4f5cux5c31ux591f}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{为什么只数一条语句？哪条？}\(T(n)\)
+要求把所有语句的次数加起来，但实际上只要数一条：
+
+\begin{thmbox}{定理 4（基本操作）}
+
+设算法有 \(m\) 条语句（\(m\) 是与 \(n\)
+无关的常数），其中执行次数最多的一条执行了 \(x(n)\) 次，则 \(T(n)\) 与
+\(x(n)\) 同阶。这条语句叫\textbf{基本操作}。
+
+\textbf{证明}：每条语句的次数都 \(\le x\)，所以 \(T\le m\cdot x\)；\(T\)
+中包含 \(x\) 这一项，所以 \(T\ge x\)。于是 \(x\le T\le m\,x\)，取
+\(c_1=1\)、\(c_2=m\)。\(\square\)
+
+\end{thmbox}
+
+\textbf{哪条语句执行次数最多？}
+对循环来说就是最内层循环体里的语句。理由：外层的语句每轮只执行常数次，而只要每次进入内层循环时循环体至少执行一次，内层循环体的次数就不少于外层的轮数；内层的循环条件比循环体每轮多判断一次，最多是循环体次数的
+2 倍，按定理 1 同阶。所以：
+
+\begin{thmbox}{推论（课件的三个结论）}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{顺序执行的代码只影响常数项}：它们的次数是常数，不影响 \(x\)。
+\item
+  \textbf{循环中只需挑一个基本操作}：同一层的几条语句次数相同，挑哪条都一样。
+\item
+  \textbf{多层嵌套循环只看最深层}：最深层循环体的次数最多。
+\end{enumerate}
+
+\end{thmbox}
+
+\slidefig{assets/1.2.2-p12.jpg}{0.8}{课件：算法 2 与三个结论}
+
+正课视频的例子：在算法 1 前加 1000 行顺序代码，\(T(n)=3n+1003\)，仍是
+\(O(n)\)（结论 1）；在循环里只数 \texttt{printf}，得 \(n\) 次（结论
+2）；算法 2 在 while 里再套一层
+\texttt{for(j=1;j\textless{}=n;j++)}，最深层执行 \(n\cdot n=n^2\)
+次，\(T(n)=O(n^2)\)（结论 3）。
+
+\begin{pitfallbox}
+
+结论 3
+的前提是“每次进入内层都至少执行一次循环体”。考研题都满足；若内层可能一次都不执行，就要直接找执行次数最多的那条语句（定理
+4 本身）。
+
+\end{pitfallbox}
+
+\hypertarget{ux7b2cux4e09ux5c42ux552fux4e00ux7684ux901aux7528ux65b9ux6cd5}{%
+\section{第三层：唯一的通用方法}\label{ux7b2cux4e09ux5c42ux552fux4e00ux7684ux901aux7528ux65b9ux6cd5}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{求时间复杂度的三步？第 2 步有哪三种情形？}第一、二层推出：时间复杂度
+= 基本操作次数 \(x(n)\) 的数量级。于是求复杂度只有一套方法：
+
+\begin{defbox}[：通用方法（三步）]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{定基本操作}：最深层循环体里的一条语句；递归算法则把“一次函数调用”当作一次（第
+  3 种情形会说明理由）。
+\item
+  \textbf{把执行次数写成求和}，按代码结构分三种情形（见下）。
+\item
+  \textbf{取数量级}：用定理 1、3
+  只留最高阶项、去系数。不必算出精确值，只要夹出同阶的上界和下界就够了。
+\end{enumerate}
+
+\end{defbox}
+
+\hypertarget{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2460ux5355ux5c42ux5faaux73af-ux6570ux5faaux73afux53d8ux91cfux53d6ux4e86ux51e0ux4e2aux503c}{%
+\subsection{第 2 步 · 情形 ①：单层循环 =
+数循环变量取了几个值}\label{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2460ux5355ux5c42ux5faaux73af-ux6570ux5faaux73afux53d8ux91cfux53d6ux4e86ux51e0ux4e2aux503c}}
+
+\begin{thmbox}{引理（终止计数）}
+
+循环变量依次取值
+\(v_0,v_1,v_2,\dots\)，循环条件对前面一段取值成立、从某个值起不成立。若条件对
+\(v_0,\dots,v_c\) 成立，对 \(v_{c+1}\) 不成立，则循环体执行 \(c+1\) 次。
+
+也就是用两句话定出 \(c\)：\textbf{最后一次进得去}（\(v_c\)
+满足条件），\textbf{下一次进不去}（\(v_{c+1}\) 不满足）。
+
+\end{thmbox}
+
+\textbf{例（正课小练习
+1）}：\texttt{i=1;\ while(i\textless{}=n)\{\ i=i*2;\ …\ \}}。
+
+\slidefig{assets/1.2.2-p14.jpg}{0.65}{课件：小练习 1}
+
+\begin{itemize}
+\tightlist
+\item
+  取值：\(v_k=2^k\)（\(k=0,1,2,\dots\)）。
+\item
+  最后一次进得去：\(2^c\le n\)；下一次进不去：\(2^{c+1}>n\)。
+\item
+  两式取对数：\(c\le\log_2 n<c+1\)，所以 \(c=\lfloor\log_2 n\rfloor\)。
+\item
+  执行次数 \(x=c+1=\lfloor\log_2 n\rfloor+1\)，与 \(\log_2 n\)
+  同阶，\(T(n)=O(\log_2 n)\)。
+\end{itemize}
+
+\begin{fixbox}
+
+课件写的是“循环结束时刚好满足
+\(2^x>n\)，\(x=\log_2 n+1\)”，是忽略取整的近似；精确值是
+\(\lfloor\log_2 n\rfloor+1\)（\(n=3000\) 时循环 12 次）。数量级相同。
+
+\end{fixbox}
+
+由同一个引理直接得到两条常用结论（各一行证明）：
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.944\hsize\raggedright\arraybackslash}X>{\hsize=0.611\hsize\raggedright\arraybackslash}X>{\hsize=1.444\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 循环形式} & \textcolor{white}{\bfseries 次数的数量级} & \textcolor{white}{\bfseries 证明} \\
+\endfirsthead
+变量 +1，条件 \(v^k\le n\) & \(n^{1/k}\) & 最后进得去 \(c^k\le n\)，下次进不去 \((c+1)^k>n\)，得 \(c=\lfloor n^{1/k}\rfloor\) \\ \hline
+变量 ×2，条件 \(v\le n\) & \(\log_2 n\) & 上面的例子；初值或边界改成常数倍（如 \(v<n/2\)）只让 \(c\) 差一个常数 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\hypertarget{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2461ux591aux5c42ux5faaux73af-ux5bf9ux5916ux5c42ux6bcfux4e2aux53d6ux503cux628aux5185ux5c42ux6b21ux6570ux52a0ux8d77ux6765}{%
+\subsection{第 2 步 · 情形 ②：多层循环 =
+对外层每个取值，把内层次数加起来}\label{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2461ux591aux5c42ux5faaux73af-ux5bf9ux5916ux5c42ux6bcfux4e2aux53d6ux503cux628aux5185ux5c42ux6b21ux6570ux52a0ux8d77ux6765}}
+
+\begin{thmbox}{嵌套计数}
+
+外层变量依次取值 \(i_0,i_1,\dots,i_c\)（用情形 ① 定出），外层取值为
+\(i\) 时内层执行 \(g(i)\) 次，则最深层执行次数
+\[x=g(i_0)+g(i_1)+\cdots+g(i_c).\]
+
+\end{thmbox}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\(g\) 不随 \(i\)
+  变化}（每轮内层都一样）：\(x=(c+1)\cdot g\)，这就是乘法规则（定理
+  2）。例：算法 2 外层 \(n\) 轮、每轮内层 \(n\) 次，\(x=n^2\)。
+\item
+  \textbf{\(g\) 随 \(i\) 变化}（如
+  \texttt{j\textless{}i}）：不能直接乘，要按下面的三种和式求和。
+\end{itemize}
+
+\hypertarget{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2462ux9012ux5f52-ux6570ux4e00ux5171ux8c03ux7528ux4e86ux51e0ux6b21}{%
+\subsection{第 2 步 · 情形 ③：递归 =
+数一共调用了几次}\label{ux7b2c-2-ux6b65-ux60c5ux5f62-ux2462ux9012ux5f52-ux6570ux4e00ux5171ux8c03ux7528ux4e86ux51e0ux6b21}}
+
+\textbf{为什么一次调用算一次}：如果一次调用本身（不算它再去调用的子调用）只做常数次操作，那么总次数
+= 常数 × 调用总次数，按定理 1 与调用总次数同阶。
+
+调用总次数的数法和情形 ②
+一样：按递归参数分层，每层有几次调用，加起来。王道书写成递推式，例如每次调用做常数次操作、再调用一次规模为
+\(n-1\) 的自己： \[T(n)=1+T(n-1)=2+T(n-2)=\cdots=(n-1)+T(1),\] 共 \(n\)
+次调用，\(T(n)=O(n)\)。递推式每展开一步就是数了一层，和“分层相加”是同一件事。
+
+\begin{fixbox}
+
+正课视频只提了一句“递归型算法也要用 \(n\)
+表示出基本操作的执行次数”，没有展开；递归的数法在课后习题（11、13
+题）里才用到，习题笔记统一版会接着这里讲。
+
+\end{fixbox}
+
+\hypertarget{ux7b2c-3-ux6b65ux8981ux7528ux5230ux7684ux4e09ux79cdux548cux5f0f}{%
+\subsection{第 3
+步要用到的三种和式}\label{ux7b2c-3-ux6b65ux8981ux7528ux5230ux7684ux4e09ux79cdux548cux5f0f}}
+
+\Needspace{4\baselineskip}
+
+\cuenote{三种和式各自和谁同阶？}第 2 步写出的和式，考研范围内只有三种：
+
+\begin{thmbox}{三种和式}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{常数相加}：\(\underbrace{a+a+\cdots+a}_{m\text{ 项}}=am\)，与
+  \(m\) 同阶。
+\item
+  \textbf{等差}：\(1+2+\cdots+m=\dfrac{m(m+1)}{2}\)，与 \(m^2\)
+  同阶（因为 \(\frac{m^2}{2}\le\frac{m(m+1)}2\le m^2\)）。
+\item
+  \textbf{等比}：\(1+2+4+\cdots+2^t=2^{t+1}-1\)，与\textbf{最后一项}
+  \(2^t\) 同阶（因为 \(2^t\le 2^{t+1}-1<2\cdot2^t\)）。
+\end{enumerate}
+
+\end{thmbox}
+
+\begin{center}
+\begin{tikzpicture}[x=4mm,y=4mm]
+\draw[dashed,wdgray] (0,0) rectangle (5,5);
+\foreach \i in {1,...,5}{\foreach \j in {1,...,\i}{\draw[fill=wdblue!25,draw=wdblue] (\i-1,\j-1) rectangle (\i,\j);}}
+\node[font=\scriptsize,align=center] at (2.5,-1.6) {等差：$1+2+\cdots+m$（图中 $m=5$）\\ 涂色部分 $\ge$ 正方形的一半 $m^2/2$\\ 且 $\le$ 整个正方形 $m^2$};
+\begin{scope}[xshift=55mm]
+\foreach \h/\k in {0.5/0,1/1,2/2,4/3}{\draw[fill=wdorange!30,draw=wdorange] (\k*1.5,0) rectangle (\k*1.5+1,\h);}
+\node[font=\scriptsize] at (0.5,-0.5) {1}; \node[font=\scriptsize] at (2,-0.5) {2};
+\node[font=\scriptsize] at (3.5,-0.5) {4}; \node[font=\scriptsize] at (5,-0.5) {8};
+\draw[wdred,thick] (0,-1) -- (4,-1); \draw[wdred,thick] (0,-0.8) -- (0,-1.2); \draw[wdred,thick] (4,-0.8) -- (4,-1.2);
+\node[font=\scriptsize,text=wdred] at (2,-1.7) {$1+2+4=7<8$};
+\node[font=\scriptsize,align=center] at (3,-3.6) {等比：前面所有项之和 $<$ 最后一项\\ 所以总和 $<2\times$ 最后一项};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{pitfallbox}
+
+等比和式是最容易看错的地方：外层变量每次
+×2、内层跑“外层变量那么多次”时，次数是 \(1+2+4+\cdots\)，与最后一项（约
+\(n\)）同阶，结果是 \(O(n)\)，\textbf{不是} \(O(n\log_2 n)\)。把外层
+\(\log_2 n\) 轮乘以内层“最多 \(n\) 次”只得到上界，不是同阶。
+
+\end{pitfallbox}
+
+\hypertarget{ux7b2cux56dbux5c42ux540cux4e00ux4e2a-nux8f93ux5165ux4e0dux540cux65f6ux6b21ux6570ux4e5fux4e0dux540c}{%
+\section{\texorpdfstring{第四层：同一个
+\(n\)，输入不同时次数也不同}{第四层：同一个 n，输入不同时次数也不同}}\label{ux7b2cux56dbux5c42ux540cux4e00ux4e2a-nux8f93ux5165ux4e0dux540cux65f6ux6b21ux6570ux4e5fux4e0dux540c}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{最好、最坏、平均的定义？默认哪个？}到这里都默认 \(T(n)\) 只由
+\(n\) 决定。有些算法的次数还取决于输入数据本身，这时同一个 \(n\)
+对应多个 \(T\)。
+
+\textbf{例（正课小练习 2）}：数组 \texttt{flag{[}n{]}} 乱序存放
+1～n，从头找值为 \texttt{n} 的元素，找到就 \texttt{break}。
+
+\slidefig{assets/1.2.2-p15.jpg}{0.6}{课件：小练习 2}
+
+\begin{defbox}[：三种时间复杂度]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{最坏时间复杂度}：规模为 \(n\)
+  的所有输入中，次数的\textbf{最大值}的数量级。
+\item
+  \textbf{平均时间复杂度}：所有输入\textbf{等概率出现}时，次数的\textbf{期望}的数量级。
+\item
+  \textbf{最好时间复杂度}：所有输入中，次数的\textbf{最小值}的数量级。
+\end{itemize}
+
+\end{defbox}
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.625\hsize\raggedright\arraybackslash}X>{\hsize=1.625\hsize\raggedright\arraybackslash}X>{\hsize=0.750\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 情况} & \textcolor{white}{\bfseries 小练习 2} & \textcolor{white}{\bfseries 结果} \\
+\endfirsthead
+最好 & \texttt{n} 在第 1 个位置，循环 1 次 & \(O(1)\) \\ \hline
+最坏 & \texttt{n} 在最后一个位置，循环 \(n\) 次 & \(O(n)\) \\ \hline
+平均 & 在第 \(k\) 个位置的概率都是 \(\frac1n\)，要循环 \(k\) 次：\(\frac1n(1+2+\cdots+n)=\frac{n+1}{2}\) & \(O(n)\) \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{bookbox}
+
+王道书的例子方向相反（从后往前找 \texttt{k}，基本运算是
+\texttt{i-\/-}）：\texttt{A{[}n-1{]}} 就是 \texttt{k} 时执行 0
+次（最好），\texttt{k} 不存在时执行 \(n\)
+次（最坏）。书上说：“通常以\textbf{最坏}时间复杂度作为算法效率的评价标准，因为它提供了运行时间的确定性上界。”
+
+\end{bookbox}
+
+\begin{teacherbox}
+
+很多算法的执行时间与输入的数据有关，一般只考虑最坏和平均时间复杂度；最好时间复杂度参考意义不大，因为评价算法主要看它在不好的情况下会不会太慢。
+
+\end{teacherbox}
+
+两者不矛盾：正课视频说的是\textbf{要算哪几种}（最坏和平均），王道书说的是\textbf{拿哪种当标准}（最坏）。题目没说明是哪种情况时，按最坏算（第五层）。
+
+\hypertarget{ux7b2cux4e94ux5c42408-ux7684ux4e66ux5199ux7ea6ux5b9a}{%
+\section{第五层：408
+的书写约定}\label{ux7b2cux4e94ux5c42408-ux7684ux4e66ux5199ux7ea6ux5b9a}}
+
+\tocback
+
+\cueblock{\cuenote}{\relax{考试里 \(O\)、log、“执行次数”、if 分支各怎么处理？}}
+
+\begin{exambox}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{\(O(f(n))\) 指同阶的最简函数}（第一层第 5
+  节），选项里只会有一个同阶的。
+\item
+  \textbf{\(\log n\) 默认是 \(\log_2 n\)}，底数本来也不影响数量级（定理
+  3 后的补充）。
+\item
+  \textbf{题目没说情况时按最坏}（第四层）。
+\item
+  \textbf{问“执行次数”要算精确值}；问“时间复杂度”才只取数量级。
+\item
+  \textbf{if / else
+  取次数最多的分支}：这正是最坏情况的定义（对所有输入取最大值）。
+\end{enumerate}
+
+\end{exambox}
+
+\hypertarget{ux7b2cux516dux5c42ux5404ux5bb6ux8bf4ux6cd5ux653eux56deux8fd9ux5957ux4f53ux7cfb}{%
+\section{第六层：各家说法放回这套体系}\label{ux7b2cux516dux5c42ux5404ux5bb6ux8bf4ux6cd5ux653eux56deux8fd9ux5957ux4f53ux7cfb}}
+
+\tocback
+
+\Needspace{4\baselineskip}
+
+\cuenote{课件、王道书、习题讲解里的说法各对应哪一层哪一步？}下表把你会在五份资料里看到的说法，都对到上面的某一层。\textbf{它们都是这套体系的特例或换一种写法}，没有一条需要单独记。
+
+{\rowcolors{2}{wdblue!5}{white}\arrayrulecolor{wdblue!35}
+\begin{xltabular}{\linewidth}{>{\hsize=0.577\hsize\raggedright\arraybackslash}X>{\hsize=1.269\hsize\raggedright\arraybackslash}X>{\hsize=1.154\hsize\raggedright\arraybackslash}X}
+\rowcolor{wdblue}\textcolor{white}{\bfseries 资料} & \textcolor{white}{\bfseries 原来的说法} & \textcolor{white}{\bfseries 在本体系里} \\
+\endfirsthead
+课件 & \(T(n)=O(f(n))\) 意味着 \(\lim\frac{T(n)}{f(n)}=k\) & 同阶的\textbf{判定法}（第一层 §4） \\ \hline
+课件 & 只保留最高阶项，系数变为 1 & \textbf{定理 1} \\ \hline
+课件 & 三个结论：顺序代码只影响常数 / 挑一个基本操作 / 只看最深层 & \textbf{定理 4 的推论} \\ \hline
+课件 & 知识回顾三步：找基本操作 → \(x=f(n)\) → \(O(x)\) & \textbf{通用方法}的三步（第三层） \\ \hline
+课件 & 一般只考虑最坏和平均 & \textbf{第四层}：要算哪几种 \\ \hline
+王道书 & \(0\le T(n)\le Cf(n)\) 定义 \(O\) & \textbf{上界}的定义；考试取最紧的上界，即同阶 \\ \hline
+王道书 & \(T(n)\) 是所有语句频度之和，数量级由基本运算决定 & \(T(n)\) 的定义 + \textbf{定理 4} \\ \hline
+王道书 & 通常以最坏为评价标准 & \textbf{第四层}：拿哪种当标准 \\ \hline
+王道书 & 加法规则对应顺序执行，乘法规则对应嵌套 & \textbf{定理 1、2}；乘法规则只在内层次数不随外层变化时可用 \\ \hline
+王道书归纳总结 & 类型 1“循环变量参与循环条件”：设次数 \(t\)，解 \(t=f(n)\) & 第 2 步\textbf{情形 ①}（终止计数） \\ \hline
+王道书归纳总结 & 类型 2“与循环条件无关”：由内向外累加；递归建递推式 & 第 2 步\textbf{情形 ②、③} \\ \hline
+习题讲解（后面用到） & 表格法、拆循环、并列单层循环、两步法、“类型一 / 类型二” & 都是第 2、3 步的书写格式或捷径，课后习题笔记统一版逐题对照 \\ \hline
+\end{xltabular}\par\vspace{4pt}}
+
+\begin{fixbox}
+
+\textbf{同名不同义}：王道书归纳总结的“类型 1 / 类型
+2”按“循环变量是否出现在循环条件里”分，习题讲解视频里的“类型一 /
+类型二”按“每层是否都是
++1”分，两套分法无关。本体系不用任何“类型”，只按代码结构分三种情形。
+
+\end{fixbox}
+
+\hypertarget{ux77e5ux8bc6ux56deux987e}{%
+\section{知识回顾}\label{ux77e5ux8bc6ux56deux987e}}
+
+\tocback
+
+\slidefig{assets/1.2.2-p17.jpg}{0.8}{课件：本节知识回顾}
+
+\cueblock{\cuenote}{\relax{自己从头推一遍：5 个概念 → 4 条定理 → 三步方法。}}
+
+\begin{summarybox}
+
+\textbf{一句话}：时间复杂度 = 基本操作执行次数 \(x(n)\) 的数量级。
+
+\textbf{第一层（定义）}：计数模型下，时间换成执行次数；\(T(n)\)
+是所有语句次数之和；与 \(T(n)\) 同阶的最简函数 \(f(n)\)
+就是时间复杂度，记 \(O(f(n))\)。同阶 = 上界 +
+下界；比值极限为非零常数可判定同阶。
+
+\textbf{第二层（定理）}：① 只留最高阶项、去系数（加法规则）；②
+同阶相乘仍同阶（乘法规则，内层次数不随外层变时用）；③
+常对幂指阶，对数底无关；④ \(T(n)\)
+与执行次数最多的那条语句同阶，循环里就是最深层循环体。
+
+\textbf{第三层（方法）}：定基本操作 →
+写成求和（单层：最后一次进得去、下一次进不去；多层：对外层每个取值加内层次数；递归：分层数调用次数）→
+用三种和式（常数、等差 \(\sim m^2\)、等比 \(\sim\) 最后一项）取数量级。
+
+\textbf{第四、五层}：次数依赖输入时分最好、最坏、平均，默认最坏；问次数算精确，问复杂度取阶，分支取最大。
+
+\textbf{自测}：① \texttt{for(i=1;i\textless{}=n;i++)} 中
+\texttt{i\textless{}=n} 执行几次？②
+\texttt{i=1;\ while(i\textless{}=n)\ i=i*3;}
+的复杂度？用终止计数写出两个不等式。③ 为什么“外层 ×2、内层跑 \(i\) 次”是
+\(O(n)\) 而不是 \(O(n\log_2 n)\)？
+
+\end{summarybox}
+\end{document}
